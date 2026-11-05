@@ -1,0 +1,750 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Kavin's Solids</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Kavin Solids">
+<meta name="theme-color" content="#f7f1e8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1c1915" media="(prefers-color-scheme: dark)">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="icon" href="icons/icon-192.png">
+<style>
+:root{
+  --bg:#f7f1e8; --card:#fffdf9; --ink:#2b2520; --muted:#7a6f64; --line:#e8dfd2;
+  --accent:#c4643c; --accent-soft:#f6e1d6; --ok:#4f7d5c; --ok-soft:#dcebdf;
+  --warn:#b7791f; --warn-soft:#f8ead0; --bad:#b83a3a; --bad-soft:#f6dada;
+  --blue:#3d6a8a; --blue-soft:#dde9f1; --shadow:0 1px 2px rgba(60,40,20,.06),0 4px 14px rgba(60,40,20,.06);
+  --r:16px; --safe-b:env(safe-area-inset-bottom,0px); --safe-t:env(safe-area-inset-top,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#1c1915;--card:#26221d;--ink:#f1ebe3;--muted:#a99d90;--line:#3a342c;
+  --accent:#e08a62;--accent-soft:#3d2a20;--ok:#7fb48d;--ok-soft:#24352a;--warn:#e0a94f;--warn-soft:#3a2f1c;
+  --bad:#e57373;--bad-soft:#3d2222;--blue:#86b3d3;--blue-soft:#1f2f3a;--shadow:none}
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif}
+body{padding-top:var(--safe-t);padding-bottom:calc(76px + var(--safe-b));min-height:100vh}
+button{font:inherit;color:inherit;cursor:pointer}
+input,select,textarea{font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px;width:100%}
+textarea{min-height:70px;resize:vertical}
+a{color:var(--accent)}
+h1,h2,h3{margin:0;line-height:1.2}
+.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);padding:12px 16px 10px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--line)}
+.top .who{flex:1;min-width:0}
+.top h1{font-size:20px;letter-spacing:-.01em}
+.top .age{font-size:13px;color:var(--muted)}
+.iconbtn{border:0;background:var(--card);border-radius:12px;width:40px;height:40px;display:grid;place-items:center;box-shadow:var(--shadow);position:relative}
+.syncdot{position:absolute;top:7px;right:7px;width:8px;height:8px;border-radius:50%;background:var(--muted)}
+.syncdot.ok{background:var(--ok)}.syncdot.busy{background:var(--warn)}.syncdot.err{background:var(--bad)}
+main{padding:14px 16px 24px;max-width:640px;margin:0 auto}
+.view{display:none}.view.on{display:block}
+nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--card);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(6,1fr);padding:6px 4px calc(6px + var(--safe-b))}
+nav.tabs button{border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:10.5px;color:var(--muted);padding:4px 0}
+nav.tabs button svg{width:24px;height:24px}
+nav.tabs button.on{color:var(--accent);font-weight:600}
+.card{background:var(--card);border-radius:var(--r);padding:14px;box-shadow:var(--shadow);margin-bottom:12px;border:1px solid var(--line)}
+.card.flat{box-shadow:none}
+.row{display:flex;align-items:center;gap:10px}
+.between{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.muted{color:var(--muted)} .small{font-size:13px} .tiny{font-size:12px}
+.daynav{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.daynav .lbl{flex:1;text-align:center}
+.daynav .lbl b{display:block;font-size:17px}
+.daynav button{border:1px solid var(--line);background:var(--card);border-radius:12px;width:44px;height:44px;font-size:20px}
+.pill{display:inline-flex;align-items:center;gap:4px;border-radius:999px;padding:3px 10px;font-size:12.5px;font-weight:600;background:var(--line);color:var(--ink);white-space:nowrap}
+.pill.new{background:var(--accent);color:#fff}
+.pill.build{background:var(--accent-soft);color:var(--accent)}
+.pill.keep{background:var(--blue-soft);color:var(--blue)}
+.pill.ok{background:var(--ok-soft);color:var(--ok)}
+.pill.warn{background:var(--warn-soft);color:var(--warn)}
+.pill.bad{background:var(--bad-soft);color:var(--bad)}
+.pill.iron{background:#efe1dc;color:#8a3b2a}
+@media (prefers-color-scheme:dark){.pill.iron{background:#3a2621;color:#e7a08c}}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.meal{display:flex;gap:12px;align-items:flex-start}
+.meal .slot{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:700}
+.meal .txt{font-size:16.5px;font-weight:600;margin-top:2px}
+.meal .body{flex:1;min-width:0}
+.tick{flex:none;width:46px;height:46px;border-radius:50%;border:2px solid var(--line);background:var(--card);display:grid;place-items:center;font-size:22px;color:transparent;transition:.15s}
+.tick.done{background:var(--ok);border-color:var(--ok);color:#fff}
+.tick.rx{background:var(--bad);border-color:var(--bad);color:#fff}
+.banner{border-radius:var(--r);padding:14px;margin-bottom:12px}
+.banner.new{background:var(--accent-soft);border:1px solid color-mix(in srgb,var(--accent) 35%,transparent)}
+.banner.watch{background:var(--warn-soft);border:1px solid color-mix(in srgb,var(--warn) 35%,transparent)}
+.banner.info{background:var(--blue-soft)}
+.banner h3{font-size:16px;margin-bottom:6px}
+.banner ol,.banner ul{margin:6px 0 0;padding-left:20px}
+.banner li{margin:3px 0}
+.btn{border:0;border-radius:12px;padding:12px 16px;font-weight:600;background:var(--accent);color:#fff;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.btn.ghost{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.btn.ok{background:var(--ok)} .btn.bad{background:var(--bad)}
+.btn.block{width:100%}
+.btn.sm{padding:8px 12px;font-size:14px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sec{font-size:13px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:700;margin:18px 2px 8px}
+details.card summary{list-style:none;cursor:pointer}
+details.card summary::-webkit-details-marker{display:none}
+details.card[open] summary{margin-bottom:10px}
+.chev{transition:transform .2s;color:var(--muted)}
+details[open] .chev{transform:rotate(90deg)}
+.kv{display:grid;grid-template-columns:92px 1fr;gap:6px 10px;font-size:14.5px}
+.kv dt{color:var(--muted);font-weight:600}
+.kv dd{margin:0}
+ul.clean{list-style:none;padding:0;margin:0}
+ul.clean li{padding:9px 0;border-bottom:1px solid var(--line)}
+ul.clean li:last-child{border-bottom:0}
+.checkline{display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
+.checkline:last-child{border-bottom:0}
+.checkline input{width:22px;height:22px;flex:none;accent-color:var(--ok)}
+.dayrow{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.dayrow:last-child{border-bottom:0}
+.dayrow .d{width:52px;flex:none;font-size:13px;color:var(--muted);line-height:1.2}
+.dayrow .d b{display:block;color:var(--ink);font-size:15px}
+.dayrow .m{flex:1;min-width:0;font-size:14.5px}
+.dayrow.today{background:var(--accent-soft);margin:0 -14px;padding:10px 14px}
+.prog{height:6px;border-radius:6px;background:var(--line);overflow:hidden;margin-top:8px}
+.prog i{display:block;height:100%;background:var(--ok);border-radius:6px}
+.agrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.acard{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;text-align:left;box-shadow:var(--shadow)}
+.acard .nm{font-weight:700;font-size:15px;margin:4px 0 6px}
+.acard .em{font-size:22px}
+.acard.reaction{border-color:var(--bad);background:var(--bad-soft)}
+.acard.overdue{border-color:var(--warn)}
+.food{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.food:last-child{border-bottom:0}
+.food .nm{flex:1;font-weight:600}
+.food .st{font-size:18px;width:26px;text-align:center}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg button{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:7px 12px;font-size:14px}
+.seg button.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.entry{padding:11px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.entry:last-child{border-bottom:0}
+.entry .t{font-size:13px;color:var(--muted)}
+.entry .w{font-weight:600}
+.scrim{position:fixed;inset:0;background:rgba(20,14,8,.45);z-index:50;display:none}
+.scrim.on{display:block}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:60;background:var(--bg);border-radius:20px 20px 0 0;max-height:92vh;overflow:auto;transform:translateY(102%);transition:transform .25s ease;padding:8px 16px calc(20px + var(--safe-b));max-width:640px;margin:0 auto}
+.sheet.on{transform:none;visibility:visible}
+.sheet{visibility:hidden;transition:transform .25s ease,visibility .25s}
+a.btn{text-decoration:none}
+.sheet .grab{width:40px;height:5px;border-radius:5px;background:var(--line);margin:4px auto 10px}
+.sheet .hd{display:flex;align-items:center;gap:10px;margin-bottom:12px;position:sticky;top:-8px;background:var(--bg);padding:8px 0}
+.sheet .hd h2{flex:1;font-size:19px}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:13px;font-weight:700;color:var(--muted);margin-bottom:5px}
+.pick{display:flex;flex-wrap:wrap;gap:6px;max-height:160px;overflow:auto;padding:2px}
+.pick button{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:6px 11px;font-size:13.5px}
+.pick button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.alert{border-radius:12px;padding:12px;font-size:14.5px;margin:8px 0}
+.alert.bad{background:var(--bad-soft);color:var(--ink);border:1px solid var(--bad)}
+.alert.warn{background:var(--warn-soft)}
+.ladder{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px}
+.ladder div{flex:1 0 110px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px;font-size:13px}
+.ladder div b{display:block;color:var(--accent);font-size:12px}
+.ladder div.now{border-color:var(--accent);background:var(--accent-soft)}
+.empty{text-align:center;color:var(--muted);padding:26px 10px}
+.toast{position:fixed;left:50%;bottom:calc(88px + var(--safe-b));transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:12px;font-size:14px;opacity:0;transition:.2s;z-index:80;pointer-events:none;max-width:90vw}
+.toast.on{opacity:1;transform:translateX(-50%)}
+.ref h3{font-size:16px;margin:4px 0 8px}
+.ref p,.ref li{font-size:14.5px}
+.ref ul{padding-left:20px;margin:6px 0}
+.call{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.call a{text-decoration:none}
+#report{display:none}
+@media print{
+  body{padding:0;background:#fff;color:#000}
+  .top,nav.tabs,main,.sheet,.scrim,.toast{display:none!important}
+  #report{display:block;font:11pt/1.4 -apple-system,Helvetica,Arial,sans-serif;color:#000;padding:0 4mm}
+  #report h1{font-size:18pt;margin-bottom:2mm}
+  #report h2{font-size:13pt;margin:6mm 0 2mm}
+  #report table{width:100%;border-collapse:collapse;font-size:9.5pt}
+  #report th,#report td{border:1px solid #999;padding:3px 5px;text-align:left;vertical-align:top}
+  #report th{background:#eee}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="who"><h1>Kavin's Solids</h1><div class="age" id="age"></div></div>
+  <button class="iconbtn" id="btnSettings" aria-label="Settings and sync">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12a9 9 0 0 1-15.4 6.4M3 12A9 9 0 0 1 18.4 5.6"/><path d="M18 2v4h-4M6 22v-4h4"/></svg>
+    <span class="syncdot" id="syncdot"></span>
+  </button>
+</header>
+
+<main>
+  <section class="view on" id="v-today"></section>
+  <section class="view" id="v-plan"></section>
+  <section class="view" id="v-allergens"></section>
+  <section class="view" id="v-foods"></section>
+  <section class="view" id="v-log"></section>
+  <section class="view" id="v-help"></section>
+</main>
+
+<nav class="tabs" id="tabs">
+  <button data-v="today" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>Today</button>
+  <button data-v="plan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="17" rx="3"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>Plan</button>
+  <button data-v="allergens"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg>Allergens</button>
+  <button data-v="foods"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 11h16a8 8 0 0 1-16 0z"/><path d="M12 3c1 2 1 4 0 6M8 5c.8 1.5.8 3 0 4M16 5c.8 1.5.8 3 0 4"/></svg>Foods</button>
+  <button data-v="log"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 6h12M8 12h12M8 18h12"/><circle cx="4" cy="6" r="1"/><circle cx="4" cy="12" r="1"/><circle cx="4" cy="18" r="1"/></svg>Log</button>
+  <button data-v="help"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 17h.01"/></svg>Safety</button>
+</nav>
+
+<div class="scrim" id="scrim"></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true"><div class="grab"></div><div class="hd"><h2 id="sheetTitle"></h2><button class="iconbtn" id="sheetClose" aria-label="Close">✕</button></div><div id="sheetBody"></div></div>
+<div class="toast" id="toast"></div>
+<div id="report"></div>
+
+<script src="plan-data.js"></script>
+<script>
+(() => {
+'use strict';
+const P = window.PLAN;
+const $ = (s, el = document) => el.querySelector(s);
+const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const LS = { get(k, d){ try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch { return d; } },
+             set(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch {} } };
+
+/* ---------- dates ---------- */
+const pad = n => String(n).padStart(2, '0');
+const ymd = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const parse = s => { const [y,m,d] = s.split('-').map(Number); return new Date(y, m-1, d); };
+const addDays = (s, n) => { const d = parse(s); d.setDate(d.getDate()+n); return ymd(d); };
+const diffDays = (a, b) => Math.round((parse(a) - parse(b)) / 864e5);
+const todayStr = () => ymd(new Date());
+const nowHM = () => { const d = new Date(); return `${pad(d.getHours())}:${pad(d.getMinutes())}`; };
+const DOW = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const fmtDate = s => { const d = parse(s); return `${DOW[d.getDay()]} ${d.getDate()} ${MON[d.getMonth()]}`; };
+const fmtLong = s => { const d = parse(s); return `${['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][d.getDay()]} ${d.getDate()} ${MON[d.getMonth()]}`; };
+function ageOn(s){
+  const b = parse(P.baby.born), d = parse(s);
+  let m = (d.getFullYear()-b.getFullYear())*12 + d.getMonth()-b.getMonth();
+  let anchor = new Date(b.getFullYear(), b.getMonth()+m, b.getDate());
+  if (anchor > d){ m--; anchor = new Date(b.getFullYear(), b.getMonth()+m, b.getDate()); }
+  const days = Math.round((d - anchor)/864e5);
+  return `${m} months${days ? `, ${days} day${days>1?'s':''}` : ''}`;
+}
+
+/* ---------- lookups ---------- */
+const AL = Object.fromEntries(P.allergens.map(a => [a.id, a]));
+const FOOD = Object.fromEntries(P.foods.map(f => [f.id, f]));
+const NUTS = P.allergens.filter(a => a.group === 'nut').map(a => a.id);
+const expandAl = ids => { const out = new Set(); (ids||[]).forEach(i => { if (i === 'nutmix'){ NUTS.forEach(n => out.add(n)); out.add('sesame'); } else if (AL[i]) out.add(i); }); return [...out]; };
+const SLOTS = { b:{n:'Breakfast', t:'07:45'}, l:{n:'Lunch', t:'11:30'}, a:{n:'Afternoon', t:'16:30'}, d:{n:'Dinner', t:'16:30'}, f:{n:'Finger food', t:'12:00'}, x:{n:'Extra', t:'12:00'} };
+
+function parseMeal(str){
+  if (!str) return null;
+  const [txt='', fs='', als=''] = str.split('|').map(s => s.trim());
+  const f = fs.split(',').map(s => s.trim()).filter(Boolean);
+  const alk = {};
+  als.split(',').map(s => s.trim()).filter(Boolean).forEach(t => { const [id, k] = t.split(':'); alk[id] = k || 'keep'; });
+  return { txt, f, al: Object.keys(alk), alk };
+}
+
+/* Resolve the plan for a date */
+function planFor(s){
+  const A = P.auckland;
+  if (s < A.start) return { type:'before' };
+  if (s <= A.end){ const i = diffDays(s, A.start); const day = P.aucklandDays[i];
+    return { type:'auckland', label:`Auckland taste day ${i+1} of 5`, meals: day ? [{slot:'b', ...parseMeal(day.b)}] : [], note: day?.note,
+      week:{ title:'Auckland exploration', meals:'Once a day, after his morning feed.', texture:'Smooth, runny purée.', amount:'A few teaspoons. Stop when he turns away.', ff:'None yet.', tips:['No allergens yet. They start the week you get home.','Sit him upright. If there\'s no high chair, sit him upright on a lap facing out.','NZ emergency number is 111. Healthline: 0800 611 116.'] } }; }
+  if (s < P.homeStart) return { type:'pause', label:'Travel pause', note: s === '2026-11-13' ? 'Flight day. No solids.' : 'No solids until Monday. Plenty of breastfeeds and rest.' };
+  const d = diffDays(s, P.homeStart), wi = Math.floor(d/7), di = d % 7;
+  const w = P.weeks[wi];
+  if (!w) return { type:'after', label:'Beyond the 12-week plan' };
+  const day = w.days[di] || {};
+  const meals = [];
+  ['b','l','a','d'].forEach(k => { if (day[k]){ const m = parseMeal(day[k]); if (m && m.txt) meals.push({slot:k, ...m}); } });
+  const ff = day.ff ? parseMeal(day.ff) : null;
+  return { type:'week', label:`Week ${w.n} · Day ${di+1}`, week:w, wi, di, meals, ff, note: day.note };
+}
+
+/* ---------- state + merge ---------- */
+const DEF = { v:1, entries:{}, ticks:{}, foods:{} };
+let S = LS.get('ks_data', null) || structuredClone(DEF);
+['entries','ticks','foods'].forEach(k => S[k] ||= {});
+let local = LS.get('ks_local', { name:'Aranei', watch:null });
+let cfg = LS.get('ks_sync', { token:'', gist:'' });
+const save = () => { LS.set('ks_data', S); scheduleSync(); };
+const stamp = o => (o.u = Date.now(), o);
+function merge(a, b){
+  const out = { v:1, entries:{}, ticks:{}, foods:{} };
+  ['entries','ticks','foods'].forEach(k => {
+    const A = a?.[k] || {}, B = b?.[k] || {};
+    new Set([...Object.keys(A), ...Object.keys(B)]).forEach(id => {
+      const x = A[id], y = B[id];
+      out[k][id] = !x ? y : !y ? x : ((y.u||0) > (x.u||0) ? y : x);
+    });
+  });
+  return out;
+}
+const live = () => Object.values(S.entries).filter(e => !e.del);
+
+/* ---------- derived ---------- */
+function allergenStatus(id, asOf = todayStr()){
+  const ex = live().filter(e => expandAl(e.al).includes(id) && e.d <= asOf).sort((a,b) => (a.d+a.t).localeCompare(b.d+b.t));
+  const rx = ex.filter(e => e.rx === 'mild' || e.rx === 'severe');
+  const last = ex.length ? ex[ex.length-1].d : null;
+  const since = last ? diffDays(asOf, last) : null;
+  let status = 'none', label = 'Not yet', cls = '';
+  if (rx.length){ status = 'reaction'; label = 'Reaction logged'; cls = 'bad'; }
+  else if (ex.length >= 3){ status = 'in'; label = 'In his diet'; cls = 'ok'; }
+  else if (ex.length){ status = 'building'; label = 'Building up'; cls = 'build'; }
+  let due = null;
+  if (ex.length && !rx.length){ if (since >= 8) due = 'overdue'; else if (since >= 6) due = 'soon'; }
+  return { ex, rx, last, since, status, label, cls, due, first: ex[0]?.d || null };
+}
+function foodTried(id){
+  const ex = live().filter(e => (e.f||[]).includes(id)).sort((a,b) => a.d.localeCompare(b.d));
+  const man = S.foods[id];
+  return { tried: ex.length > 0 || !!man?.tried, first: ex[0]?.d || man?.date || null, count: ex.length, like: man?.like ?? null };
+}
+
+/* ---------- UI helpers ---------- */
+let toastT;
+function toast(msg){ const t = $('#toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('on'), 2200); }
+function openSheet(title, html, mount){
+  $('#sheetTitle').textContent = title; $('#sheetBody').innerHTML = html;
+  $('#scrim').classList.add('on'); $('#sheet').classList.add('on'); $('#sheet').scrollTop = 0;
+  mount && mount($('#sheetBody'));
+}
+function closeSheet(){ $('#scrim').classList.remove('on'); $('#sheet').classList.remove('on'); }
+$('#scrim').onclick = closeSheet; $('#sheetClose').onclick = closeSheet;
+
+const alPill = (id, kind) => { const a = AL[id]; if (!a && id !== 'nutmix') return '';
+  const nm = id === 'nutmix' ? 'Nut mix' : a.name.replace(/ \(.*\)/, '');
+  const c = kind === 'new' ? 'new' : kind === 'build' ? 'build' : 'keep';
+  const pre = kind === 'new' ? 'NEW · ' : kind === 'build' ? 'Build · ' : '';
+  return `<span class="pill ${c}">${pre}${esc(nm)}</span>`; };
+
+/* ---------- views ---------- */
+let curDate = todayStr();
+let curView = 'today';
+function setView(v){
+  curView = v; $$('.view').forEach(x => x.classList.toggle('on', x.id === 'v-'+v));
+  $$('#tabs button').forEach(b => b.classList.toggle('on', b.dataset.v === v));
+  render(); window.scrollTo(0, 0);
+}
+$$('#tabs button').forEach(b => b.onclick = () => { if (b.dataset.v === 'today' && curView === 'today') curDate = todayStr(); setView(b.dataset.v); });
+
+function render(){
+  $('#age').textContent = `${ageOn(todayStr())} old`;
+  ({ today:renderToday, plan:renderPlan, allergens:renderAllergens, foods:renderFoods, log:renderLog, help:renderHelp })[curView]();
+}
+
+/* TODAY */
+function entryFor(key){ return Object.values(S.entries).find(e => e.plan === key && !e.del); }
+function renderToday(){
+  const s = curDate, p = planFor(s), isToday = s === todayStr();
+  let h = `<div class="daynav"><button id="dPrev" aria-label="Previous day">‹</button><div class="lbl"><b>${isToday ? 'Today' : fmtLong(s)}</b><span class="small muted">${isToday ? fmtLong(s)+' · ' : ''}${esc(p.label || '')}</span></div><button id="dNext" aria-label="Next day">›</button></div>`;
+  if (!isToday) h += `<div style="text-align:center;margin:-4px 0 12px"><button class="btn ghost sm" id="dToday">Back to today</button></div>`;
+
+  // watch banner
+  if (local.watch && Date.now() < local.watch.until){
+    const u = new Date(local.watch.until);
+    h += `<div class="banner watch"><h3>👀 Watching for a reaction to ${esc(local.watch.name)}</h3><div class="small">Keep an eye on him until <b>${pad(u.getHours())}:${pad(u.getMinutes())}</b>. Hives, swelling, vomiting, or any breathing change: see the Safety tab.</div></div>`;
+  }
+
+  if (p.type === 'before'){
+    h += `<div class="card"><h3>Not started yet</h3><p class="muted">The Auckland taste days start ${fmtLong(P.auckland.start)}. Use › to look ahead at any day of the plan.</p></div>`;
+  } else if (p.type === 'pause'){
+    h += `<div class="card"><h3>✈️ ${esc(p.label)}</h3><p class="muted">${esc(p.note)}</p><p class="small">The home plan starts <b>${fmtLong(P.homeStart)}</b> with beef purée and sweet potato. Defrost a cube of each the night before.</p></div>`;
+  } else if (p.type === 'after'){
+    h += `<div class="card"><h3>🎉 12-week plan complete</h3><p>Keep going with three meals of family food and the weekly keep-up rhythm: egg Mon, fish Tue, peanut Wed, soy and sesame Thu, prawn Fri, nut mix Sat. The Allergens tab shows anything that's due.</p></div>`;
+  } else {
+    // new allergen banner
+    const newIds = []; p.meals.forEach(m => Object.entries(m.alk).forEach(([id,k]) => k === 'new' && newIds.push(id)));
+    newIds.forEach(id => { const a = AL[id]; if (!a) return;
+      h += `<div class="banner new"><h3>${a.emoji} New allergen today: ${esc(a.name)}</h3><div class="small">${esc(a.how)}</div><ol class="small">${a.steps.map(x => `<li>${esc(x)}</li>`).join('')}</ol><div class="small" style="margin-top:6px">Morning meal only. Watch him for 2 hours afterwards.</div></div>`; });
+    if (p.note && !newIds.length) h += `<div class="banner info small">${esc(p.note)}</div>`;
+
+    p.meals.forEach(m => h += mealCard(s, m));
+    if (p.ff){ h += mealCard(s, { slot:'f', ...p.ff }, true); }
+    else if (p.type === 'week' && p.wi === 0) h += `<div class="card flat small muted">No finger foods yet. They start in week 2.</div>`;
+
+    // iron check
+    const dayEntries = live().filter(e => e.d === s);
+    if (dayEntries.length){
+      const iron = dayEntries.some(e => (e.f||[]).some(f => FOOD[f]?.iron));
+      h += `<div class="small" style="margin:4px 2px 12px">${iron ? '<span class="pill iron">Iron ✓</span> Iron-rich food logged today.' : '<span class="pill warn">Iron?</span> No iron-rich food logged yet today.'}</div>`;
+    }
+
+    // keep-up due
+    const planned = new Set(); [p, planFor(addDays(s, 1))].forEach(pp => { (pp.meals||[]).forEach(m => expandAl([...m.al, ...m.f.map(f => FOOD[f]?.al).filter(Boolean)]).forEach(i => planned.add(i))); if (pp.ff) expandAl([...pp.ff.al, ...pp.ff.f.map(f => FOOD[f]?.al).filter(Boolean)]).forEach(i => planned.add(i)); });
+    const due = P.allergens.map(a => ({a, st:allergenStatus(a.id, s)})).filter(x => x.st.due && !planned.has(x.a.id));
+    if (due.length){
+      h += `<div class="card"><div class="between"><b>Keep-up due</b><span class="small muted">at least weekly</span></div><div class="chips">${due.map(x => `<span class="pill ${x.st.due === 'overdue' ? 'bad' : 'warn'}">${x.a.emoji} ${esc(x.a.name.replace(/ \(.*\)/,''))} · ${x.st.since}d</span>`).join('')}</div><div class="small muted" style="margin-top:8px">Add any of these to a meal today. Tree nuts are all covered by one serve of the nut and seed mix.</div></div>`;
+    }
+
+    // week guide
+    const w = p.week;
+    if (w){
+      h += `<details class="card"><summary class="between"><b>This week: ${esc(w.title)}</b><span class="chev">›</span></summary>
+        <dl class="kv"><dt>Meals</dt><dd>${esc(w.meals)}</dd><dt>Texture</dt><dd>${esc(w.texture)}</dd><dt>How much</dt><dd>${esc(w.amount)}</dd><dt>Finger food</dt><dd>${esc(w.ff)}</dd></dl>
+        ${w.tips ? `<ul class="small" style="padding-left:18px;margin:10px 0 0">${w.tips.map(t => `<li>${esc(t)}</li>`).join('')}</ul>` : ''}</details>`;
+    }
+  }
+  h += `<button class="btn ghost block" id="addExtra">+ Log something else he ate</button>`;
+  $('#v-today').innerHTML = h;
+  $('#dPrev').onclick = () => { curDate = addDays(curDate, -1); renderToday(); };
+  $('#dNext').onclick = () => { curDate = addDays(curDate, 1); renderToday(); };
+  $('#dToday') && ($('#dToday').onclick = () => { curDate = todayStr(); renderToday(); });
+  $('#addExtra').onclick = () => openEntry(null, { d:s, slot:'x' });
+  $$('[data-tick]', $('#v-today')).forEach(b => b.onclick = () => toggleTick(b.dataset.tick));
+  $$('[data-edit]', $('#v-today')).forEach(b => b.onclick = () => openEntry(S.entries[b.dataset.edit]));
+  $$('[data-food]', $('#v-today')).forEach(b => b.onclick = () => openFood(b.dataset.food));
+}
+function mealCard(s, m, isFF){
+  const key = `${s}:${m.slot}`, e = entryFor(key);
+  const t = SLOTS[m.slot];
+  const slotName = isFF ? 'Finger food · with any meal' : (planFor(s).week?.n <= 2 || planFor(s).type === 'auckland') && m.slot === 'b' ? 'Morning meal · ~7:30–8am' : `${t.n} · ~${m.slot === 'l' ? '11:30am' : m.slot === 'b' ? '7:30am' : '4:30pm'}`;
+  const pills = m.al.map(id => alPill(id, m.alk[id])).join('') + m.f.filter(f => FOOD[f]?.iron).slice(0,1).map(() => '<span class="pill iron">Iron</span>').join('');
+  const foods = m.f.filter(f => FOOD[f]).map(f => `<button class="pill" data-food="${f}" style="border:0;font-weight:500">${esc(FOOD[f].n)} ↗</button>`).join('');
+  const done = !!e, rx = e && (e.rx === 'mild' || e.rx === 'severe');
+  return `<div class="card"><div class="meal"><div class="body"><div class="slot">${esc(slotName)}</div><div class="txt">${esc(m.txt)}</div>
+    ${pills ? `<div class="chips">${pills}</div>` : ''}${foods ? `<div class="chips">${foods}</div>` : ''}
+    ${e ? `<div class="small muted" style="margin-top:8px">Logged ${esc(e.t)}${e.by ? ' by '+esc(e.by) : ''} · ${esc(amtLabel(e.amt))}${e.rx && e.rx !== 'none' ? ' · <b style="color:var(--bad)">'+esc(rxLabel(e.rx))+'</b>' : ''} · <a href="#" data-edit="${e.id}">Edit</a></div>` : ''}
+    </div><button class="tick ${done ? (rx ? 'rx' : 'done') : ''}" data-tick="${key}" aria-label="${done ? 'Undo' : 'Mark done'}">${rx ? '!' : '✓'}</button></div></div>`;
+}
+const amtLabel = a => ({ taste:'Just tasted', some:'Ate some', lots:'Ate lots', refused:'Refused' })[a] || 'Ate some';
+const rxLabel = r => ({ none:'No reaction', mouth:'Mouth redness only', mild:'Mild reaction', severe:'Severe reaction' })[r] || '';
+
+function toggleTick(key){
+  const e = entryFor(key);
+  if (e){ if (!confirm('Undo this meal? It will be removed from the log.')) return; stamp(e).del = true; save(); render(); return; }
+  const [d, slot] = [key.slice(0,10), key.slice(11)];
+  const p = planFor(d);
+  const m = slot === 'f' ? p.ff : p.meals.find(x => x.slot === slot);
+  if (!m) return;
+  const id = 'e' + Date.now().toString(36) + Math.random().toString(36).slice(2,6);
+  const ent = stamp({ id, plan:key, d, t: d === todayStr() ? nowHM() : SLOTS[slot].t, slot, txt:m.txt, f:[...m.f], al:[...m.al], amt:'some', rx:'none', notes:'', by:local.name });
+  S.entries[id] = ent; save();
+  const nw = m.al.filter(a => m.alk[a] === 'new');
+  if (nw.length && d === todayStr()){ local.watch = { name: nw.map(a => AL[a]?.name).join(', '), until: Date.now() + 2*3600e3 }; LS.set('ks_local', local); }
+  render();
+  toast('Logged ✓  Tap Edit to add how it went');
+}
+
+/* ENTRY FORM */
+function openEntry(e, preset = {}){
+  const isNew = !e;
+  const x = e ? structuredClone(e) : { id:'e'+Date.now().toString(36)+Math.random().toString(36).slice(2,6), d:preset.d || todayStr(), t:nowHM(), slot:preset.slot || 'x', txt:'', f:[], al:preset.al || [], amt:'some', rx:'none', notes:'', by:local.name };
+  const alOpts = [...P.allergens.map(a => [a.id, a.name.replace(/ \(.*\)/,'')]), ['nutmix','Nut and seed mix']];
+  const html = `
+   <div class="grid2"><div class="field"><label>Date</label><input type="date" id="fD" value="${x.d}"></div><div class="field"><label>Time</label><input type="time" id="fT" value="${x.t}"></div></div>
+   <div class="field"><label>Meal</label><select id="fS">${Object.entries(SLOTS).map(([k,v]) => `<option value="${k}" ${k === x.slot ? 'selected' : ''}>${v.n}</option>`).join('')}</select></div>
+   <div class="field"><label>What he had</label><input id="fTxt" value="${esc(x.txt)}" placeholder="e.g. Beef purée + sweet potato"></div>
+   <div class="field"><label>Foods (tap to tick, so the Foods list stays up to date)</label><input id="fFind" placeholder="Search foods…" style="margin-bottom:6px"><div class="pick" id="fF">${P.foods.map(f => `<button type="button" data-id="${f.id}" class="${x.f.includes(f.id) ? 'on' : ''}">${esc(f.n)}</button>`).join('')}</div></div>
+   <div class="field"><label>Allergens in this meal</label><div class="pick" id="fA">${alOpts.map(([id,n]) => `<button type="button" data-id="${id}" class="${x.al.includes(id) ? 'on' : ''}">${esc(n)}</button>`).join('')}</div></div>
+   <div class="field"><label>How much</label><div class="seg" id="fAmt">${['taste','some','lots','refused'].map(a => `<button type="button" data-v="${a}" class="${x.amt === a ? 'on' : ''}">${amtLabel(a)}</button>`).join('')}</div></div>
+   <div class="field"><label>Any reaction?</label><div class="seg" id="fRx">${['none','mouth','mild','severe'].map(a => `<button type="button" data-v="${a}" class="${x.rx === a ? 'on' : ''}">${rxLabel(a)}</button>`).join('')}</div><div id="rxHelp"></div></div>
+   <div class="field"><label>Notes (what happened, timing, photos taken)</label><textarea id="fN">${esc(x.notes)}</textarea></div>
+   <button class="btn block" id="fSave">${isNew ? 'Save to log' : 'Save changes'}</button>
+   ${isNew ? '' : '<button class="btn ghost block" id="fDel" style="margin-top:8px;color:var(--bad)">Delete entry</button>'}`;
+  openSheet(isNew ? 'Log a meal' : 'Edit meal', html, root => {
+    const togg = (box) => $$('button', box).forEach(b => b.onclick = () => b.classList.toggle('on'));
+    togg($('#fF', root)); togg($('#fA', root));
+    $('#fFind', root).oninput = ev => { const q = ev.target.value.toLowerCase(); $$('#fF button', root).forEach(b => b.style.display = b.textContent.toLowerCase().includes(q) ? '' : 'none'); };
+    const seg = (box, cb) => $$('button', box).forEach(b => b.onclick = () => { $$('button', box).forEach(o => o.classList.remove('on')); b.classList.add('on'); cb && cb(b.dataset.v); });
+    const rxHelp = v => { $('#rxHelp', root).innerHTML = v === 'severe' ? `<div class="alert bad"><b>Call 000 now</b> if he has any breathing difficulty, noisy breathing, swollen tongue, persistent cough or wheeze, change in cry, or is pale and floppy. Lay him flat. If breathing is hard you can hold him upright, but keep him lying flat if he's pale or floppy.<div class="call"><a class="btn bad sm" href="tel:000">Call 000</a></div></div>`
+      : v === 'mild' ? `<div class="alert warn">Stop that food. Take photos and note the time. Watch closely for signs of a severe reaction. Call your GP or healthdirect (<a href="tel:1800022222">1800 022 222</a>) for advice, and don't offer that food again until your GP says so. Keep going with his other foods.</div>`
+      : v === 'mouth' ? `<div class="alert warn" style="background:var(--blue-soft)">Redness around the mouth on its own is common and usually not an allergy. If there are no other signs, offer the food again next time (ASCIA 2026).</div>` : ''; };
+    seg($('#fAmt', root)); seg($('#fRx', root), rxHelp); rxHelp(x.rx);
+    $('#fSave', root).onclick = () => {
+      const on = sel => $$(sel+' button.on', root).map(b => b.dataset.id || b.dataset.v);
+      Object.assign(x, { d:$('#fD', root).value || x.d, t:$('#fT', root).value || x.t, slot:$('#fS', root).value, txt:$('#fTxt', root).value.trim(), f:on('#fF'), al:on('#fA'), amt:on('#fAmt')[0] || 'some', rx:on('#fRx')[0] || 'none', notes:$('#fN', root).value.trim() });
+      if (!x.txt) x.txt = x.f.map(f => FOOD[f]?.n).filter(Boolean).join(', ') || 'Meal';
+      if (x.plan && x.d !== x.plan.slice(0,10)) delete x.plan;
+      S.entries[x.id] = stamp(x); save(); closeSheet(); render(); toast('Saved');
+    };
+    $('#fDel', root) && ($('#fDel', root).onclick = () => { if (confirm('Delete this entry?')){ stamp(S.entries[x.id]).del = true; save(); closeSheet(); render(); } });
+  });
+}
+
+/* PLAN */
+function renderPlan(){
+  const t = todayStr(), cur = planFor(t);
+  let ladderIdx = 0;
+  if (cur.type === 'week'){ const n = cur.week.n; ladderIdx = n <= 2 ? 0 : n <= 4 ? 1 : n <= 6 ? 2 : n <= 9 ? 3 : 4; }
+  let h = `<div class="sec">Texture ladder</div><div class="ladder">${P.textureLadder.map((x,i) => `<div class="${i === ladderIdx && cur.type === 'week' ? 'now' : ''}"><b>${esc(x.age)}</b><strong>${esc(x.label)}</strong><div class="muted">${esc(x.detail)}</div></div>`).join('')}</div>`;
+  // Auckland
+  h += `<div class="sec">Auckland</div>` + weekBlock({ key:'auck', title:'Auckland exploration', range:`${fmtDate(P.auckland.start)} – ${fmtDate(P.auckland.end)}`, days:P.aucklandDays.map((d,i) => ({ date:addDays(P.auckland.start, i), meals:[{slot:'b', ...parseMeal(d.b)}] })), open: cur.type === 'auckland', info:`<p class="small">Once a day after his morning feed. Non-allergen, iron-rich foods only. Pause Thu 12 to Sun 15 Nov for the flight home.</p>` });
+  h += `<div class="sec">Home plan</div>`;
+  P.weeks.forEach((w, wi) => {
+    const days = w.days.map((d, di) => { const date = addDays(w.start, di); const p = planFor(date); return { date, meals:p.meals, ff:p.ff }; });
+    const end = addDays(w.start, 6);
+    h += weekBlock({ key:'w'+w.n, title:`Week ${w.n}: ${w.title}`, range:`${fmtDate(w.start)} – ${fmtDate(end)}`, days, open: cur.type === 'week' && cur.wi === wi, w });
+  });
+  $('#v-plan').innerHTML = h;
+  $$('[data-go]', $('#v-plan')).forEach(r => r.onclick = () => { curDate = r.dataset.go; setView('today'); });
+  $$('[data-cook]', $('#v-plan')).forEach(c => c.onchange = () => { S.ticks[c.dataset.cook] = stamp({ on:c.checked }); save(); });
+}
+function weekBlock({ key, title, range, days, open, w, info }){
+  const t = todayStr();
+  let total = 0, done = 0;
+  days.forEach(d => { const ms = [...d.meals, ...(d.ff ? [{slot:'f'}] : [])]; total += ms.length; ms.forEach(m => entryFor(`${d.date}:${m.slot}`) && done++); });
+  const newAl = []; days.forEach(d => d.meals.forEach(m => Object.entries(m.alk).forEach(([a,k]) => k === 'new' && newAl.push(a))));
+  let body = info || '';
+  if (w){
+    body += `<dl class="kv"><dt>Meals</dt><dd>${esc(w.meals)}</dd><dt>Texture</dt><dd>${esc(w.texture)}</dd><dt>How much</dt><dd>${esc(w.amount)}</dd><dt>Finger food</dt><dd>${esc(w.ff)}</dd></dl>`;
+    if (w.cook?.length) body += `<div class="sec" style="margin-top:14px">Cook and freeze</div>${w.cook.map((c,i) => { const k = `cook:${key}:${i}`; return `<label class="checkline"><input type="checkbox" data-cook="${k}" ${S.ticks[k]?.on ? 'checked' : ''}><span class="small">${esc(c)}</span></label>`; }).join('')}`;
+    if (w.tips?.length) body += `<div class="sec" style="margin-top:14px">Tips</div><ul class="small" style="padding-left:18px;margin:0">${w.tips.map(x => `<li>${esc(x)}</li>`).join('')}</ul>`;
+  }
+  body += `<div class="sec" style="margin-top:14px">Days</div>` + days.map(d => {
+    const ms = d.meals.map(m => { const e = entryFor(`${d.date}:${m.slot}`); return `${e ? '✅' : '◻️'} ${esc(m.txt)}${Object.entries(m.alk).filter(([,k]) => k === 'new').map(([a]) => ` <span class="pill new">NEW ${esc(AL[a]?.name.replace(/ \(.*\)/,''))}</span>`).join('')}`; }).join('<br>');
+    return `<div class="dayrow ${d.date === t ? 'today' : ''}" data-go="${d.date}"><div class="d"><b>${DOW[parse(d.date).getDay()]}</b>${parse(d.date).getDate()} ${MON[parse(d.date).getMonth()]}</div><div class="m">${ms}</div><span class="chev">›</span></div>`;
+  }).join('');
+  return `<details class="card" ${open ? 'open' : ''}><summary><div class="between"><div><b>${esc(title)}</b><div class="small muted">${esc(range)}${newAl.length ? ' · new: '+newAl.map(a => esc(AL[a]?.name.replace(/ \(.*\)/,''))).join(', ') : ''}</div></div><span class="chev">›</span></div><div class="prog"><i style="width:${total ? Math.round(done/total*100) : 0}%"></i></div><div class="tiny muted" style="margin-top:4px">${done} of ${total} logged</div></summary>${body}</details>`;
+}
+
+/* ALLERGENS */
+function renderAllergens(){
+  const sts = P.allergens.map(a => ({ a, st:allergenStatus(a.id) }));
+  const inDiet = sts.filter(x => x.st.status === 'in' || x.st.status === 'building').length;
+  const rx = sts.filter(x => x.st.status === 'reaction');
+  let h = `<div class="card"><div class="between"><div><b>${inDiet} of ${P.allergens.length} introduced</b><div class="small muted">Goal: all in by about 7½ months, then each one at least weekly.</div></div><div style="font-size:28px">${inDiet === P.allergens.length ? '🎉' : '🛡️'}</div></div><div class="prog"><i style="width:${Math.round(inDiet/P.allergens.length*100)}%"></i></div></div>`;
+  if (rx.length) h += `<div class="alert bad"><b>Reaction logged: ${rx.map(x => esc(x.a.name)).join(', ')}.</b> Don't offer it again until you've spoken to your GP. Use the GP report in the Log tab.</div>`;
+  h += `<details class="card"><summary class="between"><b>How to introduce an allergen</b><span class="chev">›</span></summary><ul class="small" style="padding-left:18px;margin:0">${P.allergenRules.map(r => `<li style="margin-bottom:6px">${esc(r)}</li>`).join('')}</ul></details>`;
+  const grp = (title, list) => `<div class="sec">${title}</div><div class="agrid">${list.map(({a, st}) => `<button class="acard ${st.status === 'reaction' ? 'reaction' : ''} ${st.due === 'overdue' ? 'overdue' : ''}" data-al="${a.id}"><div class="em">${a.emoji}</div><div class="nm">${esc(a.name)}</div><span class="pill ${st.cls}">${st.status === 'in' ? '✓ ' : ''}${esc(st.label)}</span><div class="tiny muted" style="margin-top:6px">${st.last ? `Last: ${st.since === 0 ? 'today' : st.since === 1 ? 'yesterday' : st.since+' days ago'}` : nextIntro(a.id)}</div>${st.due ? `<div class="tiny" style="margin-top:4px;color:var(--${st.due === 'overdue' ? 'bad' : 'warn'});font-weight:700">${st.due === 'overdue' ? 'Over a week: give it soon' : 'Due tomorrow'}</div>` : ''}</button>`).join('')}</div>`;
+  h += grp('Main allergens', sts.filter(x => x.a.group === 'core'));
+  h += grp('Tree nuts', sts.filter(x => x.a.group === 'nut'));
+  h += `<p class="small muted" style="margin-top:12px">Logging the nut and seed mix counts as a serve of every tree nut and sesame.</p>`;
+  $('#v-allergens').innerHTML = h;
+  $$('[data-al]', $('#v-allergens')).forEach(b => b.onclick = () => openAllergen(b.dataset.al));
+}
+function nextIntro(id){
+  for (const w of P.weeks) for (let i = 0; i < 7; i++){ const p = planFor(addDays(w.start, i)); if (p.meals?.some(m => m.alk[id] === 'new')) return `Planned: ${fmtDate(addDays(w.start, i))}`; }
+  return 'Not planned';
+}
+function openAllergen(id){
+  const a = AL[id], st = allergenStatus(id);
+  const html = `<div class="row" style="margin-bottom:10px"><span style="font-size:30px">${a.emoji}</span><span class="pill ${st.cls}">${esc(st.label)}</span>${st.first ? `<span class="small muted">First: ${fmtDate(st.first)}</span>` : `<span class="small muted">${nextIntro(id)}</span>`}</div>
+    <div class="card flat"><b>How</b><p class="small" style="margin:6px 0">${esc(a.how)}</p><ol class="small" style="padding-left:18px;margin:0">${a.steps.map(s => `<li>${esc(s)}</li>`).join('')}</ol></div>
+    <div class="sec">History (${st.ex.length})</div>
+    <div class="card flat">${st.ex.length ? `<ul class="clean">${[...st.ex].reverse().map(e => `<li class="small"><b>${fmtDate(e.d)}</b> ${esc(e.t)} · ${esc(e.txt)}${e.rx !== 'none' ? ` · <b style="color:var(--${e.rx === 'mouth' ? 'muted' : 'bad'})">${esc(rxLabel(e.rx))}</b>` : ''}</li>`).join('')}</ul>` : '<div class="muted small">Nothing logged yet.</div>'}</div>
+    <button class="btn block" id="alLog">Log ${esc(a.name.replace(/ \(.*\)/,''))} given today</button>`;
+  openSheet(a.name, html, root => { $('#alLog', root).onclick = () => { closeSheet(); setTimeout(() => openEntry(null, { al:[id] }), 280); }; });
+}
+
+/* FOODS */
+let foodFilter = 'all', foodQ = '';
+function renderFoods(){
+  const tried = P.foods.filter(f => foodTried(f.id).tried).length;
+  let h = `<div class="card"><div class="between"><b>${tried} of ${P.foods.length} foods tried</b><a class="small" href="https://solidstarts.com/foods/" target="_blank" rel="noopener">Solid Starts ↗</a></div><div class="prog"><i style="width:${Math.round(tried/P.foods.length*100)}%"></i></div></div>
+   <input id="fq" placeholder="Search foods…" value="${esc(foodQ)}" style="margin-bottom:10px">
+   <div class="seg" id="ffil" style="margin-bottom:10px">${[['all','All'],['iron','Iron-rich'],['allergen','Allergens'],['untried','Untried'],['tried','Tried']].map(([k,n]) => `<button data-v="${k}" class="${foodFilter === k ? 'on' : ''}">${n}</button>`).join('')}</div><div class="card" id="flist"></div>`;
+  $('#v-foods').innerHTML = h;
+  const list = () => {
+    const q = foodQ.toLowerCase();
+    const items = P.foods.filter(f => (!q || f.n.toLowerCase().includes(q)) && (foodFilter === 'all' || (foodFilter === 'iron' && f.iron) || (foodFilter === 'allergen' && f.al) || (foodFilter === 'untried' && !foodTried(f.id).tried) || (foodFilter === 'tried' && foodTried(f.id).tried)));
+    $('#flist').innerHTML = items.length ? items.map(f => { const t = foodTried(f.id); return `<div class="food" data-food="${f.id}"><span class="st">${t.tried ? (t.like === 1 ? '😋' : t.like === -1 ? '🙅' : '✅') : '◻️'}</span><span class="nm">${esc(f.n)}</span>${f.iron ? '<span class="pill iron">Iron</span>' : ''}${f.al ? `<span class="pill keep">${esc(f.al === 'nutmix' ? 'Nuts' : AL[f.al]?.name.replace(/ \(.*\)/,''))}</span>` : ''}<span class="chev">›</span></div>`; }).join('') : '<div class="empty">No matches</div>';
+    $$('[data-food]', $('#flist')).forEach(r => r.onclick = () => openFood(r.dataset.food));
+  };
+  $('#fq').oninput = e => { foodQ = e.target.value; list(); };
+  $$('#ffil button').forEach(b => b.onclick = () => { foodFilter = b.dataset.v; $$('#ffil button').forEach(x => x.classList.toggle('on', x === b)); list(); });
+  list();
+}
+function openFood(id){
+  const f = FOOD[id]; if (!f) return; const t = foodTried(id);
+  const ss = `https://www.google.com/search?q=${encodeURIComponent('site:solidstarts.com/foods ' + f.n.replace(/\(.*\)/,''))}`;
+  const row = (k, v) => v && v !== 'n/a' ? `<dt>${k}</dt><dd>${esc(v)}</dd>` : '';
+  const html = `<div class="chips" style="margin:0 0 10px">${f.iron ? '<span class="pill iron">Iron-rich</span>' : ''}${f.al ? `<span class="pill keep">Allergen: ${esc(f.al === 'nutmix' ? 'tree nuts + sesame' : AL[f.al]?.name)}</span>` : ''}<span class="pill">${esc(f.c)}</span></div>
+   <div class="card flat"><dl class="kv">${row('Purée', f.pur)}${row('Mash / lumpy', f.mash)}${row('Finger food 6–8 mo', f.ff)}${row('9 mo +', f.ff9)}</dl>${f.note ? `<div class="alert warn small" style="margin-bottom:0">${esc(f.note)}</div>` : ''}</div>
+   <a class="btn ghost block" href="${ss}" target="_blank" rel="noopener">How to cut and serve it on Solid Starts ↗</a>
+   <div class="sec">Has he had it?</div>
+   <div class="card flat">${t.count ? `<div class="small">Logged ${t.count} time${t.count > 1 ? 's' : ''}, first on ${fmtDate(t.first)}.</div>` : `<label class="checkline"><input type="checkbox" id="ftr" ${t.tried ? 'checked' : ''}><span>Mark as tried</span></label>`}
+     <div class="seg" id="flk" style="margin-top:10px">${[[1,'😋 Loved it'],[0,'😐 OK'],[-1,'🙅 Not yet']].map(([v,n]) => `<button data-v="${v}" class="${t.like === v ? 'on' : ''}">${n}</button>`).join('')}</div>
+     <div class="tiny muted" style="margin-top:8px">A "not yet" food is worth offering again. Babies often need 10 or more tries.</div></div>`;
+  openSheet(f.n, html, root => {
+    const upd = patch => { S.foods[id] = stamp({ ...(S.foods[id]||{}), ...patch }); save(); render(); };
+    $('#ftr', root) && ($('#ftr', root).onchange = e => upd({ tried:e.target.checked, date:e.target.checked ? todayStr() : null }));
+    $$('#flk button', root).forEach(b => b.onclick = () => { $$('#flk button', root).forEach(x => x.classList.toggle('on', x === b)); upd({ like:Number(b.dataset.v) }); });
+  });
+}
+
+/* LOG */
+function renderLog(){
+  const es = live().sort((a,b) => (b.d+b.t).localeCompare(a.d+a.t));
+  const rxs = es.filter(e => e.rx === 'mild' || e.rx === 'severe');
+  let h = `<div class="grid2" style="margin-bottom:12px"><button class="btn" id="lAdd">+ Log a meal</button><button class="btn ghost" id="lGP">GP report</button></div>`;
+  if (rxs.length) h += `<div class="alert bad"><b>${rxs.length} reaction${rxs.length > 1 ? 's' : ''} logged.</b> They're listed first in the GP report.</div>`;
+  if (!es.length) h += `<div class="card empty">Nothing logged yet. Tap ✓ on a meal in Today, or use + Log a meal.</div>`;
+  const byDay = {}; es.forEach(e => (byDay[e.d] ||= []).push(e));
+  Object.entries(byDay).forEach(([d, list]) => {
+    h += `<div class="sec">${fmtLong(d)}${d === todayStr() ? ' · today' : ''}</div><div class="card">${list.map(e => `<div class="entry" data-e="${e.id}"><div class="between"><span class="t">${esc(e.t)} · ${esc(SLOTS[e.slot]?.n || 'Meal')}${e.by ? ' · '+esc(e.by) : ''}</span>${e.rx && e.rx !== 'none' ? `<span class="pill ${e.rx === 'mouth' ? 'warn' : 'bad'}">${esc(rxLabel(e.rx))}</span>` : ''}</div><div class="w">${esc(e.txt)}</div>${(e.al||[]).length ? `<div class="chips">${e.al.map(a => alPill(a, 'keep')).join('')}</div>` : ''}${e.notes ? `<div class="small muted" style="margin-top:4px">${esc(e.notes)}</div>` : ''}</div>`).join('')}</div>`;
+  });
+  h += `<div class="sec">Data</div><div class="grid2"><button class="btn ghost sm" id="lCsv">Download CSV</button><button class="btn ghost sm" id="lJson">Export backup</button></div>`;
+  $('#v-log').innerHTML = h;
+  $('#lAdd').onclick = () => openEntry(null);
+  $('#lGP').onclick = gpReport;
+  $('#lCsv').onclick = downloadCSV;
+  $('#lJson').onclick = () => download(`kavin-solids-backup-${todayStr()}.json`, JSON.stringify(S, null, 2), 'application/json');
+  $$('[data-e]', $('#v-log')).forEach(r => r.onclick = () => openEntry(S.entries[r.dataset.e]));
+}
+function download(name, text, type){
+  const blob = new Blob([text], { type }); const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+}
+function downloadCSV(){
+  const rows = [['Date','Time','Meal','What he had','Foods','Allergens','How much','Reaction','Notes','Logged by']];
+  live().sort((a,b) => (a.d+a.t).localeCompare(b.d+b.t)).forEach(e => rows.push([e.d, e.t, SLOTS[e.slot]?.n || '', e.txt, (e.f||[]).map(f => FOOD[f]?.n || f).join('; '), (e.al||[]).map(a => a === 'nutmix' ? 'Nut and seed mix' : AL[a]?.name || a).join('; '), amtLabel(e.amt), rxLabel(e.rx), e.notes || '', e.by || '']));
+  download(`kavin-solids-log-${todayStr()}.csv`, rows.map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n'), 'text/csv');
+}
+function gpReport(){
+  const es = live().sort((a,b) => (a.d+a.t).localeCompare(b.d+b.t));
+  const rx = es.filter(e => e.rx && e.rx !== 'none');
+  const tried = P.foods.map(f => ({ f, t:foodTried(f.id) })).filter(x => x.t.tried);
+  const r = `<h1>Kavin: solids and allergen record</h1>
+   <div>Born 18 May 2026 · Age ${ageOn(todayStr())} · Report date ${fmtLong(todayStr())} · Breastfed · Solids started ${es[0] ? fmtLong(es[0].d) : 'not yet'}</div>
+   <h2>Reactions</h2>${rx.length ? `<table><tr><th>Date</th><th>Time</th><th>Food</th><th>Allergens</th><th>Reaction</th><th>Notes</th></tr>${rx.map(e => `<tr><td>${e.d}</td><td>${esc(e.t)}</td><td>${esc(e.txt)}</td><td>${esc((e.al||[]).map(a => AL[a]?.name || a).join(', '))}</td><td>${esc(rxLabel(e.rx))}</td><td>${esc(e.notes)}</td></tr>`).join('')}</table>` : '<p>No reactions logged.</p>'}
+   <h2>Allergens (ASCIA 2026 guidance)</h2><table><tr><th>Allergen</th><th>Status</th><th>First given</th><th>Last given</th><th>Times</th></tr>${P.allergens.map(a => { const s = allergenStatus(a.id); return `<tr><td>${esc(a.name)}</td><td>${esc(s.label)}</td><td>${s.first || ''}</td><td>${s.last || ''}</td><td>${s.ex.length}</td></tr>`; }).join('')}</table>
+   <h2>Foods tried (${tried.length})</h2><p>${tried.map(x => `${esc(x.f.n)}${x.t.first ? ' ('+x.t.first.slice(5)+')' : ''}`).join(', ') || 'None yet.'}</p>
+   <h2>Meals logged</h2><p>${es.length} meals logged between ${es[0]?.d || '-'} and ${es[es.length-1]?.d || '-'}.</p>`;
+  $('#report').innerHTML = r;
+  setTimeout(() => window.print(), 50);
+}
+
+/* HELP / SAFETY */
+function renderHelp(){
+  const h = `<div class="ref">
+  <div class="card" style="border-color:var(--bad)"><h3>🚨 Call 000 (NZ: 111)</h3><ul>
+    <li>Choking that back blows and chest thrusts haven't cleared</li>
+    <li>Any breathing difficulty, noisy breathing, wheeze or persistent cough after food</li>
+    <li>Swollen tongue or throat, change in cry or voice</li>
+    <li>Pale and floppy, or unresponsive</li></ul>
+    <div class="call"><a class="btn bad sm" href="tel:000">Call 000</a><a class="btn ghost sm" href="tel:1800022222">healthdirect 1800 022 222</a><a class="btn ghost sm" href="tel:1800882436">Nurse line 1800 882 436</a></div></div>
+
+  <div class="card"><h3>Gagging vs choking</h3>
+   <div class="grid2"><div><span class="pill ok">Gagging: normal</span><ul class="small"><li>Noisy: coughing, spluttering, retching</li><li>Red face, watery eyes, tongue pushing forward</li><li>Can breathe and make sounds</li></ul><p class="small"><b>Do:</b> stay calm, let him work it out, keep him upright. Don't put your fingers in his mouth.</p></div>
+   <div><span class="pill bad">Choking: emergency</span><ul class="small"><li>Silent, or weak high-pitched sounds</li><li>Can't cry or cough properly</li><li>Lips or face turning blue or pale</li><li>Panicked look</li></ul></div></div>
+   <p class="small" style="margin-bottom:4px"><b>Choking first aid (under 12 months):</b></p>
+   <ol class="small"><li>Call 000 (or have someone call).</li><li>Lay him face-down along your forearm, head lower than his body, supporting his jaw.</li><li>Up to 5 firm back blows between the shoulder blades with the heel of your hand. Check after each one.</li><li>If not cleared: turn him face-up on a firm surface. Up to 5 chest thrusts with two fingers in the centre of the chest, just below the nipple line.</li><li>Keep alternating 5 back blows and 5 chest thrusts until it clears or help arrives. If he becomes unresponsive, start CPR.</li></ol>
+   <p class="tiny muted">Your baby first aid course will practise this hands-on.</p></div>
+
+  <div class="card"><h3>Allergic reactions</h3>
+   <p class="small"><span class="pill warn">Mild to moderate</span> hives or welts, swelling of the lips, face or eyes, vomiting.</p>
+   <p class="small"><b>Do:</b> stop the food. Note the time and take photos. Watch closely for severe signs. Call your GP or healthdirect for advice. Don't offer that food again until your GP says so. Log it here.</p>
+   <p class="small"><span class="pill bad">Severe (anaphylaxis)</span> difficult or noisy breathing, wheeze or persistent cough, swollen tongue or throat, change in cry, pale and floppy.</p>
+   <p class="small"><b>Do:</b> call 000 immediately. Lay him flat. If breathing is hard, you can hold him upright, but if he's pale or floppy keep him lying flat.</p>
+   <p class="small"><span class="pill keep">Not usually allergy</span> redness around the mouth only, from tomato, berries or citrus. If there's nothing else, offer the food again.</p></div>
+
+  <div class="card"><h3>See your GP (not urgent)</h3><ul class="small">
+    <li>After any mild reaction, before trying that food again</li>
+    <li>Ongoing vomiting or diarrhoea, blood in his poo, or fewer wet nappies</li>
+    <li>Constipation that lasts more than a few days or seems painful</li>
+    <li>Eczema flaring up</li>
+    <li>Still not managing lumps by 9 to 10 months (or ask your child and family health nurse)</li></ul></div>
+
+  <div class="card"><h3>Never before 12 months</h3><ul class="small">${P.avoid.map(a => `<li>${esc(a)}</li>`).join('')}</ul></div>
+  <div class="card"><h3>Safe storage</h3><ul class="small">${P.storage.map(a => `<li>${esc(a)}</li>`).join('')}</ul></div>
+  <div class="card"><h3>Mealtime basics</h3><ul class="small">
+    <li>Always sitting upright, always supervised. Never in a car seat, pram or lying down.</li>
+    <li>Breast milk stays his main food until 12 months. Breastfeed first, then solids.</li>
+    <li>Let him decide how much. Stop when he turns away or closes his mouth.</li>
+    <li>Sips of cooled boiled water from an open or straw cup with meals.</li>
+    <li>Iron-rich food at least once a day, building to twice a day.</li></ul></div>
+  <div class="card"><h3>Sources</h3><ul class="small">${P.sources.map(s => `<li><a href="${s.u}" target="_blank" rel="noopener">${esc(s.t)}</a></li>`).join('')}</ul>
+    <p class="tiny muted">General guidance based on Australian sources. Check anything specific to Kavin with your GP or child and family health nurse.</p>
+    <a class="btn ghost block" href="fridge.html" target="_blank">Open the printable fridge sheet</a></div>
+  </div>`;
+  $('#v-help').innerHTML = h;
+}
+
+/* ---------- SYNC (GitHub Gist) ---------- */
+const FILE = 'kavin-solids.json';
+let syncT, syncing = false, lastSync = LS.get('ks_lastsync', null), syncErr = '';
+function setDot(s){ $('#syncdot').className = 'syncdot ' + s; }
+function scheduleSync(){ if (!cfg.token || !cfg.gist) return; clearTimeout(syncT); setDot('busy'); syncT = setTimeout(sync, 1500); }
+async function gh(method, path, body){
+  const r = await fetch('https://api.github.com' + path, { method, cache:'no-store', headers:{ 'Authorization':'Bearer ' + cfg.token, 'Accept':'application/vnd.github+json', 'X-GitHub-Api-Version':'2022-11-28', ...(body ? {'Content-Type':'application/json'} : {}) }, body: body ? JSON.stringify(body) : undefined });
+  if (!r.ok){ let m = r.status + ''; try { m += ' ' + (await r.json()).message; } catch {} throw new Error(m); }
+  return r.json();
+}
+async function pull(){
+  const g = await gh('GET', '/gists/' + cfg.gist);
+  const f = g.files?.[FILE]; if (!f) return null;
+  let txt = f.content;
+  if (f.truncated){ txt = await (await fetch(f.raw_url, { cache:'no-store' })).text(); }
+  try { return JSON.parse(txt); } catch { return null; }
+}
+async function sync(){
+  if (!cfg.token || !cfg.gist || syncing) return;
+  if (!navigator.onLine){ setDot('err'); syncErr = 'Offline. Will sync when you\'re back online.'; return; }
+  syncing = true; setDot('busy');
+  try {
+    const remote = await pull();
+    const merged = merge(S, remote);
+    const changedRemote = JSON.stringify(merged) !== JSON.stringify(remote);
+    S = merged; LS.set('ks_data', S);
+    if (changedRemote) await gh('PATCH', '/gists/' + cfg.gist, { files:{ [FILE]:{ content: JSON.stringify(S) } } });
+    lastSync = Date.now(); LS.set('ks_lastsync', lastSync); syncErr = ''; setDot('ok');
+    if (!$('#sheet').classList.contains('on')) render();
+  } catch (e){ syncErr = e.message; setDot('err'); }
+  finally { syncing = false; }
+}
+async function createGist(){
+  const g = await gh('POST', '/gists', { description:"Kavin's solids log (synced by the Kavin Solids app)", public:false, files:{ [FILE]:{ content: JSON.stringify(S) } } });
+  return g.id;
+}
+
+/* SETTINGS */
+$('#btnSettings').onclick = openSettings;
+function openSettings(){
+  const ls = lastSync ? new Date(lastSync) : null;
+  const html = `
+   <div class="field"><label>Who's using this phone?</label><div class="seg" id="sName">${['Aranei','RT'].map(n => `<button data-v="${n}" class="${local.name === n ? 'on' : ''}">${n}</button>`).join('')}</div></div>
+   <div class="sec">Sync between phones</div>
+   <div class="card flat">
+     <div class="small" style="margin-bottom:10px">${cfg.gist ? `<span class="pill ${syncErr ? 'bad' : 'ok'}">${syncErr ? 'Sync problem' : 'Connected'}</span> ${ls ? 'Last synced '+ls.toLocaleString('en-AU', { dateStyle:'medium', timeStyle:'short' }) : ''}${syncErr ? `<div class="alert bad small">${esc(syncErr)}</div>` : ''}` : '<span class="pill">Not connected</span> The log is only on this phone.'}</div>
+     <div class="field"><label>GitHub token (Gists read and write)</label><input id="sTok" type="password" autocomplete="off" value="${esc(cfg.token)}" placeholder="github_pat_…"></div>
+     <div class="field"><label>Gist ID (leave blank on the first phone)</label><input id="sGist" autocomplete="off" value="${esc(cfg.gist)}" placeholder="e.g. 3f2a9c…"></div>
+     <div class="grid2"><button class="btn sm" id="sConnect">${cfg.gist ? 'Save and sync' : 'Connect'}</button><button class="btn ghost sm" id="sNow">Sync now</button></div>
+     ${cfg.gist ? `<button class="btn ghost sm block" id="sCopy" style="margin-top:8px">Copy Gist ID for the other phone</button><button class="btn ghost sm block" id="sOff" style="margin-top:8px;color:var(--bad)">Disconnect this phone</button>` : ''}
+     <details style="margin-top:12px"><summary class="small"><b>How to set up sync (10 minutes, once)</b></summary><ol class="small" style="padding-left:18px">
+      <li>On GitHub: Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new token.</li>
+      <li>Name it "Kavin solids". Expiry: 1 year. Under Account permissions, set <b>Gists</b> to <b>Read and write</b>. Nothing else.</li>
+      <li>Copy the token. On the first phone, paste it above, leave Gist ID blank, tap Connect. The app creates a private gist.</li>
+      <li>Tap "Copy Gist ID" and send it to the other phone (along with the token, via a secure channel such as AirDrop).</li>
+      <li>On the second phone, paste the token and the Gist ID, then tap Connect.</li></ol>
+      <p class="tiny muted">The token can only read and write your gists. It stays on each phone and is never synced.</p></details>
+   </div>
+   <div class="sec">Backup</div>
+   <div class="grid2"><button class="btn ghost sm" id="sExp">Export backup</button><label class="btn ghost sm" style="margin:0">Import backup<input type="file" id="sImp" accept="application/json,.json" hidden></label></div>
+   <p class="tiny muted" style="margin-top:14px">Plan content from plan-data.js. Data saved on this phone${cfg.gist ? ' and in your private gist' : ''}.</p>`;
+  openSheet('Settings and sync', html, root => {
+    $$('#sName button', root).forEach(b => b.onclick = () => { $$('#sName button', root).forEach(x => x.classList.toggle('on', x === b)); local.name = b.dataset.v; LS.set('ks_local', local); });
+    $('#sConnect', root).onclick = async () => {
+      cfg.token = $('#sTok', root).value.trim(); cfg.gist = $('#sGist', root).value.trim().replace(/.*\//, '');
+      if (!cfg.token){ toast('Paste your GitHub token first'); return; }
+      try {
+        if (!cfg.gist){ toast('Creating your private gist…'); cfg.gist = await createGist(); }
+        LS.set('ks_sync', cfg); await sync(); toast(syncErr ? 'Sync problem: ' + syncErr : 'Connected and synced ✓'); openSettings();
+      } catch (e){ toast('Could not connect: ' + e.message); syncErr = e.message; setDot('err'); }
+    };
+    $('#sNow', root).onclick = async () => { await sync(); toast(syncErr ? 'Sync problem: ' + syncErr : 'Synced ✓'); openSettings(); };
+    $('#sCopy', root) && ($('#sCopy', root).onclick = async () => { try { await navigator.clipboard.writeText(cfg.gist); toast('Gist ID copied'); } catch { prompt('Copy this Gist ID:', cfg.gist); } });
+    $('#sOff', root) && ($('#sOff', root).onclick = () => { if (confirm('Disconnect sync on this phone? The log stays on this phone and in the gist.')){ cfg = { token:'', gist:'' }; LS.set('ks_sync', cfg); setDot(''); openSettings(); } });
+    $('#sExp', root).onclick = () => download(`kavin-solids-backup-${todayStr()}.json`, JSON.stringify(S, null, 2), 'application/json');
+    $('#sImp', root).onchange = async e => { const f = e.target.files[0]; if (!f) return; try { const d = JSON.parse(await f.text()); S = merge(S, d); save(); render(); toast('Backup merged in ✓'); } catch { toast('That file could not be read'); } };
+  });
+}
+
+/* ---------- boot ---------- */
+if (cfg.token && cfg.gist){ setDot('busy'); sync(); }
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible'){ sync(); if (!$('#sheet').classList.contains('on')) render(); } });
+window.addEventListener('online', sync);
+setInterval(() => { if (document.visibilityState === 'visible') sync(); }, 60000);
+render();
+if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('sw.js').catch(() => {});
+})();
+</script>
+</body>
+</html>
