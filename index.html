@@ -224,7 +224,7 @@ details.more{border-top:1px solid var(--line);padding-top:12px;margin-top:4px}
 details.more summary{font-size:14px;font-weight:600;color:var(--accent);cursor:pointer;margin-bottom:10px}
 .hero{background:#2a1d17;color:#fff;padding:calc(var(--safe-t) + 12px) 18px 16px}
 .hero .hrow{display:flex;justify-content:space-between;align-items:center;gap:12px;max-width:640px;margin:0 auto}
-.hero .dots{display:flex;gap:6px;font-size:13px;line-height:1}
+.hvar{display:flex;gap:2px;width:120px;height:6px}.hvar i{display:block;border-radius:2px}
 .hero h1{font-size:26px;font-weight:700;letter-spacing:-.02em;color:#fff;margin:0}
 .hero .greet{color:#e6d8ca;font-size:15px;margin-top:4px}
 .hbtn{position:relative;border:0;background:rgba(255,255,255,.1);color:#f3e7da;border-radius:12px;width:38px;height:38px;display:grid;place-items:center}
@@ -308,7 +308,7 @@ details.more summary{font-size:14px;font-weight:600;color:var(--accent);cursor:p
 </head>
 <body>
 <header class="hero">
-  <div class="hrow"><div class="dots"><span>🍎</span><span>🥦</span><span>🥕</span><span>🫐</span></div>
+  <div class="hrow"><div class="hvar" id="hvar" aria-label="This week's food variety"></div>
   <button class="hbtn" id="btnSettings" aria-label="Settings and sync"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12a9 9 0 0 1-15.4 6.4M3 12A9 9 0 0 1 18.4 5.6"/><path d="M18 2v4h-4M6 22v-4h4"/></svg><span class="syncdot" id="syncdot"></span></button></div>
   <div class="hrow" style="margin-top:8px"><div style="min-width:0"><h1>Kavin's Solids</h1><div class="greet" id="age"></div></div></div>
 </header>
@@ -495,7 +495,11 @@ function setView(v){
 }
 $$('#tabs button').forEach(b => b.onclick = () => { if (b.dataset.v === 'today' && curView === 'today') curDate = todayStr(); setView(b.dataset.v); });
 
-function renderHero(){ $('#age').textContent = `${ageOn(todayStr())} old`; }
+function renderHero(){
+  $('#age').textContent = `${ageOn(todayStr())} old`;
+  const mon = mondayOf(todayStr()), c = groupCounts(mon, addDays(mon, 6)), total = Object.values(c).reduce((a, b) => a + b, 0);
+  $('#hvar').innerHTML = total ? GROUPS.filter(g => c[g.k]).map(g => `<i style="flex:${c[g.k]};background:${g.c}"></i>`).join('') : '<i style="flex:1;background:rgba(255,255,255,.18)"></i>';
+}
 function render(){
   renderHero();
   ({ today:renderToday, plan:renderPlan, allergens:renderAllergens, foods:renderFoods, log:renderLog, help:renderHelp })[curView]();
