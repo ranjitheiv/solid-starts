@@ -113,7 +113,7 @@ ul.clean li:last-child{border-bottom:0}
 .acard{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;text-align:left;box-shadow:var(--shadow)}
 .acard .nm{font-weight:700;font-size:15px;margin:4px 0 6px}
 .acard .em{font-size:22px}
-.acard.reaction{border-color:var(--bad);background:var(--bad-soft)}
+.acard.reaction,.acard.s-reaction{border-color:var(--bad);background:var(--bad-soft)}
 .acard.overdue{border-color:var(--warn)}
 .food{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--line);cursor:pointer}
 .food:last-child{border-bottom:0}
@@ -143,10 +143,38 @@ a.btn{text-decoration:none}
 .alert{border-radius:12px;padding:12px;font-size:14.5px;margin:8px 0}
 .alert.bad{background:var(--bad-soft);color:var(--ink);border:1px solid var(--bad)}
 .alert.warn{background:var(--warn-soft)}
-.ladder{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px}
-.ladder div{flex:1 0 110px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px;font-size:13px}
-.ladder div b{display:block;color:var(--accent);font-size:12px}
-.ladder div.now{border-color:var(--accent);background:var(--accent-soft)}
+.ladder{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -16px;padding:2px 16px 8px;scroll-padding:0 16px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.ladder::-webkit-scrollbar{display:none}
+.rung{flex:0 0 42%;scroll-snap-align:start;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;font-size:14px;box-shadow:var(--shadow)}
+.rung b{color:var(--accent);font-size:13px}
+.rung strong{display:block;margin:6px 0 4px;font-size:15px;line-height:1.25}
+.rung .muted{font-size:13px;line-height:1.35}
+.rung.now{border-color:var(--accent);background:var(--accent-soft)}
+.rung.past{opacity:.6}
+@media (min-width:560px){.rung{flex-basis:30%}}
+.cal{flex:none;width:46px;border-radius:10px;overflow:hidden;background:var(--card);border:1px solid var(--line);text-align:center;box-shadow:var(--shadow)}
+.cal .cm{display:block;background:#d9453a;color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 0}
+.cal .cd{display:block;font-size:20px;font-weight:700;line-height:1.35;padding:1px 0 2px}
+.cal.past .cm{background:var(--muted)}
+.wkcard.cur{border-color:var(--accent)}
+.stabs{display:grid;gap:4px;background:var(--line);padding:3px;border-radius:12px;margin-bottom:10px}
+.stabs button{border:0;background:none;border-radius:9px;padding:9px 2px;font-size:13.5px;font-weight:600;color:var(--muted);position:relative}
+.stabs button.on{background:var(--card);color:var(--ink);box-shadow:var(--shadow)}
+.stabs button i{position:absolute;top:5px;right:6px;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+.recipe{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px}
+.recipe .yield{font-size:13.5px;font-weight:600;color:var(--ok);margin-bottom:10px}
+.recipe .rh{font-size:12px;text-transform:uppercase;letter-spacing:.07em;font-weight:700;color:var(--muted);margin:10px 0 4px}
+.recipe .ing{margin:0;padding-left:20px;font-size:14.5px}
+.recipe .ing li{margin:3px 0}
+.recipe .how{margin:0;padding-left:20px;font-size:14.5px}
+.recipe .how li{margin:6px 0;padding-left:2px}
+.pe2{font-size:15px}
+.acard{position:relative}
+.acard.s-none{opacity:.62;box-shadow:none}
+.acard.s-building{border:2px solid var(--accent)}
+.acard.s-in{background:var(--ok-soft);border-color:color-mix(in srgb,var(--ok) 55%,var(--line))}
+.abadge{position:absolute;top:8px;right:8px;width:24px;height:24px;border-radius:50%;background:var(--ok);color:#fff;font-weight:800;font-size:14px;display:grid;place-items:center}
+.abadge.bad{background:var(--bad)}
 .empty{text-align:center;color:var(--muted);padding:26px 10px}
 .mcard{display:flex;align-items:center;gap:10px;padding:12px}
 .mcard .meal{flex:1;min-width:0;display:flex;gap:12px;align-items:flex-start;cursor:pointer}
@@ -181,8 +209,9 @@ details.banner summary{list-style:none;cursor:pointer}details.banner summary::-w
 .ftile .fn{font-size:12.5px;font-weight:600;text-align:center;line-height:1.2}
 .ftile .fb{position:absolute;top:5px;right:6px;font-size:13px}
 .ftile .fi{position:absolute;top:8px;left:8px;width:7px;height:7px;border-radius:50%;background:#b5533a}
-.ftile:not(.tried) .fe{filter:grayscale(.15);opacity:.85}
-.ftile.tried{border-color:color-mix(in srgb,var(--ok) 45%,var(--line))}
+.ftile:not(.tried){background:transparent;border:1.5px dashed var(--line);box-shadow:none}
+.ftile.tried{background:var(--ok-soft);border-color:color-mix(in srgb,var(--ok) 50%,var(--line))}
+.ftile .fb{background:var(--card);border-radius:50%;width:22px;height:22px;display:grid;place-items:center}
 .dm{display:flex;align-items:center;gap:6px;margin:2px 0;min-width:0}
 .dm .de{font-size:17px}.dm .dt{flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .dm .dk{margin-left:auto;font-size:14px}.dm.done .dt{color:var(--muted)}
@@ -245,10 +274,12 @@ details.more summary{font-size:14px;font-weight:600;color:var(--accent);cursor:p
 <div id="report"></div>
 
 <script src="plan-data.js"></script>
+<script src="recipes.js"></script>
 <script>
 (() => {
 'use strict';
 const P = window.PLAN;
+const RECIPES = window.RECIPES || {};
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -306,10 +337,10 @@ const LIKE = { '1':{i:'👍', n:'Loved it'}, '0':{i:'➖', n:'It was OK'}, '-1':
 const likeOf = v => v === undefined || v === null ? null : LIKE[String(v)];
 function stageFor(s){ if (s < '2026-11-30') return 'pur'; if (s < '2027-01-11') return 'mash'; return 'ff9'; }
 const STAGES = {
-  pur:  { n:'Smooth purée', when:'Auckland and weeks 1–2 (until 29 Nov)' },
-  mash: { n:'Mashed and lumpy', when:'Weeks 3–8 (30 Nov to 10 Jan)' },
-  ff:   { n:'Finger food he holds', when:'From week 2 (23 Nov). Big pieces, about the size of your finger, so he can grip them' },
-  ff9:  { n:'Small pieces', when:'From week 9 (11 Jan), once he can pick things up between thumb and finger' }
+  pur:  { s:'Purée', n:'Smooth purée', when:'Auckland and weeks 1–2 (until 29 Nov)' },
+  mash: { s:'Mashed', n:'Mashed and lumpy', when:'Weeks 3–8 (30 Nov to 10 Jan)' },
+  ff:   { s:'Finger food', n:'Finger food he holds', when:'From week 2 (23 Nov). Big pieces, about the size of your finger, so he can grip them' },
+  ff9:  { s:'Pieces', n:'Small pieces', when:'From week 9 (11 Jan), once he can pick things up between thumb and finger' }
 };
 
 /* Resolve the plan for a date */
@@ -487,11 +518,11 @@ function openMeal(key){
   const newA = m.al.filter(a => m.alk[a] === 'new').map(a => AL[a]).filter(Boolean);
   const html = `<div class="row" style="margin:-4px 0 14px">${tileFor(m.f, 'lg')}<div><div class="sub" style="font-size:15px">${esc(m.txt)}</div><div class="chips"><span class="pill tex">${esc(STAGES[st].n)}</span>${m.al.map(id => alPill(id, m.alk[id])).join('')}</div></div></div>
     ${newA.map(a => `<div class="banner new small"><b>${a.emoji} First time: ${esc(a.name)}</b><div style="margin-top:4px">${esc(a.how)}</div><ol>${a.steps.map(x => `<li>${esc(x)}</li>`).join('')}</ol></div>`).join('')}
-    <div class="sec" style="margin-top:4px">How to make it</div>
-    ${m.f.map(id => { const f = FOOD[id]; if (!f) return ''; const t = f[st] || f.mash || f.pur || f.ff || ''; return `<button class="prep" data-food="${id}"><span class="pe">${f.e}</span><span class="pb"><b>${esc(f.n)}</b><span>${esc(t)}</span></span><span class="chev">›</span></button>`; }).join('') || '<div class="small muted">Use whatever is in the freezer or left over, prepared to his current texture.</div>'}
+    <div class="sec" style="margin-top:4px">What's in it · tap a food for the recipe</div>
+    ${m.f.map(id => { const f = FOOD[id]; if (!f) return ''; const t = f[st] || f.mash || f.pur || f.ff || ''; return `<button class="prep" data-food="${id}" data-st="${st}"><span class="pe">${f.e}</span><span class="pb"><b>${esc(f.n)}</b><span>${esc(t)}</span></span><span class="chev">›</span></button>`; }).join('') || '<div class="small muted">Use whatever is in the freezer or left over, prepared to his current texture.</div>'}
     <button class="btn block" id="mDone" style="margin-top:14px">✓ He's eaten it</button>`;
   openSheet(m.title, html, root => {
-    $$('[data-food]', root).forEach(b => b.onclick = () => openFood(b.dataset.food));
+    $$('[data-food]', root).forEach(b => b.onclick = () => openFood(b.dataset.food, b.dataset.st));
     $('#mDone', root).onclick = () => { closeSheet(); setTimeout(() => toggleTick(key), 260); };
   });
 }
@@ -541,7 +572,7 @@ function openEntry(e, preset = {}){
    <div class="grid2"><div class="field"><label>Date</label><input type="date" id="fD" value="${x.d}"></div><div class="field"><label>Time</label><input type="time" id="fT" value="${x.t}"></div></div>
    <div class="field"><label>Meal</label><select id="fS">${Object.entries(SLOTS).map(([k,v]) => `<option value="${k}" ${k === x.slot ? 'selected' : ''}>${v.n}</option>`).join('')}</select></div>
    <div class="field"><label>What he had</label><input id="fTxt" value="${esc(x.txt)}" placeholder="e.g. Beef purée + sweet potato"></div>
-   <div class="field"><label>Foods (tap to tick, so the Foods list stays up to date)</label><input id="fFind" placeholder="Search foods…" style="margin-bottom:6px"><div class="pick" id="fF">${P.foods.map(f => `<button type="button" data-id="${f.id}" class="${x.f.includes(f.id) ? 'on' : ''}">${esc(f.n)}</button>`).join('')}</div></div>
+   <div class="field"><label>Foods (tap to tick, so the Foods list stays up to date)</label><input id="fFind" placeholder="Search foods…" style="margin-bottom:6px"><div class="pick" id="fF">${[...P.foods].sort((a, b) => (x.f.includes(b.id) - x.f.includes(a.id)) || (foodTried(b.id).tried - foodTried(a.id).tried)).map(f => `<button type="button" data-id="${f.id}" class="${x.f.includes(f.id) ? 'on' : ''}"><span class="pe2">${f.e}</span> ${esc(f.n)}</button>`).join('')}</div></div>
    <div class="field"><label>Allergens in this meal</label><div class="pick" id="fA">${alOpts.map(([id,n]) => `<button type="button" data-id="${id}" class="${x.al.includes(id) ? 'on' : ''}">${esc(n)}</button>`).join('')}</div></div>
    <div class="field"><label>How much</label><div class="seg" id="fAmt">${['taste','some','lots','refused'].map(a => `<button type="button" data-v="${a}" class="${x.amt === a ? 'on' : ''}">${amtLabel(a)}</button>`).join('')}</div></div>
    </details>
@@ -576,20 +607,22 @@ function renderPlan(){
   const t = todayStr(), cur = planFor(t);
   let ladderIdx = 0;
   if (cur.type === 'week'){ const n = cur.week.n; ladderIdx = n <= 2 ? 0 : n <= 4 ? 1 : n <= 6 ? 2 : n <= 9 ? 3 : 4; }
-  let h = `<div class="sec">Texture ladder</div><div class="ladder">${P.textureLadder.map((x,i) => `<div class="${i === ladderIdx && cur.type === 'week' ? 'now' : ''}"><b>${esc(x.age)}</b><strong>${esc(x.label)}</strong><div class="muted">${esc(x.detail)}</div></div>`).join('')}</div>`;
+  if (cur.type === 'after') ladderIdx = 4;
+  let h = `<div class="sec">Texture ladder</div><div class="ladder" id="ladder">${P.textureLadder.map((x,i) => `<div class="rung ${i === ladderIdx ? 'now' : i < ladderIdx ? 'past' : ''}" data-i="${i}"><div class="between"><b>${esc(x.age)}</b>${i === ladderIdx ? '<span class="pill new">Now</span>' : i === ladderIdx + 1 ? '<span class="pill keep">Next</span>' : i < ladderIdx ? '<span class="tiny muted">✓ Done</span>' : ''}</div><strong>${esc(x.label)}</strong><div class="muted">${esc(x.detail)}</div></div>`).join('')}</div>`;
   // Auckland
-  h += `<div class="sec">Auckland</div>` + weekBlock({ key:'auck', title:'Auckland exploration', range:`${fmtDate(P.auckland.start)} – ${fmtDate(P.auckland.end)}`, days:P.aucklandDays.map((d,i) => ({ date:addDays(P.auckland.start, i), meals:[{slot:'b', ...parseMeal(d.b)}] })), open: cur.type === 'auckland', info:`<p class="small">Once a day after his morning feed. Non-allergen, iron-rich foods only. Pause Thu 12 to Sun 15 Nov for the flight home.</p>` });
+  h += `<div class="sec">Auckland</div>` + weekBlock({ key:'auck', start:P.auckland.start, title:'Auckland exploration', range:`${fmtDate(P.auckland.start)} – ${fmtDate(P.auckland.end)}`, days:P.aucklandDays.map((d,i) => ({ date:addDays(P.auckland.start, i), meals:[{slot:'b', ...parseMeal(d.b)}] })), open: cur.type === 'auckland', info:`<p class="small">Once a day after his morning feed. Non-allergen, iron-rich foods only. Pause Thu 12 to Sun 15 Nov for the flight home.</p>` });
   h += `<div class="sec">Home plan</div>`;
   P.weeks.forEach((w, wi) => {
     const days = w.days.map((d, di) => { const date = addDays(w.start, di); const p = planFor(date); return { date, meals:p.meals, ff:p.ff }; });
     const end = addDays(w.start, 6);
-    h += weekBlock({ key:'w'+w.n, title:`Week ${w.n}: ${w.title}`, range:`${fmtDate(w.start)} – ${fmtDate(end)}`, days, open: cur.type === 'week' && cur.wi === wi, w });
+    h += weekBlock({ key:'w'+w.n, start:w.start, title:`Week ${w.n}: ${w.title}`, range:`${fmtDate(w.start)} – ${fmtDate(end)}`, days, open: cur.type === 'week' && cur.wi === wi, w });
   });
   $('#v-plan').innerHTML = h;
+  const lad = $('#ladder'), rn = lad && lad.querySelector(`[data-i="${ladderIdx}"]`); if (rn) lad.scrollLeft = rn.offsetLeft - lad.offsetLeft - 16;
   $$('[data-go]', $('#v-plan')).forEach(r => r.onclick = () => { curDate = r.dataset.go; setView('today'); });
   $$('[data-cook]', $('#v-plan')).forEach(c => c.onchange = () => { S.ticks[c.dataset.cook] = stamp({ on:c.checked }); save(); });
 }
-function weekBlock({ key, title, range, days, open, w, info }){
+function weekBlock({ key, start, title, range, days, open, w, info }){
   const t = todayStr();
   let total = 0, done = 0;
   days.forEach(d => { const ms = [...d.meals, ...(d.ff ? [{slot:'f'}] : [])]; total += ms.length; ms.forEach(m => entryFor(`${d.date}:${m.slot}`) && done++); });
@@ -604,7 +637,8 @@ function weekBlock({ key, title, range, days, open, w, info }){
     const ms = d.meals.map(m => { const e = entryFor(`${d.date}:${m.slot}`); const lk = e && likeOf(e.like); return `<div class="dm ${e ? 'done' : ''}"><span class="de">${emojisFor(m.f)[0] || '🍽️'}</span><span class="dt">${esc(m.title)}</span>${Object.entries(m.alk).filter(([,k]) => k === 'new').map(([a]) => `<span class="pill new">${esc(AL[a]?.name.replace(/ \(.*\)/,''))}</span>`).join('')}${e ? `<span class="dk">${lk ? lk.i : '✓'}</span>` : ''}</div>`; }).join('');
     return `<div class="dayrow ${d.date === t ? 'today' : ''}" data-go="${d.date}"><div class="d"><b>${DOW[parse(d.date).getDay()]}</b>${parse(d.date).getDate()} ${MON[parse(d.date).getMonth()]}</div><div class="m">${ms}</div><span class="chev">›</span></div>`;
   }).join('');
-  return `<details class="card" ${open ? 'open' : ''}><summary><div class="between"><div><b>${esc(title)}</b><div class="small muted">${esc(range)}${newAl.length ? ' · new: '+newAl.map(a => esc(AL[a]?.name.replace(/ \(.*\)/,''))).join(', ') : ''}</div></div><span class="chev">›</span></div><div class="prog"><i style="width:${total ? Math.round(done/total*100) : 0}%"></i></div><div class="tiny muted" style="margin-top:4px">${done} of ${total} logged</div></summary>${body}</details>`;
+  const sd = parse(start), past = addDays(start, days.length - 1) < t, isCur = t >= start && t <= addDays(start, days.length - 1);
+  return `<details class="card wkcard ${isCur ? 'cur' : ''}" ${open ? 'open' : ''}><summary><div class="row" style="align-items:flex-start"><div class="cal ${past ? 'past' : ''}"><span class="cm">${MON[sd.getMonth()]}</span><span class="cd">${sd.getDate()}</span></div><div style="flex:1;min-width:0"><div class="between"><div><b>${esc(title)}</b><div class="small muted">${esc(range)}${newAl.length ? ' · new: '+newAl.map(a => esc(AL[a]?.name.replace(/ \(.*\)/,''))).join(', ') : ''}</div></div><span class="chev">›</span></div><div class="prog"><i style="width:${total ? Math.round(done/total*100) : 0}%"></i></div><div class="tiny muted" style="margin-top:4px">${done} of ${total} logged</div></div></div></summary>${body}</details>`;
 }
 
 /* ALLERGENS */
@@ -615,7 +649,7 @@ function renderAllergens(){
   let h = `<div class="card"><div class="between"><div><b>${inDiet} of ${P.allergens.length} introduced</b><div class="small muted">Goal: all in by about 7½ months, then each one at least weekly.</div></div><div style="font-size:28px">${inDiet === P.allergens.length ? '🎉' : '🛡️'}</div></div><div class="prog"><i style="width:${Math.round(inDiet/P.allergens.length*100)}%"></i></div></div>`;
   if (rx.length) h += `<div class="alert bad"><b>Reaction logged: ${rx.map(x => esc(x.a.name)).join(', ')}.</b> Don't offer it again until you've spoken to your GP. Use the GP report in the Log tab.</div>`;
   h += `<details class="card"><summary class="between"><b>How to introduce an allergen</b><span class="chev">›</span></summary><ul class="small" style="padding-left:18px;margin:0">${P.allergenRules.map(r => `<li style="margin-bottom:6px">${esc(r)}</li>`).join('')}</ul></details>`;
-  const grp = (title, list) => `<div class="sec">${title}</div><div class="agrid">${list.map(({a, st}) => `<button class="acard ${st.status === 'reaction' ? 'reaction' : ''} ${st.due === 'overdue' ? 'overdue' : ''}" data-al="${a.id}"><div class="em">${a.emoji}</div><div class="nm">${esc(a.name)}</div><span class="pill ${st.cls}">${st.status === 'in' ? '✓ ' : ''}${esc(st.label)}</span><div class="tiny muted" style="margin-top:6px">${st.last ? `Last: ${st.since === 0 ? 'today' : st.since === 1 ? 'yesterday' : st.since+' days ago'}` : nextIntro(a.id)}</div>${st.due ? `<div class="tiny" style="margin-top:4px;color:var(--${st.due === 'overdue' ? 'bad' : 'warn'});font-weight:700">${st.due === 'overdue' ? 'Over a week: give it soon' : 'Due tomorrow'}</div>` : ''}</button>`).join('')}</div>`;
+  const grp = (title, list) => `<div class="sec">${title}</div><div class="agrid">${list.map(({a, st}) => `<button class="acard s-${st.status} ${st.due === 'overdue' ? 'overdue' : ''}" data-al="${a.id}">${st.status === 'in' ? '<span class="abadge">✓</span>' : st.status === 'reaction' ? '<span class="abadge bad">!</span>' : ''}<div class="em">${a.emoji}</div><div class="nm">${esc(a.name)}</div><span class="pill ${st.cls}">${st.status === 'in' ? '✓ ' : ''}${esc(st.label)}</span><div class="tiny muted" style="margin-top:6px">${st.last ? `Last: ${st.since === 0 ? 'today' : st.since === 1 ? 'yesterday' : st.since+' days ago'}` : nextIntro(a.id)}</div>${st.due ? `<div class="tiny" style="margin-top:4px;color:var(--${st.due === 'overdue' ? 'bad' : 'warn'});font-weight:700">${st.due === 'overdue' ? 'Over a week: give it soon' : 'Due tomorrow'}</div>` : ''}</button>`).join('')}</div>`;
   h += grp('Main allergens', sts.filter(x => x.a.group === 'core'));
   h += grp('Tree nuts', sts.filter(x => x.a.group === 'nut'));
   h += `<p class="small muted" style="margin-top:12px">Logging the nut and seed mix counts as a serve of every tree nut and sesame.</p>`;
@@ -654,23 +688,29 @@ function renderFoods(){
   $$('#ffil button').forEach(b => b.onclick = () => { foodFilter = b.dataset.v; $$('#ffil button').forEach(x => x.classList.toggle('on', x === b)); list(); });
   list();
 }
-function openFood(id){
+function openFood(id, want){
   const f = FOOD[id]; if (!f) return; const t = foodTried(id);
   const today = todayStr(), now = today < P.auckland.start ? 'pur' : stageFor(today), ffNow = today >= '2026-11-23';
   const ss = `https://www.google.com/search?q=${encodeURIComponent('site:solidstarts.com/foods ' + f.n.replace(/\(.*\)/,''))}`;
   const isNow = k => k === now || (k === 'ff' && ffNow && now !== 'ff9');
-  const stage = k => f[k] ? `<div class="stage ${isNow(k) ? 'now' : ''}"><div class="between"><b>${STAGES[k].n}</b>${isNow(k) ? '<span class="pill new">Now</span>' : ''}</div><div class="tiny muted">${esc(STAGES[k].when)}</div><p>${esc(f[k])}</p></div>` : '';
-  const order = ['pur','mash','ff','ff9'];
-  const nowFirst = [...order.filter(isNow), ...order.filter(k => !isNow(k))];
+  const avail = ['pur','mash','ff','ff9'].filter(k => f[k]);
+  let sel = avail.includes(want) ? want : (avail.find(k => k === now) || avail.find(isNow) || avail[0]);
+  const stageHtml = k => {
+    const rc = RECIPES[id]?.[k];
+    return `<div class="stage ${isNow(k) ? 'now' : ''}"><div class="between"><b>${STAGES[k].n}</b>${isNow(k) ? '<span class="pill new">Now</span>' : ''}</div><div class="tiny muted">${esc(STAGES[k].when)}</div><p>${esc(f[k])}</p></div>
+      ${rc ? `<div class="sec">How to make it</div><div class="recipe"><div class="yield">🍽️ Makes: ${esc(rc.y)}</div><div class="rh">Ingredients</div><ul class="ing">${rc.ing.map(i => `<li>${esc(i)}</li>`).join('')}</ul><div class="rh">Method</div><ol class="how">${rc.how.map(i => `<li>${esc(i)}</li>`).join('')}</ol></div>` : ''}`;
+  };
   const html = `<div class="row" style="margin:-4px 0 12px"><div class="mi lg n1"><span>${f.e}</span></div><div class="chips" style="margin:0">${f.iron ? '<span class="pill iron">Iron-rich</span>' : ''}${f.al ? `<span class="pill keep">Allergen: ${esc(f.al === 'nutmix' ? 'tree nuts + sesame' : AL[f.al]?.name)}</span>` : ''}</div></div>
    ${f.note ? `<div class="alert warn small" style="margin-top:0">${esc(f.note)}</div>` : ''}
    <div class="sec" style="margin-top:6px">How to serve it</div>
-   ${nowFirst.map(stage).join('')}
-   <a class="btn ghost block" href="${ss}" target="_blank" rel="noopener" style="margin-top:4px">Photos of how to cut it (Solid Starts) ↗</a>
+   <div class="stabs" id="stTabs" style="grid-template-columns:repeat(${avail.length},1fr)">${avail.map(k => `<button data-k="${k}" class="${k === sel ? 'on' : ''}">${STAGES[k].s}${isNow(k) ? '<i></i>' : ''}</button>`).join('')}</div>
+   <div id="stBody">${stageHtml(sel)}</div>
+   <a class="btn ghost block" href="${ss}" target="_blank" rel="noopener" style="margin-top:12px">Photos of how to cut it (Solid Starts) ↗</a>
    <div class="sec">How does he like it?</div>
    <div class="rate sm" id="flk">${['1','0','-1'].map(v => `<button data-v="${v}" class="${String(t.like) === v ? 'on' : ''}"><span>${LIKE[v].i}</span>${LIKE[v].n}</button>`).join('')}</div>
    <div class="tiny muted" style="margin-top:8px">${t.count ? `Eaten ${t.count} time${t.count > 1 ? 's' : ''}, first on ${fmtDate(t.first)}. ` : t.tried ? 'Marked as tried. ' : 'Not tried yet. '}A 👎 food is worth offering again. Babies often need 10 or more tries.</div>`;
   openSheet(f.n, html, root => {
+    $$('#stTabs button', root).forEach(b => b.onclick = () => { $$('#stTabs button', root).forEach(x => x.classList.toggle('on', x === b)); $('#stBody', root).innerHTML = stageHtml(b.dataset.k); });
     $$('#flk button', root).forEach(b => b.onclick = () => { const was = b.classList.contains('on'); $$('#flk button', root).forEach(x => x.classList.remove('on')); if (!was) b.classList.add('on'); S.foods[id] = stamp({ ...(S.foods[id]||{}), tried:true, date:S.foods[id]?.date || todayStr(), like: was ? null : Number(b.dataset.v) }); save(); render(); });
   });
 }
