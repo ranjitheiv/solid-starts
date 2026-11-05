@@ -222,10 +222,10 @@ details.banner summary{list-style:none;cursor:pointer}details.banner summary::-w
 .daynav .lbl .small{display:block}
 details.more{border-top:1px solid var(--line);padding-top:12px;margin-top:4px}
 details.more summary{font-size:14px;font-weight:600;color:var(--accent);cursor:pointer;margin-bottom:10px}
-.hero{background:#2a1d17;color:#fff;padding:calc(var(--safe-t) + 14px) 18px 20px}
+.hero{background:#2a1d17;color:#fff;padding:calc(var(--safe-t) + 12px) 18px 16px}
 .hero .hrow{display:flex;justify-content:space-between;align-items:center;gap:12px;max-width:640px;margin:0 auto}
-.hero .dots{display:flex;gap:7px}.hero .dots i{width:9px;height:9px;border-radius:50%;display:block}
-.hero h1{font-size:30px;font-weight:700;letter-spacing:-.02em;color:#fff;margin:0}
+.hero .dots{display:flex;gap:6px;font-size:13px;line-height:1}
+.hero h1{font-size:26px;font-weight:700;letter-spacing:-.02em;color:#fff;margin:0}
 .hero .greet{color:#e6d8ca;font-size:15px;margin-top:4px}
 .hbtn{position:relative;border:0;background:rgba(255,255,255,.1);color:#f3e7da;border-radius:12px;width:38px;height:38px;display:grid;place-items:center}
 .hbtn .syncdot{top:6px;right:6px}
@@ -264,6 +264,28 @@ details.more summary{font-size:14px;font-weight:600;color:var(--accent);cursor:p
 .badge.got .bc{background:var(--accent-soft);border:2px solid var(--accent);filter:none;opacity:1}
 .badge .bn{font-size:12px;font-weight:600;line-height:1.2}
 .badge .bd{font-size:11px;color:var(--muted);margin-top:2px}
+.fbar{flex:1;display:flex;gap:2px;min-width:60px}
+.fbar i{flex:1;height:10px;border-radius:2px;background:var(--line)}
+.fbar i.ok{background:var(--ok)}.fbar i.low{background:var(--warn)}.fbar i.short{background:var(--bad)}
+.fmini{display:flex;align-items:center;gap:8px;font-size:13.5px;margin-top:8px}
+.fmini span{width:110px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.fmini b{width:20px;text-align:right}
+.frow2{border-bottom:1px solid var(--line);cursor:pointer}.frow2:last-child{border-bottom:0}
+.frow2 .frow{border-bottom:0}
+.fnm{width:96px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fnum{width:22px;text-align:right}
+.fneed{margin:-6px 0 8px 40px}
+.fedit{display:flex;align-items:center;gap:8px;padding:0 0 10px 40px}
+.fedit .bbtn{margin-left:auto}
+.lg{display:inline-block;width:10px;height:10px;border-radius:2px;margin:0 4px 0 10px;vertical-align:-1px}
+.lg:first-child{margin-left:0}.lg.ok{background:var(--ok)}.lg.low{background:var(--warn)}.lg.short{background:var(--bad)}
+.stepper{display:flex;align-items:center;justify-content:center;gap:28px;margin:8px 0 6px}
+.stepper span{font-size:44px;font-weight:700;min-width:60px;text-align:center}
+.cbtn.big{width:52px;height:52px;font-size:26px}
+.fzchips{display:flex;flex-wrap:wrap;gap:8px}
+.fzc{display:flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:3px 6px 3px 4px}
+.fzc.on{background:var(--ok-soft);border-color:color-mix(in srgb,var(--ok) 50%,var(--line))}
+.fzt{border:0;background:none;font-size:14px;font-weight:600;padding:5px 6px}
+.fzb{border:1px solid var(--line);background:var(--card);border-radius:50%;width:26px;height:26px;line-height:1}
 .toast{position:fixed;left:50%;bottom:calc(88px + var(--safe-b));transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:12px;font-size:14px;opacity:0;transition:.2s;z-index:80;pointer-events:none;max-width:90vw}
 .toast.on{opacity:1;transform:translateX(-50%)}
 .ref h3{font-size:16px;margin:4px 0 8px}
@@ -286,9 +308,9 @@ details.more summary{font-size:14px;font-weight:600;color:var(--accent);cursor:p
 </head>
 <body>
 <header class="hero">
-  <div class="hrow"><div class="dots"><i style="background:#c4643c"></i><i style="background:#e0a94f"></i><i style="background:#7fb48d"></i><i style="background:#86b3d3"></i></div>
+  <div class="hrow"><div class="dots"><span>🍎</span><span>🥦</span><span>🥕</span><span>🫐</span></div>
   <button class="hbtn" id="btnSettings" aria-label="Settings and sync"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12a9 9 0 0 1-15.4 6.4M3 12A9 9 0 0 1 18.4 5.6"/><path d="M18 2v4h-4M6 22v-4h4"/></svg><span class="syncdot" id="syncdot"></span></button></div>
-  <div class="hrow" style="align-items:flex-end;margin-top:10px"><div style="min-width:0"><h1>Kavin's Solids</h1><div class="greet" id="greet"></div></div><div class="agebadge" id="agebadge"></div></div>
+  <div class="hrow" style="margin-top:8px"><div style="min-width:0"><h1>Kavin's Solids</h1><div class="greet" id="age"></div></div></div>
 </header>
 
 <main>
@@ -473,14 +495,7 @@ function setView(v){
 }
 $$('#tabs button').forEach(b => b.onclick = () => { if (b.dataset.v === 'today' && curView === 'today') curDate = todayStr(); setView(b.dataset.v); });
 
-function renderHero(){
-  const b = parse(P.baby.born), d = new Date();
-  let m = (d.getFullYear()-b.getFullYear())*12 + d.getMonth()-b.getMonth(); if (d.getDate() < b.getDate()) m--;
-  $('#agebadge').innerHTML = `<b>${m}</b><span>months</span><small>old</small>`;
-  const hr = d.getHours(), t = todayStr(), p = planFor(t);
-  const g = hr < 5 ? 'Up early! Hopefully not for long.' : hr < 11 ? 'Good morning! Breakfast first.' : hr < 14 ? 'Good afternoon! Lunch time soon.' : hr < 17 ? 'Afternoon! Dinner isn\'t far off.' : 'Good evening! Bath and bed soon.';
-  $('#greet').textContent = p.type === 'pause' ? 'Travel pause. Back on solids Monday.' : g;
-}
+function renderHero(){ $('#age').textContent = `${ageOn(todayStr())} old`; }
 function render(){
   renderHero();
   ({ today:renderToday, plan:renderPlan, allergens:renderAllergens, foods:renderFoods, log:renderLog, help:renderHelp })[curView]();
@@ -576,30 +591,45 @@ function openRate(id){
   const e = S.entries[id]; if (!e) return;
   const html = `<div class="row" style="margin:-4px 0 16px">${tileFor(e.f)}<div><b>${esc(e.title || e.txt)}</b><div class="small muted">Logged ${esc(e.t)}</div></div></div>
     <div class="rate">${['1','0','-1'].map(v => `<button data-v="${v}"><span>${LIKE[v].i}</span>${LIKE[v].n}</button>`).join('')}</div>
-    ${e.cubes?.length ? `<div class="small muted" style="margin-top:12px;text-align:center">🧊 Took 1 cube each from the freezer: ${e.cubes.map(f => esc(FOOD[f]?.s)).join(', ')}</div>` : ''}
+    <div id="frzUse"></div>
     <button class="btn ghost block" id="rRx" style="margin-top:16px">He had a reaction</button>
     <button class="linkbtn" id="rSkip">Skip for now</button>`;
   openSheet('How did it go?', html, root => {
     $$('.rate button', root).forEach(b => b.onclick = () => { stamp(e).like = Number(b.dataset.v); save(); closeSheet(); render(); toast(`${LIKE[b.dataset.v].i} Saved`); });
     $('#rRx', root).onclick = () => { closeSheet(); setTimeout(() => openEntry(e, { rx:true }), 260); };
     $('#rSkip', root).onclick = closeSheet;
+    renderFrzUse(e, $('#frzUse', root));
   });
+}
+const cubeMap = e => Array.isArray(e.cubes) ? Object.fromEntries(e.cubes.map(f => [f, 1])) : (e.cubes || {});
+function renderFrzUse(e, box){
+  const used = cubeMap(e);
+  const cands = (e.f || []).filter(f => FREEZABLE.includes(f) && ((used[f] || 0) > 0 || (S.freezer[f]?.n || 0) > 0));
+  if (!cands.length){ box.innerHTML = ''; return; }
+  box.innerHTML = `<div class="sec" style="margin-top:16px">🧊 From the freezer</div><div class="fzchips">${cands.map(f => { const n = used[f] || 0;
+    return `<div class="fzc ${n ? 'on' : ''}"><button class="fzt" data-t="${f}">${n ? '✓' : '○'} ${FOOD[f].e} ${esc(FOOD[f].s)}</button>${n ? `<button class="fzb" data-m="${f}" aria-label="One less">−</button><b>${n}</b><button class="fzb" data-p="${f}" aria-label="One more">+</button>` : ''}</div>`; }).join('')}</div>
+    <div class="tiny muted" style="margin-top:6px">Ticked means cubes came out of the freezer. Made it fresh? Tap to untick.</div>`;
+  const setN = (f, n) => { const cur = cubeMap(e); const old = cur[f] || 0; n = Math.max(0, Math.min(n, old + (S.freezer[f]?.n || 0)));
+    S.freezer[f] = stamp({ n: (S.freezer[f]?.n || 0) - (n - old) }); if (n) cur[f] = n; else delete cur[f]; e.cubes = cur; stamp(e); save(); renderFrzUse(e, box); };
+  $$('[data-t]', box).forEach(b => b.onclick = () => { const f = b.dataset.t; setN(f, (cubeMap(e)[f] || 0) ? 0 : 1); });
+  $$('[data-m]', box).forEach(b => b.onclick = () => setN(b.dataset.m, (cubeMap(e)[b.dataset.m] || 0) - 1));
+  $$('[data-p]', box).forEach(b => b.onclick = () => setN(b.dataset.p, (cubeMap(e)[b.dataset.p] || 0) + 1));
 }
 const amtLabel = a => ({ taste:'Just tasted', some:'Ate some', lots:'Ate lots', refused:'Refused' })[a] || 'Ate some';
 const rxLabel = r => ({ none:'No reaction', mouth:'Mouth redness only', mild:'Mild reaction', severe:'Severe reaction' })[r] || '';
 
 function toggleTick(key){
   const e = entryFor(key);
-  if (e){ if (!confirm('Undo this meal? It will be removed from the log.')) return; (e.cubes || []).forEach(f => { S.freezer[f] = stamp({ n: (S.freezer[f]?.n || 0) + 1 }); }); stamp(e).del = true; save(); render(); return; }
+  if (e){ if (!confirm('Undo this meal? It will be removed from the log.')) return; Object.entries(cubeMap(e)).forEach(([f, n]) => { S.freezer[f] = stamp({ n: (S.freezer[f]?.n || 0) + n }); }); stamp(e).del = true; save(); render(); return; }
   const [d, slot] = [key.slice(0,10), key.slice(11)];
   const p = planFor(d);
   const m = slot === 'f' ? p.ff : p.meals.find(x => x.slot === slot);
   if (!m) return;
   const id = 'e' + Date.now().toString(36) + Math.random().toString(36).slice(2,6);
   const ent = stamp({ id, plan:key, d, t: d === todayStr() ? nowHM() : SLOTS[slot].t, slot, title:m.title, txt:m.txt, f:[...m.f], al:[...m.al], amt:'some', rx:'none', notes:'', by:local.name });
-  const cubes = m.f.filter(f => (S.freezer[f]?.n || 0) > 0);
-  cubes.forEach(f => { S.freezer[f] = stamp({ n: S.freezer[f].n - 1 }); });
-  if (cubes.length) ent.cubes = cubes;
+  const cubes = {};
+  m.f.filter(f => FREEZABLE.includes(f) && (S.freezer[f]?.n || 0) > 0).forEach(f => { cubes[f] = 1; S.freezer[f] = stamp({ n: S.freezer[f].n - 1 }); });
+  if (Object.keys(cubes).length) ent.cubes = cubes;
   S.entries[id] = ent; save();
   const nw = m.al.filter(a => m.alk[a] === 'new');
   if (nw.length && d === todayStr()){ local.watch = { name: nw.map(a => AL[a]?.name).join(', '), until: Date.now() + 2*3600e3 }; LS.set('ks_local', local); }
@@ -667,30 +697,55 @@ function upcomingFreezable(s, days = 7){
   for (let i = 0; i < days; i++){ const p = planFor(addDays(s, i)); (p.meals||[]).forEach(m => m.f.forEach(f => { if (FREEZABLE.includes(f)) need[f] = (need[f] || 0) + 1; })); }
   return need;
 }
+function frzState(id, need){ const n = S.freezer[id]?.n || 0; return !n ? 'empty' : n >= need ? 'ok' : n * 2 >= need ? 'low' : 'short'; }
+function frzBar(id, need){
+  const n = S.freezer[id]?.n || 0, st = frzState(id, need), segs = Math.max(10, Math.min(16, n));
+  return `<div class="fbar">${Array.from({ length: segs }, (_, i) => `<i class="${i < n ? st : ''}"></i>`).join('')}</div>`;
+}
 function freezerCard(s){
   const need = upcomingFreezable(s), have = id => S.freezer[id]?.n || 0;
   const stocked = FREEZABLE.filter(id => have(id) > 0);
   const short = Object.entries(need).filter(([id, n]) => have(id) < n).map(([id]) => id);
   if (!stocked.length && !Object.keys(need).length) return '';
+  const top = [...stocked].sort((a, b) => have(b) - have(a)).slice(0, 4);
   return `<button class="card frzcard" id="frz"><div class="between"><b>🧊 Freezer</b><span class="small muted">${stocked.reduce((a, id) => a + have(id), 0)} cubes ›</span></div>
-    ${short.length ? `<div class="small" style="margin-top:6px">Running short for this week: ${short.slice(0, 5).map(id => `${FOOD[id].e} ${esc(FOOD[id].s)} <b>${have(id)}</b>`).join(' · ')}</div>` : '<div class="small" style="margin-top:6px;color:var(--ok)">Stocked for the next 7 days</div>'}</button>`;
+    ${top.map(id => `<div class="fmini"><span>${FOOD[id].e} ${esc(FOOD[id].s)}</span>${frzBar(id, need[id] || 0)}<b>${have(id)}</b></div>`).join('')}
+    ${short.length ? `<div class="small" style="margin-top:8px;color:var(--bad)">Cook next: ${short.slice(0, 4).map(id => `${FOOD[id].e} ${esc(FOOD[id].s)}`).join(', ')}</div>` : '<div class="small" style="margin-top:8px;color:var(--ok)">Stocked for the next 7 days</div>'}</button>`;
 }
+let frzOpenRow = null;
 function openFreezer(){
   const need = upcomingFreezable(todayStr()), have = id => S.freezer[id]?.n || 0;
-  const order = [...FREEZABLE].sort((a, b) => ((need[b] || 0) - have(b)) - ((need[a] || 0) - have(a)) || have(b) - have(a));
-  const short = order.filter(id => (need[id] || 0) > have(id));
-  const row = id => { const f = FOOD[id], n = have(id), nd = need[id] || 0;
-    return `<div class="frow"><span class="fe2">${f.e}</span><div style="flex:1;min-width:0"><b>${esc(f.n)}</b><div class="tiny muted">${nd ? `Needed this week: ${nd}` : 'Not in this week\'s plan'}</div></div>
-      <button class="cbtn" data-dec="${id}" aria-label="One less">−</button><span class="cnt ${n === 0 ? 'zero' : n < nd ? 'low' : ''}">${n}</span><button class="cbtn" data-inc="${id}" aria-label="One more">+</button>
-      <button class="bbtn" data-batch="${id}">+${cubesIn(id)}</button></div>`; };
-  const html = `<p class="small muted" style="margin-top:-6px">After a cook-up, tap the blue button to add a full batch. Cubes come off automatically when you tick a meal that uses them.</p>` +
-    (short.length ? `<div class="alert warn small"><b>Cook next:</b> ${short.map(id => `${FOOD[id].e} ${esc(FOOD[id].s)}`).join(', ')}</div>` : `<div class="alert small" style="background:var(--ok-soft)">You're stocked for the next 7 days.</div>`) +
-    `<div class="card flat" style="padding:4px 12px">${order.map(row).join('')}</div>`;
+  const short = FREEZABLE.filter(id => (need[id] || 0) > have(id)).sort((a, b) => ((need[b] - have(b)) - (need[a] - have(a))));
+  const stocked = FREEZABLE.filter(id => have(id) > 0).sort((a, b) => have(b) - have(a));
+  const other = FREEZABLE.filter(id => !short.includes(id) && !stocked.includes(id));
+  const edit = id => frzOpenRow === id ? `<div class="fedit"><button class="cbtn" data-dec="${id}" aria-label="One less">−</button><span class="cnt">${have(id)}</span><button class="cbtn" data-inc="${id}" aria-label="One more">+</button><button class="bbtn" data-batch="${id}">I made a batch</button></div>` : '';
+  const stockRow = id => `<div class="frow2" data-row="${id}"><div class="frow"><span class="fe2">${FOOD[id].e}</span><span class="fnm">${esc(FOOD[id].s)}</span>${frzBar(id, need[id] || 0)}<b class="fnum">${have(id)}</b></div>${need[id] ? `<div class="tiny muted fneed">Needed this week: ${need[id]}</div>` : ''}${edit(id)}</div>`;
+  const html = `
+    ${short.length ? `<div class="sec" style="margin-top:0;color:var(--bad)">Cook this weekend</div><div class="card flat" style="padding:4px 12px">${short.map(id => `<div class="frow"><span class="fe2">${FOOD[id].e}</span><div style="flex:1;min-width:0"><b>${esc(FOOD[id].s)}</b><div class="tiny muted">Need ${need[id]}, have ${have(id)}</div></div><button class="bbtn" data-batch="${id}">I made a batch</button></div>`).join('')}</div>` : `<div class="alert small" style="background:var(--ok-soft);margin-top:0">You're stocked for everything in the next 7 days.</div>`}
+    <div class="sec">In the freezer</div>
+    ${stocked.length ? `<div class="card flat" style="padding:4px 12px">${stocked.map(stockRow).join('')}</div>` : '<div class="small muted">Nothing yet. After a cook-up, tap "I made a batch".</div>'}
+    <div class="small" style="margin:6px 2px"><span class="lg ok"></span>enough for the week <span class="lg low"></span>getting low <span class="lg short"></span>not enough</div>
+    <details class="card flat" style="padding:10px 12px" ${other.some(id => id === frzOpenRow) ? 'open' : ''}><summary class="between"><b>Other foods (${other.length})</b><span class="chev">›</span></summary>${other.map(stockRow).join('')}</details>
+    <p class="tiny muted">Tap a food to fix its count. Cubes come off when you tick a meal, and you can untick them in the rating pop-up if you made it fresh.</p>`;
   openSheet('Freezer', html, root => {
     const upd = (id, n) => { S.freezer[id] = stamp({ n: Math.max(0, n) }); save(); openFreezer(); };
+    $$('[data-row]', root).forEach(r => r.onclick = ev => { if (ev.target.closest('button')) return; frzOpenRow = frzOpenRow === r.dataset.row ? null : r.dataset.row; openFreezer(); });
     $$('[data-inc]', root).forEach(b => b.onclick = () => upd(b.dataset.inc, have(b.dataset.inc) + 1));
     $$('[data-dec]', root).forEach(b => b.onclick = () => upd(b.dataset.dec, have(b.dataset.dec) - 1));
-    $$('[data-batch]', root).forEach(b => b.onclick = () => { upd(b.dataset.batch, have(b.dataset.batch) + cubesIn(b.dataset.batch)); toast(`Added ${cubesIn(b.dataset.batch)} cubes`); });
+    $$('[data-batch]', root).forEach(b => b.onclick = () => openBatch(b.dataset.batch));
+  });
+}
+function openBatch(id){
+  const f = FOOD[id]; let n = cubesIn(id) || 6;
+  const html = `<div class="row" style="margin:-4px 0 14px">${tileFor([id], 'lg')}<div><b>${esc(f.n)}</b><div class="small muted">How many cubes did you get?</div></div></div>
+    <div class="stepper"><button class="cbtn big" id="bM" aria-label="One less">−</button><span id="bN">${n}</span><button class="cbtn big" id="bP" aria-label="One more">+</button></div>
+    <div class="small muted" style="text-align:center">The recipe usually makes about ${cubesIn(id)}</div>
+    <button class="btn block" id="bAdd" style="margin-top:16px">Add ${n} to the freezer</button>`;
+  openSheet('I made a batch', html, root => {
+    const upd = () => { $('#bN', root).textContent = n; $('#bAdd', root).textContent = `Add ${n} to the freezer`; };
+    $('#bM', root).onclick = () => { n = Math.max(1, n - 1); upd(); };
+    $('#bP', root).onclick = () => { n = Math.min(60, n + 1); upd(); };
+    $('#bAdd', root).onclick = () => { S.freezer[id] = stamp({ n: (S.freezer[id]?.n || 0) + n }); save(); toast(`🧊 Added ${n} ${f.s.toLowerCase()} cubes`); frzOpenRow = null; openFreezer(); render(); };
   });
 }
 
