@@ -148,6 +148,50 @@ a.btn{text-decoration:none}
 .ladder div b{display:block;color:var(--accent);font-size:12px}
 .ladder div.now{border-color:var(--accent);background:var(--accent-soft)}
 .empty{text-align:center;color:var(--muted);padding:26px 10px}
+.mcard{display:flex;align-items:center;gap:10px;padding:12px}
+.mcard .meal{flex:1;min-width:0;display:flex;gap:12px;align-items:flex-start;cursor:pointer}
+.mcard.is-done{background:color-mix(in srgb,var(--ok-soft) 45%,var(--card))}
+.mi{flex:none;width:58px;height:58px;border-radius:16px;background:var(--accent-soft);display:grid;place-items:center;font-size:32px;line-height:1}
+.mi.n2,.mi.n3{grid-template-columns:1fr 1fr;font-size:22px;padding:4px;gap:0}
+.mi.n3 span:first-child{grid-column:1/-1}
+.mi.lg{width:72px;height:72px;font-size:40px}.mi.lg.n2,.mi.lg.n3{font-size:28px}
+.mi.sm{width:44px;height:44px;font-size:24px;border-radius:12px}.mi.sm.n2,.mi.sm.n3{font-size:16px}
+.mcard .ttl{font-size:17.5px;font-weight:700;letter-spacing:-.01em;margin-top:1px}
+.sub{font-size:14px;color:var(--muted);margin-top:2px}
+.pill.tex{background:var(--blue-soft);color:var(--blue);font-weight:600}
+.logged{font-size:13.5px;margin-top:8px;font-weight:600}
+.logged .lk{font-size:16px}
+.bigemo{font-size:28px}
+details.banner summary{list-style:none;cursor:pointer}details.banner summary::-webkit-details-marker{display:none}
+.rate{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.rate button{border:1.5px solid var(--line);background:var(--card);border-radius:16px;padding:16px 6px 12px;display:flex;flex-direction:column;align-items:center;gap:6px;font-weight:600;font-size:14px}
+.rate button span{font-size:34px;line-height:1}
+.rate button.on{border-color:var(--accent);background:var(--accent-soft)}
+.rate.sm button{padding:10px 4px 8px;font-size:13px}.rate.sm button span{font-size:24px}
+.linkbtn{display:block;margin:12px auto 0;border:0;background:none;color:var(--muted);font-size:14px;text-decoration:underline}
+.prep{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;border:1px solid var(--line);background:var(--card);border-radius:14px;padding:12px;margin-bottom:8px}
+.prep .pe{font-size:28px;line-height:1}
+.prep .pb{flex:1;display:flex;flex-direction:column;gap:3px;font-size:14.5px}
+.stage{border:1px solid var(--line);background:var(--card);border-radius:14px;padding:12px;margin-bottom:8px}
+.stage p{margin:6px 0 0;font-size:14.5px}
+.stage.now{border-color:var(--accent);background:color-mix(in srgb,var(--accent-soft) 60%,var(--card))}
+.fgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.ftile{position:relative;border:1px solid var(--line);background:var(--card);border-radius:14px;padding:12px 4px 10px;display:flex;flex-direction:column;align-items:center;gap:4px;box-shadow:var(--shadow)}
+.ftile .fe{font-size:30px;line-height:1.1}
+.ftile .fn{font-size:12.5px;font-weight:600;text-align:center;line-height:1.2}
+.ftile .fb{position:absolute;top:5px;right:6px;font-size:13px}
+.ftile .fi{position:absolute;top:8px;left:8px;width:7px;height:7px;border-radius:50%;background:#b5533a}
+.ftile:not(.tried) .fe{filter:grayscale(.15);opacity:.85}
+.ftile.tried{border-color:color-mix(in srgb,var(--ok) 45%,var(--line))}
+.dm{display:flex;align-items:center;gap:6px;margin:2px 0;min-width:0}
+.dm .de{font-size:17px}.dm .dt{flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dm .dk{margin-left:auto;font-size:14px}.dm.done .dt{color:var(--muted)}
+.dm .pill{font-size:11px;padding:2px 7px}
+.lkbig{font-size:22px}
+.dayrow .chev{transform:none!important}
+.daynav .lbl .small{display:block}
+details.more{border-top:1px solid var(--line);padding-top:12px;margin-top:4px}
+details.more summary{font-size:14px;font-weight:600;color:var(--accent);cursor:pointer;margin-bottom:10px}
 .toast{position:fixed;left:50%;bottom:calc(88px + var(--safe-b));transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:12px;font-size:14px;opacity:0;transition:.2s;z-index:80;pointer-events:none;max-width:90vw}
 .toast.on{opacity:1;transform:translateX(-50%)}
 .ref h3{font-size:16px;margin:4px 0 8px}
@@ -241,19 +285,39 @@ const SLOTS = { b:{n:'Breakfast', t:'07:45'}, l:{n:'Lunch', t:'11:30'}, a:{n:'Af
 
 function parseMeal(str){
   if (!str) return null;
-  const [txt='', fs='', als=''] = str.split('|').map(s => s.trim());
+  const [txt='', fs='', als='', ttl=''] = str.split('|').map(s => s.trim());
   const f = fs.split(',').map(s => s.trim()).filter(Boolean);
   const alk = {};
   als.split(',').map(s => s.trim()).filter(Boolean).forEach(t => { const [id, k] = t.split(':'); alk[id] = k || 'keep'; });
-  return { txt, f, al: Object.keys(alk), alk };
+  return { txt, f, al: Object.keys(alk), alk, title: ttl || autoTitle(f) || txt };
 }
+const KEEPCASE = new Set(['weetbix']);
+function autoTitle(f){
+  const n = f.filter(x => FOOD[x]).map(x => KEEPCASE.has(x) ? FOOD[x].s : FOOD[x].s);
+  if (!n.length) return '';
+  const L = n.slice(0, 3).map((x, i) => i && !KEEPCASE.has(f[i]) ? x.charAt(0).toLowerCase() + x.slice(1) : x);
+  let t = L.length > 1 ? L.slice(0, -1).join(', ') + ' & ' + L[L.length-1] : L[0];
+  if (n.length > 3) t += ` +${n.length-3}`;
+  return t;
+}
+const emojisFor = f => [...new Set((f||[]).map(x => FOOD[x]?.e).filter(Boolean))];
+const tileFor = (f, size = '') => { const em = emojisFor(f).slice(0, 3); return `<div class="mi ${size} n${Math.max(1, em.length)}">${(em.length ? em : ['🍽️']).map(x => `<span>${x}</span>`).join('')}</div>`; };
+const LIKE = { '1':{i:'👍', n:'Loved it'}, '0':{i:'➖', n:'It was OK'}, '-1':{i:'👎', n:'Not keen'} };
+const likeOf = v => v === undefined || v === null ? null : LIKE[String(v)];
+function stageFor(s){ if (s < '2026-11-30') return 'pur'; if (s < '2027-01-11') return 'mash'; return 'ff9'; }
+const STAGES = {
+  pur:  { n:'Smooth purée', when:'Auckland and weeks 1–2 (until 29 Nov)' },
+  mash: { n:'Mashed and lumpy', when:'Weeks 3–8 (30 Nov to 10 Jan)' },
+  ff:   { n:'Finger food he holds', when:'From week 2 (23 Nov). Big pieces, about the size of your finger, so he can grip them' },
+  ff9:  { n:'Small pieces', when:'From week 9 (11 Jan), once he can pick things up between thumb and finger' }
+};
 
 /* Resolve the plan for a date */
 function planFor(s){
   const A = P.auckland;
   if (s < A.start) return { type:'before' };
   if (s <= A.end){ const i = diffDays(s, A.start); const day = P.aucklandDays[i];
-    return { type:'auckland', label:`Auckland taste day ${i+1} of 5`, meals: day ? [{slot:'b', ...parseMeal(day.b)}] : [], note: day?.note,
+    return { type:'auckland', tex:'Runny and smooth', label:`Auckland day ${i+1} of 5`, meals: day ? [{slot:'b', ...parseMeal(day.b)}] : [], note: day?.note,
       week:{ title:'Auckland exploration', meals:'Once a day, after his morning feed.', texture:'Smooth, runny purée.', amount:'A few teaspoons. Stop when he turns away.', ff:'None yet.', tips:['No allergens yet. They start the week you get home.','Sit him upright. If there\'s no high chair, sit him upright on a lap facing out.','NZ emergency number is 111. Healthline: 0800 611 116.'] } }; }
   if (s < P.homeStart) return { type:'pause', label:'Travel pause', note: s === '2026-11-13' ? 'Flight day. No solids.' : 'No solids until Monday. Plenty of breastfeeds and rest.' };
   const d = diffDays(s, P.homeStart), wi = Math.floor(d/7), di = d % 7;
@@ -263,7 +327,7 @@ function planFor(s){
   const meals = [];
   ['b','l','a','d'].forEach(k => { if (day[k]){ const m = parseMeal(day[k]); if (m && m.txt) meals.push({slot:k, ...m}); } });
   const ff = day.ff ? parseMeal(day.ff) : null;
-  return { type:'week', label:`Week ${w.n} · Day ${di+1}`, week:w, wi, di, meals, ff, note: day.note };
+  return { type:'week', tex:w.tex, label:`Week ${w.n} · Day ${di+1}`, week:w, wi, di, meals, ff, note: day.note };
 }
 
 /* ---------- state + merge ---------- */
@@ -302,11 +366,14 @@ function allergenStatus(id, asOf = todayStr()){
   return { ex, rx, last, since, status, label, cls, due, first: ex[0]?.d || null };
 }
 function foodTried(id){
-  const ex = live().filter(e => (e.f||[]).includes(id)).sort((a,b) => a.d.localeCompare(b.d));
+  const ex = live().filter(e => (e.f||[]).includes(id)).sort((a,b) => (a.d+a.t).localeCompare(b.d+b.t));
   const man = S.foods[id];
-  return { tried: ex.length > 0 || !!man?.tried, first: ex[0]?.d || man?.date || null, count: ex.length, like: man?.like ?? null };
+  const rated = ex.filter(e => e.like !== undefined && e.like !== null);
+  const lastRated = rated[rated.length-1];
+  let like = man?.like ?? null;
+  if (lastRated && (!man || (lastRated.u||0) > (man.u||0))) like = lastRated.like;
+  return { tried: ex.length > 0 || !!man?.tried, first: ex[0]?.d || man?.date || null, count: ex.length, like };
 }
-
 /* ---------- UI helpers ---------- */
 let toastT;
 function toast(msg){ const t = $('#toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('on'), 2200); }
@@ -362,12 +429,12 @@ function renderToday(){
     // new allergen banner
     const newIds = []; p.meals.forEach(m => Object.entries(m.alk).forEach(([id,k]) => k === 'new' && newIds.push(id)));
     newIds.forEach(id => { const a = AL[id]; if (!a) return;
-      h += `<div class="banner new"><h3>${a.emoji} New allergen today: ${esc(a.name)}</h3><div class="small">${esc(a.how)}</div><ol class="small">${a.steps.map(x => `<li>${esc(x)}</li>`).join('')}</ol><div class="small" style="margin-top:6px">Morning meal only. Watch him for 2 hours afterwards.</div></div>`; });
+      h += `<details class="banner new"><summary><div class="row"><span class="bigemo">${a.emoji}</span><div style="flex:1"><b>New allergen today: ${esc(a.name)}</b><div class="small">Start with ¼ tsp at breakfast. Watch for 2 hours.</div></div><span class="chev">›</span></div></summary><div class="small" style="margin-top:10px">${esc(a.how)}</div><ol class="small">${a.steps.map(x => `<li>${esc(x)}</li>`).join('')}</ol></details>`; });
     if (p.note && !newIds.length) h += `<div class="banner info small">${esc(p.note)}</div>`;
 
     p.meals.forEach(m => h += mealCard(s, m));
     if (p.ff){ h += mealCard(s, { slot:'f', ...p.ff }, true); }
-    else if (p.type === 'week' && p.wi === 0) h += `<div class="card flat small muted">No finger foods yet. They start in week 2.</div>`;
+    else if (p.type === 'week' && p.wi === 0) h += `<div class="small muted" style="margin:0 2px 12px">No finger foods yet. They start in week 2.</div>`;
 
     // iron check
     const dayEntries = live().filter(e => e.d === s);
@@ -398,20 +465,47 @@ function renderToday(){
   $('#dToday') && ($('#dToday').onclick = () => { curDate = todayStr(); renderToday(); });
   $('#addExtra').onclick = () => openEntry(null, { d:s, slot:'x' });
   $$('[data-tick]', $('#v-today')).forEach(b => b.onclick = () => toggleTick(b.dataset.tick));
-  $$('[data-edit]', $('#v-today')).forEach(b => b.onclick = () => openEntry(S.entries[b.dataset.edit]));
+  $$('[data-open]', $('#v-today')).forEach(b => b.onclick = () => { const e = entryFor(b.dataset.open); e ? openEntry(e) : openMeal(b.dataset.open); });
   $$('[data-food]', $('#v-today')).forEach(b => b.onclick = () => openFood(b.dataset.food));
 }
 function mealCard(s, m, isFF){
-  const key = `${s}:${m.slot}`, e = entryFor(key);
-  const t = SLOTS[m.slot];
-  const slotName = isFF ? 'Finger food · with any meal' : (planFor(s).week?.n <= 2 || planFor(s).type === 'auckland') && m.slot === 'b' ? 'Morning meal · ~7:30–8am' : `${t.n} · ~${m.slot === 'l' ? '11:30am' : m.slot === 'b' ? '7:30am' : '4:30pm'}`;
-  const pills = m.al.map(id => alPill(id, m.alk[id])).join('') + m.f.filter(f => FOOD[f]?.iron).slice(0,1).map(() => '<span class="pill iron">Iron</span>').join('');
-  const foods = m.f.filter(f => FOOD[f]).map(f => `<button class="pill" data-food="${f}" style="border:0;font-weight:500">${esc(FOOD[f].n)} ↗</button>`).join('');
-  const done = !!e, rx = e && (e.rx === 'mild' || e.rx === 'severe');
-  return `<div class="card"><div class="meal"><div class="body"><div class="slot">${esc(slotName)}</div><div class="txt">${esc(m.txt)}</div>
-    ${pills ? `<div class="chips">${pills}</div>` : ''}${foods ? `<div class="chips">${foods}</div>` : ''}
-    ${e ? `<div class="small muted" style="margin-top:8px">Logged ${esc(e.t)}${e.by ? ' by '+esc(e.by) : ''} · ${esc(amtLabel(e.amt))}${e.rx && e.rx !== 'none' ? ' · <b style="color:var(--bad)">'+esc(rxLabel(e.rx))+'</b>' : ''} · <a href="#" data-edit="${e.id}">Edit</a></div>` : ''}
-    </div><button class="tick ${done ? (rx ? 'rx' : 'done') : ''}" data-tick="${key}" aria-label="${done ? 'Undo' : 'Mark done'}">${rx ? '!' : '✓'}</button></div></div>`;
+  const key = `${s}:${m.slot}`, e = entryFor(key), p = planFor(s);
+  const early = p.type === 'auckland' || p.week?.n <= 2;
+  const slotName = isFF ? 'Finger food · any meal' : m.slot === 'b' ? (early ? 'Morning · 7:30–8am' : 'Breakfast · 7:30am') : m.slot === 'l' ? 'Lunch · 11:30am' : m.slot === 'a' ? 'Afternoon · 4:30pm' : 'Dinner · 4:30pm';
+  const tex = isFF ? 'Hold and gnaw' : p.tex;
+  const chips = (tex ? `<span class="pill tex">${esc(tex)}</span>` : '') + m.al.map(id => alPill(id, m.alk[id])).join('');
+  const rx = e && (e.rx === 'mild' || e.rx === 'severe');
+  const lk = e && likeOf(e.like);
+  const status = e ? `<div class="logged">${lk ? `<span class="lk">${lk.i}</span> ${lk.n}` : '✓ Eaten'}${e.rx && e.rx !== 'none' ? ` · <b style="color:var(--${e.rx === 'mouth' ? 'warn' : 'bad'})">${esc(rxLabel(e.rx))}</b>` : ''}<span class="muted"> · ${esc(e.t)}${e.by ? ' · '+esc(e.by) : ''}</span></div>` : '';
+  const sub = m.txt && m.txt.toLowerCase() !== m.title.toLowerCase() ? `<div class="sub">${esc(m.txt)}</div>` : '';
+  return `<div class="card mcard ${e ? 'is-done' : ''}"><div class="meal" data-open="${key}" role="button" tabindex="0">${tileFor(m.f)}<div class="body"><div class="slot">${esc(slotName)}</div><div class="ttl">${esc(m.title)}</div>${sub}${chips ? `<div class="chips">${chips}</div>` : ''}${status}</div></div><button class="tick ${e ? (rx ? 'rx' : 'done') : ''}" data-tick="${key}" aria-label="${e ? 'Undo' : 'Mark as eaten'}">${rx ? '!' : '✓'}</button></div>`;
+}
+function mealFromKey(key){ const d = key.slice(0,10), slot = key.slice(11), p = planFor(d); return { d, slot, p, m: slot === 'f' ? p.ff : (p.meals||[]).find(x => x.slot === slot) }; }
+function openMeal(key){
+  const { d, slot, m } = mealFromKey(key); if (!m) return;
+  const st = slot === 'f' ? (d >= '2027-01-11' ? 'ff9' : 'ff') : stageFor(d);
+  const newA = m.al.filter(a => m.alk[a] === 'new').map(a => AL[a]).filter(Boolean);
+  const html = `<div class="row" style="margin:-4px 0 14px">${tileFor(m.f, 'lg')}<div><div class="sub" style="font-size:15px">${esc(m.txt)}</div><div class="chips"><span class="pill tex">${esc(STAGES[st].n)}</span>${m.al.map(id => alPill(id, m.alk[id])).join('')}</div></div></div>
+    ${newA.map(a => `<div class="banner new small"><b>${a.emoji} First time: ${esc(a.name)}</b><div style="margin-top:4px">${esc(a.how)}</div><ol>${a.steps.map(x => `<li>${esc(x)}</li>`).join('')}</ol></div>`).join('')}
+    <div class="sec" style="margin-top:4px">How to make it</div>
+    ${m.f.map(id => { const f = FOOD[id]; if (!f) return ''; const t = f[st] || f.mash || f.pur || f.ff || ''; return `<button class="prep" data-food="${id}"><span class="pe">${f.e}</span><span class="pb"><b>${esc(f.n)}</b><span>${esc(t)}</span></span><span class="chev">›</span></button>`; }).join('') || '<div class="small muted">Use whatever is in the freezer or left over, prepared to his current texture.</div>'}
+    <button class="btn block" id="mDone" style="margin-top:14px">✓ He's eaten it</button>`;
+  openSheet(m.title, html, root => {
+    $$('[data-food]', root).forEach(b => b.onclick = () => openFood(b.dataset.food));
+    $('#mDone', root).onclick = () => { closeSheet(); setTimeout(() => toggleTick(key), 260); };
+  });
+}
+function openRate(id){
+  const e = S.entries[id]; if (!e) return;
+  const html = `<div class="row" style="margin:-4px 0 16px">${tileFor(e.f)}<div><b>${esc(e.title || e.txt)}</b><div class="small muted">Logged ${esc(e.t)}</div></div></div>
+    <div class="rate">${['1','0','-1'].map(v => `<button data-v="${v}"><span>${LIKE[v].i}</span>${LIKE[v].n}</button>`).join('')}</div>
+    <button class="btn ghost block" id="rRx" style="margin-top:16px">He had a reaction</button>
+    <button class="linkbtn" id="rSkip">Skip for now</button>`;
+  openSheet('How did it go?', html, root => {
+    $$('.rate button', root).forEach(b => b.onclick = () => { stamp(e).like = Number(b.dataset.v); save(); closeSheet(); render(); toast(`${LIKE[b.dataset.v].i} Saved`); });
+    $('#rRx', root).onclick = () => { closeSheet(); setTimeout(() => openEntry(e, { rx:true }), 260); };
+    $('#rSkip', root).onclick = closeSheet;
+  });
 }
 const amtLabel = a => ({ taste:'Just tasted', some:'Ate some', lots:'Ate lots', refused:'Refused' })[a] || 'Ate some';
 const rxLabel = r => ({ none:'No reaction', mouth:'Mouth redness only', mild:'Mild reaction', severe:'Severe reaction' })[r] || '';
@@ -424,12 +518,12 @@ function toggleTick(key){
   const m = slot === 'f' ? p.ff : p.meals.find(x => x.slot === slot);
   if (!m) return;
   const id = 'e' + Date.now().toString(36) + Math.random().toString(36).slice(2,6);
-  const ent = stamp({ id, plan:key, d, t: d === todayStr() ? nowHM() : SLOTS[slot].t, slot, txt:m.txt, f:[...m.f], al:[...m.al], amt:'some', rx:'none', notes:'', by:local.name });
+  const ent = stamp({ id, plan:key, d, t: d === todayStr() ? nowHM() : SLOTS[slot].t, slot, title:m.title, txt:m.txt, f:[...m.f], al:[...m.al], amt:'some', rx:'none', notes:'', by:local.name });
   S.entries[id] = ent; save();
   const nw = m.al.filter(a => m.alk[a] === 'new');
   if (nw.length && d === todayStr()){ local.watch = { name: nw.map(a => AL[a]?.name).join(', '), until: Date.now() + 2*3600e3 }; LS.set('ks_local', local); }
   render();
-  toast('Logged ✓  Tap Edit to add how it went');
+  setTimeout(() => openRate(id), 120);
 }
 
 /* ENTRY FORM */
@@ -437,16 +531,21 @@ function openEntry(e, preset = {}){
   const isNew = !e;
   const x = e ? structuredClone(e) : { id:'e'+Date.now().toString(36)+Math.random().toString(36).slice(2,6), d:preset.d || todayStr(), t:nowHM(), slot:preset.slot || 'x', txt:'', f:[], al:preset.al || [], amt:'some', rx:'none', notes:'', by:local.name };
   const alOpts = [...P.allergens.map(a => [a.id, a.name.replace(/ \(.*\)/,'')]), ['nutmix','Nut and seed mix']];
+  const rateSeg = `<div class="rate sm" id="fLike">${['1','0','-1'].map(v => `<button type="button" data-v="${v}" class="${String(x.like) === v ? 'on' : ''}"><span>${LIKE[v].i}</span>${LIKE[v].n}</button>`).join('')}</div>`;
   const html = `
+   ${isNew ? '' : `<div class="row" style="margin:-4px 0 14px">${tileFor(x.f)}<div><b>${esc(x.title || x.txt)}</b><div class="small muted">${fmtDate(x.d)} · ${esc(x.t)}${x.by ? ' · '+esc(x.by) : ''}</div></div></div>`}
+   <div class="field"><label>How did he go?</label>${rateSeg}</div>
+   <div class="field"><label>Any reaction?</label><div class="seg" id="fRx">${['none','mouth','mild','severe'].map(a => `<button type="button" data-v="${a}" class="${x.rx === a ? 'on' : ''}">${rxLabel(a)}</button>`).join('')}</div><div id="rxHelp"></div></div>
+   <div class="field"><label>Notes</label><textarea id="fN" placeholder="What happened, timing, photos taken…">${esc(x.notes)}</textarea></div>
+   <details class="more" ${isNew ? 'open' : ''}><summary>${isNew ? 'What he ate' : 'Change date, time or foods'}</summary>
    <div class="grid2"><div class="field"><label>Date</label><input type="date" id="fD" value="${x.d}"></div><div class="field"><label>Time</label><input type="time" id="fT" value="${x.t}"></div></div>
    <div class="field"><label>Meal</label><select id="fS">${Object.entries(SLOTS).map(([k,v]) => `<option value="${k}" ${k === x.slot ? 'selected' : ''}>${v.n}</option>`).join('')}</select></div>
    <div class="field"><label>What he had</label><input id="fTxt" value="${esc(x.txt)}" placeholder="e.g. Beef purée + sweet potato"></div>
    <div class="field"><label>Foods (tap to tick, so the Foods list stays up to date)</label><input id="fFind" placeholder="Search foods…" style="margin-bottom:6px"><div class="pick" id="fF">${P.foods.map(f => `<button type="button" data-id="${f.id}" class="${x.f.includes(f.id) ? 'on' : ''}">${esc(f.n)}</button>`).join('')}</div></div>
    <div class="field"><label>Allergens in this meal</label><div class="pick" id="fA">${alOpts.map(([id,n]) => `<button type="button" data-id="${id}" class="${x.al.includes(id) ? 'on' : ''}">${esc(n)}</button>`).join('')}</div></div>
    <div class="field"><label>How much</label><div class="seg" id="fAmt">${['taste','some','lots','refused'].map(a => `<button type="button" data-v="${a}" class="${x.amt === a ? 'on' : ''}">${amtLabel(a)}</button>`).join('')}</div></div>
-   <div class="field"><label>Any reaction?</label><div class="seg" id="fRx">${['none','mouth','mild','severe'].map(a => `<button type="button" data-v="${a}" class="${x.rx === a ? 'on' : ''}">${rxLabel(a)}</button>`).join('')}</div><div id="rxHelp"></div></div>
-   <div class="field"><label>Notes (what happened, timing, photos taken)</label><textarea id="fN">${esc(x.notes)}</textarea></div>
-   <button class="btn block" id="fSave">${isNew ? 'Save to log' : 'Save changes'}</button>
+   </details>
+   <button class="btn block" id="fSave" style="margin-top:14px">${isNew ? 'Save to log' : 'Save changes'}</button>
    ${isNew ? '' : '<button class="btn ghost block" id="fDel" style="margin-top:8px;color:var(--bad)">Delete entry</button>'}`;
   openSheet(isNew ? 'Log a meal' : 'Edit meal', html, root => {
     const togg = (box) => $$('button', box).forEach(b => b.onclick = () => b.classList.toggle('on'));
@@ -457,10 +556,14 @@ function openEntry(e, preset = {}){
       : v === 'mild' ? `<div class="alert warn">Stop that food. Take photos and note the time. Watch closely for signs of a severe reaction. Call your GP or healthdirect (<a href="tel:1800022222">1800 022 222</a>) for advice, and don't offer that food again until your GP says so. Keep going with his other foods.</div>`
       : v === 'mouth' ? `<div class="alert warn" style="background:var(--blue-soft)">Redness around the mouth on its own is common and usually not an allergy. If there are no other signs, offer the food again next time (ASCIA 2026).</div>` : ''; };
     seg($('#fAmt', root)); seg($('#fRx', root), rxHelp); rxHelp(x.rx);
+    $$('#fLike button', root).forEach(b => b.onclick = () => { const was = b.classList.contains('on'); $$('#fLike button', root).forEach(o => o.classList.remove('on')); if (!was) b.classList.add('on'); });
+    if (preset.rx){ setTimeout(() => $('#fRx', root).scrollIntoView({ block:'center' }), 300); }
     $('#fSave', root).onclick = () => {
       const on = sel => $$(sel+' button.on', root).map(b => b.dataset.id || b.dataset.v);
       Object.assign(x, { d:$('#fD', root).value || x.d, t:$('#fT', root).value || x.t, slot:$('#fS', root).value, txt:$('#fTxt', root).value.trim(), f:on('#fF'), al:on('#fA'), amt:on('#fAmt')[0] || 'some', rx:on('#fRx')[0] || 'none', notes:$('#fN', root).value.trim() });
+      const lk = $('#fLike button.on', root); x.like = lk ? Number(lk.dataset.v) : null;
       if (!x.txt) x.txt = x.f.map(f => FOOD[f]?.n).filter(Boolean).join(', ') || 'Meal';
+      if (!x.plan) x.title = autoTitle(x.f) || x.txt;
       if (x.plan && x.d !== x.plan.slice(0,10)) delete x.plan;
       S.entries[x.id] = stamp(x); save(); closeSheet(); render(); toast('Saved');
     };
@@ -498,7 +601,7 @@ function weekBlock({ key, title, range, days, open, w, info }){
     if (w.tips?.length) body += `<div class="sec" style="margin-top:14px">Tips</div><ul class="small" style="padding-left:18px;margin:0">${w.tips.map(x => `<li>${esc(x)}</li>`).join('')}</ul>`;
   }
   body += `<div class="sec" style="margin-top:14px">Days</div>` + days.map(d => {
-    const ms = d.meals.map(m => { const e = entryFor(`${d.date}:${m.slot}`); return `${e ? '✅' : '◻️'} ${esc(m.txt)}${Object.entries(m.alk).filter(([,k]) => k === 'new').map(([a]) => ` <span class="pill new">NEW ${esc(AL[a]?.name.replace(/ \(.*\)/,''))}</span>`).join('')}`; }).join('<br>');
+    const ms = d.meals.map(m => { const e = entryFor(`${d.date}:${m.slot}`); const lk = e && likeOf(e.like); return `<div class="dm ${e ? 'done' : ''}"><span class="de">${emojisFor(m.f)[0] || '🍽️'}</span><span class="dt">${esc(m.title)}</span>${Object.entries(m.alk).filter(([,k]) => k === 'new').map(([a]) => `<span class="pill new">${esc(AL[a]?.name.replace(/ \(.*\)/,''))}</span>`).join('')}${e ? `<span class="dk">${lk ? lk.i : '✓'}</span>` : ''}</div>`; }).join('');
     return `<div class="dayrow ${d.date === t ? 'today' : ''}" data-go="${d.date}"><div class="d"><b>${DOW[parse(d.date).getDay()]}</b>${parse(d.date).getDate()} ${MON[parse(d.date).getMonth()]}</div><div class="m">${ms}</div><span class="chev">›</span></div>`;
   }).join('');
   return `<details class="card" ${open ? 'open' : ''}><summary><div class="between"><div><b>${esc(title)}</b><div class="small muted">${esc(range)}${newAl.length ? ' · new: '+newAl.map(a => esc(AL[a]?.name.replace(/ \(.*\)/,''))).join(', ') : ''}</div></div><span class="chev">›</span></div><div class="prog"><i style="width:${total ? Math.round(done/total*100) : 0}%"></i></div><div class="tiny muted" style="margin-top:4px">${done} of ${total} logged</div></summary>${body}</details>`;
@@ -537,14 +640,14 @@ function openAllergen(id){
 let foodFilter = 'all', foodQ = '';
 function renderFoods(){
   const tried = P.foods.filter(f => foodTried(f.id).tried).length;
-  let h = `<div class="card"><div class="between"><b>${tried} of ${P.foods.length} foods tried</b><a class="small" href="https://solidstarts.com/foods/" target="_blank" rel="noopener">Solid Starts ↗</a></div><div class="prog"><i style="width:${Math.round(tried/P.foods.length*100)}%"></i></div></div>
+  let h = `<div class="card"><div class="between"><b>${tried} of ${P.foods.length} foods tried</b></div><div class="prog"><i style="width:${Math.round(tried/P.foods.length*100)}%"></i></div></div>
    <input id="fq" placeholder="Search foods…" value="${esc(foodQ)}" style="margin-bottom:10px">
-   <div class="seg" id="ffil" style="margin-bottom:10px">${[['all','All'],['iron','Iron-rich'],['allergen','Allergens'],['untried','Untried'],['tried','Tried']].map(([k,n]) => `<button data-v="${k}" class="${foodFilter === k ? 'on' : ''}">${n}</button>`).join('')}</div><div class="card" id="flist"></div>`;
+   <div class="seg" id="ffil" style="margin-bottom:10px">${[['all','All'],['iron','Iron'],['allergen','Allergens'],['untried','To try'],['tried','Tried']].map(([k,n]) => `<button data-v="${k}" class="${foodFilter === k ? 'on' : ''}">${n}</button>`).join('')}</div><div class="fgrid" id="flist"></div>`;
   $('#v-foods').innerHTML = h;
   const list = () => {
     const q = foodQ.toLowerCase();
     const items = P.foods.filter(f => (!q || f.n.toLowerCase().includes(q)) && (foodFilter === 'all' || (foodFilter === 'iron' && f.iron) || (foodFilter === 'allergen' && f.al) || (foodFilter === 'untried' && !foodTried(f.id).tried) || (foodFilter === 'tried' && foodTried(f.id).tried)));
-    $('#flist').innerHTML = items.length ? items.map(f => { const t = foodTried(f.id); return `<div class="food" data-food="${f.id}"><span class="st">${t.tried ? (t.like === 1 ? '😋' : t.like === -1 ? '🙅' : '✅') : '◻️'}</span><span class="nm">${esc(f.n)}</span>${f.iron ? '<span class="pill iron">Iron</span>' : ''}${f.al ? `<span class="pill keep">${esc(f.al === 'nutmix' ? 'Nuts' : AL[f.al]?.name.replace(/ \(.*\)/,''))}</span>` : ''}<span class="chev">›</span></div>`; }).join('') : '<div class="empty">No matches</div>';
+    $('#flist').innerHTML = items.length ? items.map(f => { const t = foodTried(f.id), lk = likeOf(t.like); return `<button class="ftile ${t.tried ? 'tried' : ''}" data-food="${f.id}"><span class="fe">${f.e}</span><span class="fn">${esc(f.s)}</span>${t.tried ? `<span class="fb">${lk ? lk.i : '✓'}</span>` : ''}</button>`; }).join('') : '<div class="empty" style="grid-column:1/-1">No matches</div>';
     $$('[data-food]', $('#flist')).forEach(r => r.onclick = () => openFood(r.dataset.food));
   };
   $('#fq').oninput = e => { foodQ = e.target.value; list(); };
@@ -553,19 +656,22 @@ function renderFoods(){
 }
 function openFood(id){
   const f = FOOD[id]; if (!f) return; const t = foodTried(id);
+  const today = todayStr(), now = today < P.auckland.start ? 'pur' : stageFor(today), ffNow = today >= '2026-11-23';
   const ss = `https://www.google.com/search?q=${encodeURIComponent('site:solidstarts.com/foods ' + f.n.replace(/\(.*\)/,''))}`;
-  const row = (k, v) => v && v !== 'n/a' ? `<dt>${k}</dt><dd>${esc(v)}</dd>` : '';
-  const html = `<div class="chips" style="margin:0 0 10px">${f.iron ? '<span class="pill iron">Iron-rich</span>' : ''}${f.al ? `<span class="pill keep">Allergen: ${esc(f.al === 'nutmix' ? 'tree nuts + sesame' : AL[f.al]?.name)}</span>` : ''}<span class="pill">${esc(f.c)}</span></div>
-   <div class="card flat"><dl class="kv">${row('Purée', f.pur)}${row('Mash / lumpy', f.mash)}${row('Finger food 6–8 mo', f.ff)}${row('9 mo +', f.ff9)}</dl>${f.note ? `<div class="alert warn small" style="margin-bottom:0">${esc(f.note)}</div>` : ''}</div>
-   <a class="btn ghost block" href="${ss}" target="_blank" rel="noopener">How to cut and serve it on Solid Starts ↗</a>
-   <div class="sec">Has he had it?</div>
-   <div class="card flat">${t.count ? `<div class="small">Logged ${t.count} time${t.count > 1 ? 's' : ''}, first on ${fmtDate(t.first)}.</div>` : `<label class="checkline"><input type="checkbox" id="ftr" ${t.tried ? 'checked' : ''}><span>Mark as tried</span></label>`}
-     <div class="seg" id="flk" style="margin-top:10px">${[[1,'😋 Loved it'],[0,'😐 OK'],[-1,'🙅 Not yet']].map(([v,n]) => `<button data-v="${v}" class="${t.like === v ? 'on' : ''}">${n}</button>`).join('')}</div>
-     <div class="tiny muted" style="margin-top:8px">A "not yet" food is worth offering again. Babies often need 10 or more tries.</div></div>`;
+  const isNow = k => k === now || (k === 'ff' && ffNow && now !== 'ff9');
+  const stage = k => f[k] ? `<div class="stage ${isNow(k) ? 'now' : ''}"><div class="between"><b>${STAGES[k].n}</b>${isNow(k) ? '<span class="pill new">Now</span>' : ''}</div><div class="tiny muted">${esc(STAGES[k].when)}</div><p>${esc(f[k])}</p></div>` : '';
+  const order = ['pur','mash','ff','ff9'];
+  const nowFirst = [...order.filter(isNow), ...order.filter(k => !isNow(k))];
+  const html = `<div class="row" style="margin:-4px 0 12px"><div class="mi lg n1"><span>${f.e}</span></div><div class="chips" style="margin:0">${f.iron ? '<span class="pill iron">Iron-rich</span>' : ''}${f.al ? `<span class="pill keep">Allergen: ${esc(f.al === 'nutmix' ? 'tree nuts + sesame' : AL[f.al]?.name)}</span>` : ''}</div></div>
+   ${f.note ? `<div class="alert warn small" style="margin-top:0">${esc(f.note)}</div>` : ''}
+   <div class="sec" style="margin-top:6px">How to serve it</div>
+   ${nowFirst.map(stage).join('')}
+   <a class="btn ghost block" href="${ss}" target="_blank" rel="noopener" style="margin-top:4px">Photos of how to cut it (Solid Starts) ↗</a>
+   <div class="sec">How does he like it?</div>
+   <div class="rate sm" id="flk">${['1','0','-1'].map(v => `<button data-v="${v}" class="${String(t.like) === v ? 'on' : ''}"><span>${LIKE[v].i}</span>${LIKE[v].n}</button>`).join('')}</div>
+   <div class="tiny muted" style="margin-top:8px">${t.count ? `Eaten ${t.count} time${t.count > 1 ? 's' : ''}, first on ${fmtDate(t.first)}. ` : t.tried ? 'Marked as tried. ' : 'Not tried yet. '}A 👎 food is worth offering again. Babies often need 10 or more tries.</div>`;
   openSheet(f.n, html, root => {
-    const upd = patch => { S.foods[id] = stamp({ ...(S.foods[id]||{}), ...patch }); save(); render(); };
-    $('#ftr', root) && ($('#ftr', root).onchange = e => upd({ tried:e.target.checked, date:e.target.checked ? todayStr() : null }));
-    $$('#flk button', root).forEach(b => b.onclick = () => { $$('#flk button', root).forEach(x => x.classList.toggle('on', x === b)); upd({ like:Number(b.dataset.v) }); });
+    $$('#flk button', root).forEach(b => b.onclick = () => { const was = b.classList.contains('on'); $$('#flk button', root).forEach(x => x.classList.remove('on')); if (!was) b.classList.add('on'); S.foods[id] = stamp({ ...(S.foods[id]||{}), tried:true, date:S.foods[id]?.date || todayStr(), like: was ? null : Number(b.dataset.v) }); save(); render(); });
   });
 }
 
@@ -578,7 +684,7 @@ function renderLog(){
   if (!es.length) h += `<div class="card empty">Nothing logged yet. Tap ✓ on a meal in Today, or use + Log a meal.</div>`;
   const byDay = {}; es.forEach(e => (byDay[e.d] ||= []).push(e));
   Object.entries(byDay).forEach(([d, list]) => {
-    h += `<div class="sec">${fmtLong(d)}${d === todayStr() ? ' · today' : ''}</div><div class="card">${list.map(e => `<div class="entry" data-e="${e.id}"><div class="between"><span class="t">${esc(e.t)} · ${esc(SLOTS[e.slot]?.n || 'Meal')}${e.by ? ' · '+esc(e.by) : ''}</span>${e.rx && e.rx !== 'none' ? `<span class="pill ${e.rx === 'mouth' ? 'warn' : 'bad'}">${esc(rxLabel(e.rx))}</span>` : ''}</div><div class="w">${esc(e.txt)}</div>${(e.al||[]).length ? `<div class="chips">${e.al.map(a => alPill(a, 'keep')).join('')}</div>` : ''}${e.notes ? `<div class="small muted" style="margin-top:4px">${esc(e.notes)}</div>` : ''}</div>`).join('')}</div>`;
+    h += `<div class="sec">${fmtLong(d)}${d === todayStr() ? ' · today' : ''}</div><div class="card">${list.map(e => { const lk = likeOf(e.like); return `<div class="entry row" data-e="${e.id}">${tileFor(e.f, 'sm')}<div style="flex:1;min-width:0"><div class="w">${esc(e.title || e.txt)}</div><div class="t">${esc(e.t)} · ${esc(SLOTS[e.slot]?.n || 'Meal')}${e.by ? ' · '+esc(e.by) : ''}</div>${e.rx && e.rx !== 'none' ? `<span class="pill ${e.rx === 'mouth' ? 'warn' : 'bad'}" style="margin-top:4px">${esc(rxLabel(e.rx))}</span>` : ''}${e.notes ? `<div class="small muted" style="margin-top:4px">${esc(e.notes)}</div>` : ''}</div><span class="lkbig">${lk ? lk.i : ''}</span></div>`; }).join('')}</div>`;
   });
   h += `<div class="sec">Data</div><div class="grid2"><button class="btn ghost sm" id="lCsv">Download CSV</button><button class="btn ghost sm" id="lJson">Export backup</button></div>`;
   $('#v-log').innerHTML = h;
@@ -594,8 +700,8 @@ function download(name, text, type){
   setTimeout(() => URL.revokeObjectURL(a.href), 4000);
 }
 function downloadCSV(){
-  const rows = [['Date','Time','Meal','What he had','Foods','Allergens','How much','Reaction','Notes','Logged by']];
-  live().sort((a,b) => (a.d+a.t).localeCompare(b.d+b.t)).forEach(e => rows.push([e.d, e.t, SLOTS[e.slot]?.n || '', e.txt, (e.f||[]).map(f => FOOD[f]?.n || f).join('; '), (e.al||[]).map(a => a === 'nutmix' ? 'Nut and seed mix' : AL[a]?.name || a).join('; '), amtLabel(e.amt), rxLabel(e.rx), e.notes || '', e.by || '']));
+  const rows = [['Date','Time','Meal','What he had','Foods','Allergens','How much','Liked it','Reaction','Notes','Logged by']];
+  live().sort((a,b) => (a.d+a.t).localeCompare(b.d+b.t)).forEach(e => rows.push([e.d, e.t, SLOTS[e.slot]?.n || '', e.txt, (e.f||[]).map(f => FOOD[f]?.n || f).join('; '), (e.al||[]).map(a => a === 'nutmix' ? 'Nut and seed mix' : AL[a]?.name || a).join('; '), amtLabel(e.amt), likeOf(e.like)?.n || '', rxLabel(e.rx), e.notes || '', e.by || '']));
   download(`kavin-solids-log-${todayStr()}.csv`, rows.map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n'), 'text/csv');
 }
 function gpReport(){
