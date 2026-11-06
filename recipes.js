@@ -1062,47 +1062,51 @@ window.RECIPES = {
  },
  "chicken": {
   "pur": {
-   "y": "About 10 cubes",
+   "y": "About 8–10 cubes from 2 drumsticks",
    "ing": [
-    "2 chicken thigh fillets (about 250 g)",
+    "2 chicken drumsticks (or 2 thigh fillets, about 250 g)",
     "Water to cover"
    ],
    "how": [
-    "Trim off any visible fat.",
-    "Put in a saucepan, cover with water, bring to a simmer and cook gently for 15–20 minutes until cooked through (no pink when cut in the thickest part).",
-    "Keep the poaching water.",
-    "Chop and blend with 4–6 tbsp of the poaching water until smooth.",
-    "Spoon into an ice cube tray, cover and freeze. Once frozen, pop the cubes into a labelled, dated zip-lock bag. Use within a month.",
-    "To serve: thaw a cube overnight in the fridge, reheat until steaming hot, stir, let it cool and test the temperature. Add a little breast milk now if you want it thinner."
+    "Pull the skin off the drumsticks (a paper towel helps you grip). Trim visible fat.",
+    "Put in a saucepan, cover with water and bring to a gentle simmer.",
+    "Drumsticks: simmer 25–30 minutes, until the meat pulls easily off the bone with no pink near the bone. Thigh fillets: 15–20 minutes.",
+    "Lift the chicken out and keep the poaching water.",
+    "Strip the meat once cool enough to handle. Throw away the bone, cartilage, gristle and the thin needle-like bones and tough white tendons that run through drumsticks. Feel through the meat with your fingers to check.",
+    "Blend the meat with 3–4 tbsp of the poaching water until completely smooth and runny. Add more water if needed.",
+    "Freeze the rest in an ice cube tray. Add breast milk only at serving, after reheating.",
+    "To serve: thaw a cube overnight in the fridge, reheat until steaming hot, stir, let it cool and test the temperature."
    ]
   },
   "mash": {
-   "y": "About 10 cubes",
+   "y": "About 8–10 cubes",
    "ing": [
-    "2 chicken thigh fillets (about 250 g)"
+    "2 chicken drumsticks (or 2 thigh fillets)"
    ],
    "how": [
-    "Poach as for purée.",
+    "Poach as for purée: 25–30 minutes for drumsticks, 15–20 for thighs.",
+    "Strip the meat once cool enough to handle. Throw away the bone, cartilage, gristle and the thin needle-like bones and tough white tendons that run through drumsticks. Feel through the meat with your fingers to check.",
     "Shred very finely with two forks, then chop.",
     "Stir into mashed veg, rice or dhal with a little poaching water to keep it moist.",
-    "Spoon into an ice cube tray, cover and freeze. Once frozen, pop the cubes into a labelled, dated zip-lock bag. Use within a month."
+    "Spoon into an ice cube tray, cover and freeze. Use within a month."
    ]
   },
   "ff": {
    "y": "2–3 serves",
    "ing": [
-    "1 chicken thigh fillet"
+    "1–2 chicken drumsticks (or 1 thigh fillet)"
    ],
    "how": [
-    "Poach for 15–20 minutes until cooked through.",
-    "Cut into strips along the grain, about as long and thick as your finger.",
+    "Skin off, then poach 25–30 minutes (thigh 15–20) until cooked through.",
+    "Strip the meat once cool enough to handle. Throw away the bone, cartilage, gristle and the thin needle-like bones and tough white tendons that run through drumsticks. Feel through the meat with your fingers to check.",
+    "Pull the meat into strips along the grain, about as long and thick as your finger.",
     "It should be soft and moist. If it's dry, he'll struggle with it."
    ]
   },
   "ff9": {
    "y": "Family serve, his portion first",
    "ing": [
-    "500 g chicken thigh, diced small",
+    "500 g chicken thigh or drumstick meat, diced small (bones removed)",
     "1 onion, finely chopped",
     "1 garlic clove, crushed",
     "1 tsp grated ginger",

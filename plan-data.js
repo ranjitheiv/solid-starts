@@ -97,12 +97,12 @@ window.PLAN = {
       mash: "Lamb mince cooked in a little sauce, mashed fine with a fork.",
       ff: "A soft lamb kofta shaped into a finger-length log, or a large strip of slow-cooked shoulder.",
       ff9: "Small pieces of soft shredded lamb." },
-    { id: "chicken", e: "🍗", n: "Chicken (thigh)", s: "Chicken", c: "Protein", iron: true,
-      pur: "Poach chicken thigh fillets in water until cooked through, then blend with some of the poaching water until smooth. Thigh has more iron than breast.",
-      mash: "Shred cooked thigh very finely and stir it through mash or dhal.",
-      ff: "A large strip of soft thigh meat, or shredded thigh squeezed together into a log he can hold.",
+    { id: "chicken", e: "🍗", n: "Chicken (drumstick or thigh)", s: "Chicken", c: "Protein", iron: true,
+      pur: "Poach skinless drumsticks (or thigh fillets) in water until the meat falls off the bone. Strip the meat, removing every bone, needle bone and tendon, then blend with some of the poaching water until smooth. Drumstick and thigh are dark meat, with more iron than breast.",
+      mash: "Shred the cooked meat very finely and stir it through mash or dhal.",
+      ff: "A large strip of soft drumstick or thigh meat, or shredded chicken squeezed together into a log he can hold.",
       ff9: "Small soft shreds of chicken. Mild chicken curry with his portion taken out before chilli and salt.",
-      note: "Always cooked through with no pink. Check for small bones." },
+      note: "Always cooked through with no pink near the bone. Drumsticks have thin needle-like bones and tough tendons: feel through the meat with your fingers before blending or serving." },
     { id: "salmon", e: "🐟", n: "Salmon", s: "Salmon", c: "Protein", iron: true, al: "fish",
       pur: "Bake or steam the salmon, flake it and check every flake for bones. Blend with breast milk, or mash into potato or sweet potato purée.",
       mash: "Flake it and fork it through mashed potato or sweet potato.",
@@ -325,7 +325,7 @@ window.PLAN = {
       texture: "Smooth, thick purée. Start a little runnier than yoghurt, then thicken through the week.",
       amount: "1–3 tsp to start, building to 1–2 tbsp. Stop when he turns away, closes his mouth or loses interest.",
       ff: "None yet. This week is about getting comfortable.",
-      cook: ["Beef purée (1 batch, freeze in cubes)", "Chicken thigh purée", "Red lentil dhal, blended smooth", "Sweet potato and pumpkin purée", "Cooked pear purée", "Hard-boil eggs fresh on egg days (keep 2 days in the fridge, max)"],
+      cook: ["Beef purée (1 batch, freeze in cubes)", "Chicken drumstick purée", "Red lentil dhal, blended smooth", "Sweet potato and pumpkin purée", "Cooked pear purée", "Hard-boil eggs fresh on egg days (keep 2 days in the fridge, max)"],
       tips: ["Sit him upright in the high chair, feet supported if possible.", "Offer the spoon at his lips and let him open up and lean in. Don't push it in.", "Gagging is common and normal this week. Stay calm and let him sort it out."],
       days: [
         { b: "Beef purée + sweet potato | beef,sweetpotato |", note: "First day home. No allergen, just iron." },
@@ -522,7 +522,7 @@ window.PLAN = {
 
   aucklandDays: [
     { b: "Banana porridge mixed with breast milk | cereal |", note: "First taste. Mix 1–2 tsp of the porridge powder with breast milk until runny, like thin yoghurt. A few tiny spoonfuls is plenty." },
-    { b: "Chicken thigh, poached and blended | chicken |" },
+    { b: "Chicken drumstick, poached and blended | chicken |", note: "Skin off, poach 25–30 min, strip the meat and check carefully for small bones and tendons. Blend runny with the poaching water." },
     { b: "Red lentil dhal, no salt or chilli | dhal |" },
     { b: "Pumpkin purée stirred into banana porridge | pumpkin,cereal |" },
     { b: "Beef and sweet potato purée | beef,sweetpotato |", note: "Last Auckland meal before the travel pause." }
