@@ -1476,32 +1476,33 @@ window.RECIPES = {
   "pur": {
    "y": "1 serve",
    "ing": [
-    "1–2 tsp plain rice-based iron-fortified baby cereal",
-    "2–3 tbsp warm expressed breast milk"
+    "1–2 tsp Only Organic Banana Porridge powder",
+    "2–3 tbsp warm expressed breast milk (or cooled boiled water)"
    ],
    "how": [
-    "Put the cereal in a bowl.",
+    "Put the powder in a bowl.",
     "Stir in the breast milk a little at a time until smooth.",
     "First few days: runny, like thin yoghurt. Then use less milk so it gets thicker.",
-    "Make it fresh each time. Don't store leftovers he's eaten from."
+    "Away from home: use kettle water, cooled to warm, plus a little breast milk if you have some.",
+    "Make it fresh each time. Throw out anything left in his bowl."
    ]
   },
   "mash": {
    "y": "1 serve",
    "ing": [
-    "1–2 tbsp iron-fortified cereal",
-    "2 tbsp breast milk",
+    "1–2 tbsp banana porridge powder",
+    "2 tbsp warm breast milk",
     "2 tbsp mashed banana or pear"
    ],
    "how": [
-    "Mix the cereal and milk thickly.",
+    "Mix the powder and milk thickly.",
     "Stir through the mashed fruit."
    ]
   },
   "ff": {
    "y": "1 serve",
    "ing": [
-    "1–2 tbsp iron-fortified cereal",
+    "1–2 tbsp banana porridge powder",
     "1–2 tbsp breast milk"
    ],
    "how": [
@@ -1512,10 +1513,10 @@ window.RECIPES = {
   "ff9": {
    "y": "1 serve",
    "ing": [
-    "1 tbsp iron-fortified cereal"
+    "1 tbsp banana porridge powder"
    ],
    "how": [
-    "Stir into his porridge for extra iron."
+    "Stir into his porridge or yoghurt for extra iron."
    ]
   }
  },
@@ -2311,6 +2312,47 @@ window.RECIPES = {
    ],
    "how": [
     "Stir into porridge or yoghurt, or bake into fingers."
+   ]
+  }
+ },
+ "papaya": {
+  "pur": {
+   "y": "1–2 serves (don't freeze)",
+   "ing": [
+    "A slice of ripe papaya (about 50 g)"
+   ],
+   "how": [
+    "Peel it and scoop out every seed.",
+    "Mash with a fork or blend until smooth.",
+    "Serve straight away."
+   ]
+  },
+  "mash": {
+   "y": "1–2 serves",
+   "ing": [
+    "A slice of ripe papaya"
+   ],
+   "how": [
+    "Peel, remove the seeds and mash roughly with a fork."
+   ]
+  },
+  "ff": {
+   "y": "1 serve",
+   "ing": [
+    "A slice of ripe papaya"
+   ],
+   "how": [
+    "Peel, remove the seeds and cut into finger-sized strips.",
+    "It should squash easily. If it's firm, it isn't ripe enough."
+   ]
+  },
+  "ff9": {
+   "y": "1 serve",
+   "ing": [
+    "A slice of ripe papaya"
+   ],
+   "how": [
+    "Cut into small soft pieces."
    ]
   }
  }

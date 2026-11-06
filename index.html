@@ -286,6 +286,28 @@ details.more summary{font-size:14px;font-weight:600;color:var(--accent);cursor:p
 .fzc.on{background:var(--ok-soft);border-color:color-mix(in srgb,var(--ok) 50%,var(--line))}
 .fzt{border:0;background:none;font-size:14px;font-weight:600;padding:5px 6px}
 .fzb{border:1px solid var(--line);background:var(--card);border-radius:50%;width:26px;height:26px;line-height:1}
+.loc{display:inline-flex;align-items:center;gap:4px;border-radius:999px;padding:3px 10px;font-size:13px;font-weight:600;background:var(--line);color:var(--ink);white-space:nowrap}
+.loc.sm{font-size:11.5px;padding:2px 8px}
+.loc-home{background:var(--line)}
+.loc-auckland{background:#dcefe4;color:#2f6a48}
+.loc-melb{background:#e9e1f3;color:#5b3f86}
+.loc-hotel{background:#f8ead0;color:#8a5a12}
+.loc-fiji{background:#d8eef3;color:#1f6a7c}
+.loc-fly{background:var(--blue-soft);color:var(--blue)}
+@media (prefers-color-scheme:dark){.loc-auckland{background:#1f3328;color:#8fd0a8}.loc-melb{background:#2c2338;color:#c8b2ea}.loc-hotel{background:#3a2f1c;color:#e0a94f}.loc-fiji{background:#18333a;color:#8fd3e2}}
+.loc-auckland-t{color:#2f6a48}.loc-melb-t{color:#5b3f86}.loc-hotel-t{color:#8a5a12}.loc-fiji-t{color:#1f6a7c}
+@media (prefers-color-scheme:dark){.loc-auckland-t{color:#8fd0a8}.loc-melb-t{color:#c8b2ea}.loc-hotel-t{color:#e0a94f}.loc-fiji-t{color:#8fd3e2}}
+.dloc{font-weight:700;margin-bottom:2px}
+.banner.flight{background:var(--blue-soft);border:1px solid color-mix(in srgb,var(--blue) 35%,transparent)}
+.banner.flight.soft{padding:10px 14px}
+.tripcard summary{list-style:none;cursor:pointer}.tripcard summary::-webkit-details-marker{display:none}
+.tripcard ul{margin:10px 0 0;padding-left:18px}.tripcard li{margin:4px 0}
+.trips{padding:8px 14px}
+.trow{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--line)}
+.trow:last-of-type{border-bottom:0}
+.trow .tdate{flex:none;width:104px;font-size:13px;font-weight:600;color:var(--muted)}
+.trow .loc{white-space:normal;line-height:1.3}
+.trow.now .tdate{color:var(--accent)}
 .toast{position:fixed;left:50%;bottom:calc(88px + var(--safe-b));transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:12px;font-size:14px;opacity:0;transition:.2s;z-index:80;pointer-events:none;max-width:90vw}
 .toast.on{opacity:1;transform:translateX(-50%)}
 .ref h3{font-size:16px;margin:4px 0 8px}
@@ -413,7 +435,7 @@ function planFor(s){
   if (s <= A.end){ const i = diffDays(s, A.start); const day = P.aucklandDays[i];
     return { type:'auckland', tex:'Runny and smooth', label:`Auckland day ${i+1} of 5`, meals: day ? [{slot:'b', ...parseMeal(day.b)}] : [], note: day?.note,
       week:{ title:'Auckland exploration', meals:'Once a day, after his morning feed.', texture:'Smooth, runny purée.', amount:'A few teaspoons. Stop when he turns away.', ff:'None yet.', tips:['No allergens yet. They start the week you get home.','Sit him upright. If there\'s no high chair, sit him upright on a lap facing out.','NZ emergency number is 111. Healthline: 0800 611 116.'] } }; }
-  if (s < P.homeStart) return { type:'pause', label:'Travel pause', note: s === '2026-11-13' ? 'Flight day. No solids.' : 'No solids until Monday. Plenty of breastfeeds and rest.' };
+  if (s < P.homeStart) return { type:'pause', label:'Travel pause', note: flightOn(s) ? `${flightOn(s).t}. No solids today.` : 'No solids until Monday. Plenty of breastfeeds and rest.' };
   const d = diffDays(s, P.homeStart), wi = Math.floor(d/7), di = d % 7;
   const w = P.weeks[wi];
   if (!w) return { type:'after', label:'Beyond the 12-week plan' };
@@ -509,7 +531,7 @@ function render(){
 function entryFor(key){ return Object.values(S.entries).find(e => e.plan === key && !e.del); }
 function renderToday(){
   const s = curDate, p = planFor(s), isToday = s === todayStr();
-  let h = `<div class="daynav"><button id="dPrev" aria-label="Previous day">‹</button><div class="lbl"><b>${isToday ? 'Today' : fmtLong(s)}</b><span class="small muted">${isToday ? fmtLong(s)+' · ' : ''}${esc(p.label || '')}</span></div><button id="dNext" aria-label="Next day">›</button></div>` + weekStrip(s) + summaryCard(s);
+  let h = `<div class="daynav"><button id="dPrev" aria-label="Previous day">‹</button><div class="lbl"><b>${isToday ? 'Today' : fmtLong(s)}</b><span class="small muted">${isToday ? fmtLong(s)+' · ' : ''}${esc(p.label || '')}</span></div><button id="dNext" aria-label="Next day">›</button></div>` + weekStrip(s) + tripCard(s) + summaryCard(s);
   if (!isToday) h += `<div style="text-align:center;margin:-4px 0 12px"><button class="btn ghost sm" id="dToday">Back to today</button></div>`;
 
   // watch banner
@@ -641,6 +663,38 @@ function toggleTick(key){
   setTimeout(() => openRate(id), 120);
 }
 
+/* TRIPS */
+const locOf = d => (P.locations || []).find(l => d >= l.from && d <= l.to) || null;
+const flightOn = d => (P.flights || []).find(f => f.d === d) || null;
+const locChip = (l, small) => l ? `<span class="loc loc-${l.k} ${small ? 'sm' : ''}">${l.e} ${esc(l.n)}${small ? '' : ` · ${esc(l.sub)}`}</span>` : '';
+const LOC_TIPS = {
+  hotel: ['No-cook day: a fork, two bowls and the kettle are all you need.', 'Shopping list: silken tofu, tinned salmon in spring water (no added salt), full-fat plain yoghurt, avocados, bananas, ripe pears, no-added-salt chickpeas.', 'Egg days: ask the hotel breakfast for a hard-boiled egg.', 'Keep opened tofu, salmon and yoghurt in the room fridge and use within 24 hours.', 'Save the nearest emergency department in your phone (the Royal Children\'s Hospital, Parkville, if you\'re in the city).'],
+  fiji: ['No new allergens in Fiji. Keep-ups only.', 'Buffet: ask for small plain portions with no salt or sauce, then fork-mash at the table.', 'Use bottled or boiled water for anything you mix for him, and peel fruit yourself.', 'Packed: porridge box, Weet-Bix, peanut butter, tahini, small UHT soy milk, bowls, spoons, fork, bibs.'],
+  melb: ['Auntie\'s has a full kitchen, so cook as normal.'],
+  auckland: ['Non-allergen, iron-rich tastes only. NZ emergency number is 111. Healthline: 0800 611 116.']
+};
+function tripCard(s){
+  const l = locOf(s), f = flightOn(s), tips = l ? (LOC_TIPS[l.k] || []) : [];
+  let h = '';
+  if (f) h += `<div class="banner flight"><b>✈️ ${esc(f.t)} today</b><div class="small">Nothing new today. Keep meals simple and pack his food in your carry-on.</div></div>`;
+  else { const nf = (P.flights || []).find(x => x.d === addDays(s, 1)); if (nf) h += `<div class="banner flight soft"><b>✈️ ${esc(nf.t)} tomorrow</b><div class="small">No new allergens today.</div></div>`; }
+  if (l && l.k !== 'home' && tips.length) h += `<details class="card tripcard loc-${l.k}-card"><summary class="between"><span>${locChip(l)}</span><span class="chev">›</span></summary><ul class="small">${tips.map(t => `<li>${esc(t)}</li>`).join('')}</ul></details>`;
+  return h;
+}
+function rangeLbl(l){
+  const a = parse(l.from), b = parse(l.to);
+  if (l.to >= '2027-01-01') return `${a.getDate()} ${MON[a.getMonth()]} on`;
+  if (l.from === l.to) return `${a.getDate()} ${MON[a.getMonth()]}`;
+  return a.getMonth() === b.getMonth() ? `${a.getDate()}–${b.getDate()} ${MON[a.getMonth()]}` : `${a.getDate()} ${MON[a.getMonth()]} – ${b.getDate()} ${MON[b.getMonth()]}`;
+}
+function tripsOverview(){
+  const t = todayStr();
+  const segs = (P.locations || []).filter(l => l.to >= t);
+  if (!segs.length) return '';
+  return `<div class="sec">Trips</div><div class="card trips">${segs.map(l => `<div class="trow ${t >= l.from && t <= l.to ? 'now' : ''}"><span class="tdate">${rangeLbl(l)}</span>${locChip(l)}</div>`).join('')}
+    <div class="tiny muted" style="margin-top:8px">✈️ ${(P.flights || []).filter(f => f.d >= t).map(f => fmtDate(f.d).replace(/^\w+ /, '')).join(' · ')}. Nothing new on a flight day or the day before.</div></div>`;
+}
+
 /* WEEK STRIP */
 const mondayOf = s => { const d = parse(s); const k = (d.getDay() + 6) % 7; return addDays(s, -k); };
 function dayStatus(d){
@@ -654,7 +708,7 @@ function weekStrip(s){
   const mon = mondayOf(s), t = todayStr();
   return `<div class="wstrip">${[0,1,2,3,4,5,6].map(i => { const d = addDays(mon, i), st = dayStatus(d), dd = parse(d);
     const cls = st.rx ? 'rx' : st.total && st.done >= st.total ? 'full' : st.any ? 'part' : '';
-    return `<button class="wd ${cls} ${d === s ? 'sel' : ''} ${d === t ? 'today' : ''}" data-day="${d}"><span class="wl">${'MTWTFSS'[i]}</span><span class="wc">${st.rx ? '!' : cls === 'full' ? '✓' : dd.getDate()}</span><span class="wn">${st.isNew ? 'new' : ''}</span></button>`; }).join('')}</div>`;
+    return `<button class="wd ${cls} ${d === s ? 'sel' : ''} ${d === t ? 'today' : ''}" data-day="${d}"><span class="wl">${'MTWTFSS'[i]}</span><span class="wc">${st.rx ? '!' : cls === 'full' ? '✓' : dd.getDate()}</span><span class="wn">${flightOn(d) ? '✈️' : st.isNew ? 'new' : ''}</span></button>`; }).join('')}</div>`;
 }
 
 /* TODAY SO FAR / PARTNER FEED */
@@ -778,7 +832,7 @@ function milestones(){
     { id:'f25', e:'🌈', n:'25 foods tried', d:nth(25) },
     { id:'all', e:'🛡️', n:'All 15 allergens in', d:allIn },
     { id:'rice', e:'🍙', n:"Kavin's first rice ball", d:first(e => /rice ball/i.test(e.title || e.txt || '')) },
-    { id:'f50', e:'🏆', n:'All 50 foods tried', d:nth(50) }
+    { id:'fall', e:'🏆', n:`All ${P.foods.length} foods tried`, d:nth(P.foods.length) }
   ];
 }
 function checkMilestones(){
@@ -846,9 +900,9 @@ function renderPlan(){
   if (cur.type === 'after') ladderIdx = 4;
   let h = `<div class="sec">Texture ladder</div><div class="ladder" id="ladder">${P.textureLadder.map((x,i) => `<div class="rung ${i === ladderIdx ? 'now' : i < ladderIdx ? 'past' : ''}" data-i="${i}"><div class="between"><b>${esc(x.age)}</b>${i === ladderIdx ? '<span class="pill new">Now</span>' : i === ladderIdx + 1 ? '<span class="pill keep">Next</span>' : i < ladderIdx ? '<span class="tiny muted">✓ Done</span>' : ''}</div><strong>${esc(x.label)}</strong><div class="muted">${esc(x.detail)}</div></div>`).join('')}</div>`;
   // Auckland
-  h += `<button class="btn ghost block" id="pFrz" style="margin-top:14px">🧊 Freezer and cook-next list</button>`;
-  h += `<div class="sec">Auckland</div>` + weekBlock({ key:'auck', start:P.auckland.start, title:'Auckland exploration', range:`${fmtDate(P.auckland.start)} – ${fmtDate(P.auckland.end)}`, days:P.aucklandDays.map((d,i) => ({ date:addDays(P.auckland.start, i), meals:[{slot:'b', ...parseMeal(d.b)}] })), open: cur.type === 'auckland', info:`<p class="small">Once a day after his morning feed. Non-allergen, iron-rich foods only. Pause Thu 12 to Sun 15 Nov for the flight home.</p>` });
-  h += `<div class="sec">Home plan</div>`;
+  h += `<button class="btn ghost block" id="pFrz" style="margin-top:14px">🧊 Freezer and cook-next list</button>` + tripsOverview();
+  h += `<div class="sec">Auckland</div>` + weekBlock({ key:'auck', start:P.auckland.start, title:'Auckland exploration', range:`${fmtDate(P.auckland.start)} – ${fmtDate(P.auckland.end)}`, days:P.aucklandDays.map((d,i) => ({ date:addDays(P.auckland.start, i), meals:[{slot:'b', ...parseMeal(d.b)}] })), open: cur.type === 'auckland', info:`<p class="small">Once a day after his morning feed with Only Organic banana porridge, chicken, dhal, pumpkin and beef. No allergens yet. Pause Thu 12 to Sun 15 Nov for the flight home.</p>` });
+  h += `<div class="sec">Week by week</div>`;
   P.weeks.forEach((w, wi) => {
     const days = w.days.map((d, di) => { const date = addDays(w.start, di); const p = planFor(date); return { date, meals:p.meals, ff:p.ff }; });
     const end = addDays(w.start, 6);
@@ -868,15 +922,16 @@ function weekBlock({ key, start, title, range, days, open, w, info }){
   let body = info || '';
   if (w){
     body += `<dl class="kv"><dt>Meals</dt><dd>${esc(w.meals)}</dd><dt>Texture</dt><dd>${esc(w.texture)}</dd><dt>How much</dt><dd>${esc(w.amount)}</dd><dt>Finger food</dt><dd>${esc(w.ff)}</dd></dl>`;
-    if (w.cook?.length) body += `<div class="sec" style="margin-top:14px">Cook and freeze</div>${w.cook.map((c,i) => { const k = `cook:${key}:${i}`; return `<label class="checkline"><input type="checkbox" data-cook="${k}" ${S.ticks[k]?.on ? 'checked' : ''}><span class="small">${esc(c)}</span></label>`; }).join('')}`;
+    if (w.cook?.length) body += `<div class="sec" style="margin-top:14px">Cook and prep</div>${w.cook.map((c,i) => { const k = `cook:${key}:${i}`; return `<label class="checkline"><input type="checkbox" data-cook="${k}" ${S.ticks[k]?.on ? 'checked' : ''}><span class="small">${esc(c)}</span></label>`; }).join('')}`;
     if (w.tips?.length) body += `<div class="sec" style="margin-top:14px">Tips</div><ul class="small" style="padding-left:18px;margin:0">${w.tips.map(x => `<li>${esc(x)}</li>`).join('')}</ul>`;
   }
   body += `<div class="sec" style="margin-top:14px">Days</div>` + days.map(d => {
     const ms = d.meals.map(m => { const e = entryFor(`${d.date}:${m.slot}`); const lk = e && likeOf(e.like); return `<div class="dm ${e ? 'done' : ''}"><span class="de">${emojisFor(m.f)[0] || '🍽️'}</span><span class="dt">${esc(m.title)}</span>${Object.entries(m.alk).filter(([,k]) => k === 'new').map(([a]) => `<span class="pill new">${esc(AL[a]?.name.replace(/ \(.*\)/,''))}</span>`).join('')}${e ? `<span class="dk">${lk ? lk.i : '✓'}</span>` : ''}</div>`; }).join('');
-    return `<div class="dayrow ${d.date === t ? 'today' : ''}" data-go="${d.date}"><div class="d"><b>${DOW[parse(d.date).getDay()]}</b>${parse(d.date).getDate()} ${MON[parse(d.date).getMonth()]}</div><div class="m">${ms}</div><span class="chev">›</span></div>`;
+    const dl = locOf(d.date), df = flightOn(d.date);
+    return `<div class="dayrow ${d.date === t ? 'today' : ''}" data-go="${d.date}"><div class="d"><b>${DOW[parse(d.date).getDay()]}</b>${parse(d.date).getDate()} ${MON[parse(d.date).getMonth()]}</div><div class="m">${df ? `<div class="tiny" style="font-weight:700;color:var(--blue)">✈️ ${esc(df.t)}</div>` : ''}${dl && dl.k !== 'home' ? `<div class="tiny dloc loc-${dl.k}-t">${dl.e} ${esc(dl.sub)}</div>` : ''}${ms}</div><span class="chev">›</span></div>`;
   }).join('');
   const sd = parse(start), past = addDays(start, days.length - 1) < t, isCur = t >= start && t <= addDays(start, days.length - 1);
-  return `<details class="card wkcard ${isCur ? 'cur' : ''}" ${open ? 'open' : ''}><summary><div class="row" style="align-items:flex-start"><div class="cal ${past ? 'past' : ''}"><span class="cm">${MON[sd.getMonth()]}</span><span class="cd">${sd.getDate()}</span></div><div style="flex:1;min-width:0"><div class="between"><div><b>${esc(title)}</b><div class="small muted">${esc(range)}${newAl.length ? ' · new: '+newAl.map(a => esc(AL[a]?.name.replace(/ \(.*\)/,''))).join(', ') : ''}</div></div><span class="chev">›</span></div><div class="prog"><i style="width:${total ? Math.round(done/total*100) : 0}%"></i></div><div class="tiny muted" style="margin-top:4px">${done} of ${total} logged</div></div></div></summary>${body}</details>`;
+  return `<details class="card wkcard ${isCur ? 'cur' : ''}" ${open ? 'open' : ''}><summary><div class="row" style="align-items:flex-start"><div class="cal ${past ? 'past' : ''}"><span class="cm">${MON[sd.getMonth()]}</span><span class="cd">${sd.getDate()}</span></div><div style="flex:1;min-width:0"><div class="between"><div><b>${esc(title)}</b><div class="small muted">${esc(range)}${newAl.length ? ' · new: '+newAl.map(a => esc(AL[a]?.name.replace(/ \(.*\)/,''))).join(', ') : ''}</div>${(() => { const seen = []; days.forEach(d => { const l = locOf(d.date); if (l && !seen.some(x => x.k === l.k && x.sub === l.sub)) seen.push(l); }); return seen.length && !(seen.length === 1 && seen[0].k === 'home') ? `<div class="chips" style="margin-top:6px">${seen.map(l => locChip(l, true)).join('')}${days.some(d => flightOn(d.date)) ? '<span class="loc sm loc-fly">✈️ Flight</span>' : ''}</div>` : ''; })()}</div><span class="chev">›</span></div><div class="prog"><i style="width:${total ? Math.round(done/total*100) : 0}%"></i></div><div class="tiny muted" style="margin-top:4px">${done} of ${total} logged</div></div></div></summary>${body}</details>`;
 }
 
 /* ALLERGENS */
