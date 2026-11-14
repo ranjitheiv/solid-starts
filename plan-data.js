@@ -29,22 +29,22 @@ window.PLAN = {
 
   allergens: [
     { id: "egg", name: "Egg", emoji: "🥚", group: "core",
-      how: "Hard-boil an egg for 10 minutes so the yolk and white are both firm. Mash a little with breast milk.",
+      how: "Hard-boil an egg for 10 minutes so the yolk and white are both firm. Mash a little with breast milk. Once he's had it twice, well-cooked omelette strips make a good finger food.",
       steps: ["First time: ¼ tsp mixed into his food. If no reaction after 30 minutes, give ½ tsp more.", "Next time: 1 tsp.", "Then: 2 tsp, building up over the following weeks to about half an egg."] },
     { id: "peanut", name: "Peanut", emoji: "🥜", group: "core",
-      how: "Smooth peanut butter (100% peanuts if you can). Thin with a few drops of warm water or breast milk, or stir into his food. Never chunky, never whole or chopped peanuts, and never rub it on his skin.",
+      how: "Smooth peanut butter (100% peanuts if you can). Thin with a few drops of warm water or breast milk, or stir into his food. After the first two tries, a very thin smear on a toast finger works too. Never chunky, never whole or chopped peanuts, and never rub it on his skin.",
       steps: ["First time: ¼ tsp. If no reaction after 30 minutes, give ½ tsp more.", "Next time: 1 tsp.", "Then: 2 tsp. Keep it in his diet at least once a week."] },
     { id: "dairy", name: "Cow's milk (dairy)", emoji: "🥛", group: "core",
       how: "Full-fat plain yoghurt is easiest. Cheese and milk in cooking count too. Cow's milk is fine in food, just not as a drink before 12 months.",
       steps: ["First time: ¼ tsp yoghurt, then ½ tsp after 30 minutes if fine.", "Next time: 2 tsp.", "Then: 1 to 2 tbsp."] },
     { id: "wheat", name: "Wheat", emoji: "🌾", group: "core",
-      how: "Weet-Bix softened with breast milk, soft pasta or toast fingers.",
+      how: "First tries: Weet-Bix softened with breast milk so you can measure it. After that, toast fingers and soft pasta are great finger foods.",
       steps: ["First time: about ¼ tsp of softened Weet-Bix, then ½ tsp after 30 minutes if fine.", "Next time: 1 to 2 tsp.", "Then: a normal serve (up to ½ a Weet-Bix)."] },
     { id: "sesame", name: "Sesame", emoji: "⚪", group: "core",
-      how: "Hulled tahini, stirred into yoghurt, dhal, mashed veg or hummus.",
+      how: "Hulled tahini, stirred into yoghurt, dhal, mashed veg or hummus. After the first two tries, a thin smear on a toast finger.",
       steps: ["First time: ¼ tsp, then ½ tsp after 30 minutes if fine.", "Next time: 1 tsp.", "Then: 1 to 2 tsp."] },
     { id: "soy", name: "Soy", emoji: "🫘", group: "core",
-      how: "Silken tofu blended smooth, or firm tofu mashed.",
+      how: "First tries: silken tofu mashed smooth. After that, strips of firm tofu are an easy finger food.",
       steps: ["First time: ¼ tsp, then ½ tsp after 30 minutes if fine.", "Next time: 2 tsp.", "Then: 1 to 2 tbsp."] },
     { id: "fish", name: "Fish", emoji: "🐟", group: "core",
       how: "Salmon or a white fish like barramundi or snapper, cooked through, flaked and checked carefully for bones.",
@@ -70,6 +70,7 @@ window.PLAN = {
   ],
 
   allergenRules: [
+    "First tries are always measured: stirred into a smooth food he's already had and given on a spoon, even on baby-led days. Finger-food versions (omelette strips, toast with a thin smear) come after the first two tries.",
     "Give a new allergen at the morning meal, when he's well, and with one of you home for the rest of the day.",
     "Only one new allergen per day. Allergens he's already had are fine to mix together.",
     "Watch him for 2 hours after a new allergen. Most reactions show up within minutes.",
@@ -80,9 +81,9 @@ window.PLAN = {
 
   // Each food: e = emoji, n = name, s = short name for meal titles.
   // Stages (shown in plain language in the app):
-  //   pur  = Smooth purée (Auckland + weeks 1–2)
-  //   mash = Mashed and lumpy (weeks 3–8)
-  //   ff   = Finger food he holds himself (from week 2, big pieces)
+  //   pur  = Smooth purée (Auckland + week 1)
+  //   mash = Mashed and lumpy, on a loaded spoon (weeks 2–8)
+  //   ff   = Finger food he holds himself (optional from week 1, every meal from 23 Nov)
   //   ff9  = Small pieces (from about 8–9 months, pincer grip)
   // A stage left out means that food isn't served that way.
   foods: [
@@ -324,55 +325,55 @@ window.PLAN = {
       meals: "1 meal a day, about 7:30–8am after his morning breastfeed.",
       texture: "Smooth, thick purée. Start a little runnier than yoghurt, then thicken through the week.",
       amount: "1–3 tsp to start, building to 1–2 tbsp. Stop when he turns away, closes his mouth or loses interest.",
-      ff: "None yet. This week is about getting comfortable.",
-      cook: ["Beef purée (1 batch, freeze in cubes)", "Chicken drumstick purée", "Red lentil dhal, blended smooth", "Sweet potato and pumpkin purée", "Cooked pear purée", "Hard-boil eggs fresh on egg days (keep 2 days in the fridge, max)"],
-      tips: ["Sit him upright in the high chair, feet supported if possible.", "Offer the spoon at his lips and let him open up and lean in. Don't push it in.", "Gagging is common and normal this week. Stay calm and let him sort it out."],
+      ff: "Optional: one big, soft 'holding' food alongside the purée, like a steamed sweet potato wedge or half a banana with peel left on as a handle. Skip it if you'd rather wait until after the first aid course on the 23rd.",
+      cook: ["Steamed sweet potato wedges, soft enough to squash between your fingers (optional holding food)", "Beef purée (1 batch, freeze in cubes)", "Chicken drumstick purée", "Red lentil dhal, blended smooth", "Sweet potato and pumpkin purée", "Cooked pear purée", "Hard-boil eggs fresh on egg days (keep 2 days in the fridge, max)"],
+      tips: ["Sit him upright in the high chair, feet supported if possible.", "Offer the spoon at his lips and let him open up and lean in. Don't push it in.", "Gagging is common and normal this week. Stay calm and let him sort it out.", "Allergen first tries stay measured and stirred in, as planned."],
       days: [
-        { b: "Beef purée + sweet potato | beef,sweetpotato |", note: "First day home. No allergen, just iron." },
-        { b: "Banana porridge with egg, then pumpkin | cereal,egg,pumpkin | egg:new", note: "EGG FIRST TRY. ¼ tsp, wait 30 min, then ½ tsp. Watch for 2 hours." },
-        { b: "Dhal purée with 1 tsp egg mashed through | dhal,egg | egg:build" },
-        { b: "Banana porridge with peanut butter, then pear | cereal,pb,pear | peanut:new", note: "PEANUT FIRST TRY. ¼ tsp, wait 30 min, then ½ tsp. Watch for 2 hours." },
-        { b: "Chicken purée + pumpkin with 1 tsp peanut butter stirred in | chicken,pumpkin,pb | peanut:build" },
-        { b: "Beef purée + 2 tsp mashed egg + avocado | beef,egg,avocado | egg:build" },
-        { b: "Banana porridge with 2 tsp peanut butter + mashed banana | cereal,pb,banana | peanut:build" }
+        { b: "Beef purée + sweet potato | beef,sweetpotato |", note: "First day home. No allergen, just iron.", ff: "Steamed sweet potato wedge | sweetpotato" },
+        { b: "Banana porridge with egg, then pumpkin | cereal,egg,pumpkin | egg:new", note: "EGG FIRST TRY. ¼ tsp, wait 30 min, then ½ tsp. Watch for 2 hours.", ff: "Banana half with peel handle | banana" },
+        { b: "Dhal purée with 1 tsp egg mashed through | dhal,egg | egg:build", ff: "Avocado spear | avocado" },
+        { b: "Banana porridge with peanut butter, then pear | cereal,pb,pear | peanut:new", note: "PEANUT FIRST TRY. ¼ tsp, wait 30 min, then ½ tsp. Watch for 2 hours.", ff: "Steamed sweet potato wedge | sweetpotato" },
+        { b: "Chicken purée + pumpkin with 1 tsp peanut butter stirred in | chicken,pumpkin,pb | peanut:build", ff: "Banana half with peel handle | banana" },
+        { b: "Beef purée + 2 tsp mashed egg + avocado | beef,egg,avocado | egg:build", ff: "Steamed broccoli floret with a long stalk | broccoli" },
+        { b: "Banana porridge with 2 tsp peanut butter + mashed banana | cereal,pb,banana | peanut:build", ff: "Avocado spear | avocado" }
       ] },
-    { n: 2, tex: "Thick purée", start: "2026-11-23", title: "Dairy, wheat, sesame, then fly to Melbourne",
+    { n: 2, tex: "Hybrid: finger food + spoon", start: "2026-11-23", title: "Baby-led starts: dairy, wheat, sesame, then fly to Melbourne",
       meals: "1 meal a day, about 7:30–8am. If he's keen by the weekend, add a small afternoon taste.",
-      texture: "Thicker purées. Start fork-mashing soft foods like avocado and banana.",
-      amount: "1–2 tbsp, following his cues.",
-      ff: "From Tuesday: one 'easy start' finger food a day, alongside the purée. Pieces should be big enough that he can't fit them whole in his mouth.",
-      cook: ["Lamb purée", "Pumpkin + carrot purée", "Zucchini purée", "Stewed apple", "Steam broccoli fresh (finger food)", "Sun 29 at auntie's: beef and veg mash for Monday in the hotel fridge (eat within 24 hours)"],
-      tips: ["Sesame moves to Thursday so nothing is new the day before you fly.", "Sat 28: fly to Melbourne. Pack the porridge box, Weet-Bix, peanut butter, tahini, 2 bowls, spoons, a fork and bibs.", "Finger food: hold it out to him and let him take it. He'll mostly suck and gnaw, which is the point."],
+      texture: "Hybrid. A big soft finger food every meal, plus thick purée or mash on a spoon you load and hand to him.",
+      amount: "1–2 tbsp from the spoon, plus whatever he gets from the finger food. Follow his cues.",
+      ff: "Every meal from Monday, after the first aid course. Finger-length and soft enough to squash between your thumb and finger, so he can grip it in his fist and gnaw the end.",
+      cook: ["Slow-cooked beef strips (chuck or gravy beef) for gnawing", "Steamed sweet potato wedges", "Lamb purée", "Pumpkin + carrot purée", "Zucchini purée", "Stewed apple", "Steam broccoli fresh (finger food)", "Sun 29 at auntie's: beef and veg mash for Monday in the hotel fridge (eat within 24 hours)"],
+      tips: ["Sesame moves to Thursday so nothing is new the day before you fly.", "Sat 28: fly to Melbourne. Pack the porridge box, Weet-Bix, peanut butter, tahini, 2 bowls, spoons, a fork and bibs.", "Finger food: hold it out to him and let him take it. He'll mostly suck and gnaw, which is the point.", "He swallows very little from finger food at first, so the spoon is where the iron goes in. Keep an iron food on the spoon every day.", "New allergens stay measured on the spoon. Toast fingers only after Wednesday's wheat first try."],
       days: [
-        { b: "Pumpkin + carrot purée with yoghurt stirred through | pumpkin,carrot,yoghurt | dairy:new", note: "DAIRY FIRST TRY. ¼ tsp yoghurt, wait 30 min, then ½ tsp." },
+        { b: "Pumpkin + carrot purée with yoghurt stirred through | pumpkin,carrot,yoghurt | dairy:new", note: "DAIRY FIRST TRY. ¼ tsp yoghurt on the spoon, wait 30 min, then ½ tsp. First baby-led day too.", ff: "Slow-cooked beef strip + sweet potato wedge | beef,sweetpotato" },
         { b: "Lamb purée + zucchini, then 2 tsp yoghurt | lamb,zucchini,yoghurt | dairy:build", ff: "Steamed broccoli floret with a long stalk | broccoli" },
         { b: "Weet-Bix softened with breast milk + stewed apple | weetbix,apple | wheat:new", note: "WHEAT FIRST TRY. Small spoonful, wait 30 min, then a bit more.", ff: "Avocado spear | avocado" },
         { b: "Dhal purée with tahini stirred through | dhal,tahini | sesame:new", note: "SESAME FIRST TRY. ¼ tsp tahini, wait 30 min, then ½ tsp.", ff: "Well-cooked omelette strip | egg" },
-        { b: "Weet-Bix + yoghurt + 1 tsp tahini + pear | weetbix,yoghurt,tahini,pear | wheat:build,sesame:build,dairy", note: "Nothing new today: you fly tomorrow.", ff: "Banana half with peel handle | banana" },
+        { b: "Weet-Bix + yoghurt + 1 tsp tahini + pear | weetbix,yoghurt,tahini,pear | wheat:build,sesame:build,dairy", note: "Nothing new today: you fly tomorrow.", ff: "Toast finger with a thin smear of tahini | toast,tahini" },
         { b: "Banana porridge with 1 tsp peanut butter + mashed avocado | cereal,pb,avocado | peanut", note: "Travel day to Melbourne. Keep it simple: porridge and peanut butter travel well.", ff: "Banana half | banana" },
         { b: "Mashed hard-boiled egg + sweet potato | egg,sweetpotato | egg", note: "At auntie's. Cook a small batch of beef and veg mash today for Monday's afternoon meal.", ff: "Toast finger with thin avocado | toast" }
       ] },
-    { n: 3, tex: "Mashed, soft lumps", start: "2026-11-30", title: "Melbourne: no-cook hotel week, soy, fish and prawn",
+    { n: 3, tex: "Hybrid: no-cook finger food", start: "2026-11-30", title: "Melbourne: no-cook hotel week, soy, fish and prawn",
       meals: "2 meals: morning (~7:30–8am, the allergen meal) and afternoon (~4:30pm). Weekdays at the hotel are no-cook.",
-      texture: "Mashed with soft lumps. A fork does everything this week.",
+      texture: "Hybrid. No-cook finger foods do most of the work at the hotel, with fork-mashed food on a loaded spoon for iron and new allergens.",
       amount: "2–3 tbsp per meal.",
-      ff: "1–2 easy finger foods a day: avocado, banana, ripe pear.",
-      cook: ["Hotel shop on Sunday night or Monday: silken tofu, tinned salmon in spring water (no added salt), full-fat plain yoghurt, avocados, bananas, ripe pears, a tin of no-added-salt chickpeas", "Sat 5 at auntie's: salmon and potato mash, sweet potato mash", "Sun 6 at auntie's: prawn and potato mash, beef and veg mash"],
+      ff: "At every meal: avocado spears, banana, ripe pear wedges, toast fingers, and firm tofu strips once soy is in.",
+      cook: ["Hotel shop on Sunday night or Monday: silken tofu, firm tofu, a loaf of bread for toast fingers, 2–3 beef or chicken pouches (no added salt) as backup, tinned salmon in spring water (no added salt), full-fat plain yoghurt, avocados, bananas, ripe pears, a tin of no-added-salt chickpeas", "Sat 5 at auntie's: salmon and potato mash, sweet potato mash", "Sun 6 at auntie's: prawn and potato mash, beef and veg mash"],
       tips: ["Hotel days need only a fork, bowls and the kettle. The porridge box, Weet-Bix, tofu and salmon keep it iron-rich without meat.", "Ask the hotel breakfast for a hard-boiled egg on egg days.", "Aranei: save the nearest emergency department in your phone (the Royal Children's Hospital in Parkville if you're in the city). Call 000 as usual.", "If the hotel turns out to have a kitchenette, cook as normal."],
       days: [
         { b: "Silken tofu mashed with avocado | tofu,avocado | soy:new | Tofu and avocado", a: "Beef and veg mash from auntie's + mashed pear | beef,carrot,pear | | Beef mash from auntie's", note: "SOY FIRST TRY. Silken tofu needs no cooking: just mash it.", ff: "Avocado spear | avocado" },
         { b: "Silken tofu mashed into banana porridge | tofu,cereal | soy:build | Tofu and banana porridge", a: "Weet-Bix softened with kettle water + yoghurt + peanut butter | weetbix,yoghurt,pb | wheat,dairy,peanut", ff: "Banana half | banana" },
         { b: "Tinned salmon mashed into avocado | salmon,avocado | fish:new | Salmon and avocado", a: "Chickpeas mashed with tahini + yoghurt | chickpeas,tahini,yoghurt | sesame,dairy | Chickpea and tahini mash", note: "FISH FIRST TRY. Tinned salmon in spring water, no added salt. Remove skin and bones, then mash well.", ff: "Ripe pear wedge | pear" },
-        { b: "Tinned salmon mashed with avocado + pear | salmon,avocado,pear | fish:build | Salmon and avocado", a: "Hard-boiled egg from breakfast, mashed with yoghurt | egg,yoghurt | egg,dairy | Egg and yoghurt mash", ff: "Banana half | banana" },
-        { b: "Banana porridge with peanut butter + mashed tofu | cereal,pb,tofu | peanut,soy", a: "Weet-Bix + yoghurt + tahini + mashed pear | weetbix,yoghurt,tahini,pear | wheat,dairy,sesame", note: "Last hotel day. Keep-ups only.", ff: "Avocado spear | avocado" },
-        { b: "Mashed egg + sweet potato | egg,sweetpotato | egg", a: "Salmon + potato mash | salmon,potato | fish", note: "Back at auntie's: cook today's and tomorrow's mash.", ff: "Soft roasted sweet potato wedge | sweetpotato" },
-        { b: "Prawn finely minced through potato mash | prawn,potato | shellfish:new | Prawn and potato mash", a: "Beef and veg mash | beef,carrot,zucchini | | Beef and veg mash", note: "PRAWN FIRST TRY.", ff: "Steamed broccoli floret | broccoli" }
+        { b: "Tinned salmon mashed with avocado + pear | salmon,avocado,pear | fish:build | Salmon and avocado", a: "Hard-boiled egg from breakfast, mashed with yoghurt | egg,yoghurt | egg,dairy | Egg and yoghurt mash", ff: "Toast finger with smashed avocado | toast,avocado" },
+        { b: "Banana porridge with peanut butter + mashed tofu | cereal,pb,tofu | peanut,soy", a: "Weet-Bix + yoghurt + tahini + mashed pear | weetbix,yoghurt,tahini,pear | wheat,dairy,sesame", note: "Last hotel day. Keep-ups only.", ff: "Firm tofu strip + pear wedge | tofu,pear" },
+        { b: "Mashed egg + sweet potato | egg,sweetpotato | egg", a: "Salmon + potato mash | salmon,potato | fish", note: "Back at auntie's: cook today's and tomorrow's mash.", ff: "Salmon and potato patty log | salmon,potato" },
+        { b: "Prawn finely minced through potato mash | prawn,potato | shellfish:new | Prawn and potato mash", a: "Beef and veg mash | beef,carrot,zucchini | | Beef and veg mash", note: "PRAWN FIRST TRY. Minced very finely into the mash on a spoon, measured like the others.", ff: "Steamed broccoli floret | broccoli" }
       ] },
-    { n: 4, tex: "Lumpy mash", start: "2026-12-07", title: "Fly home, then Fiji: keep-ups only",
+    { n: 4, tex: "Hybrid: buffet finger food", start: "2026-12-07", title: "Fly home, then Fiji: keep-ups only",
       meals: "2 meals a day. Travel days: keep it simple.",
-      texture: "Lumpy mash. In Fiji, fork-mash plain buffet food at the table.",
+      texture: "Lumpy mash on a spoon plus soft finger food. In Fiji, the buffet is ideal for baby-led: soft pieces from plain dishes, with his portion taken before salt or sauce.",
       amount: "2–4 tbsp per meal, following his cues.",
-      ff: "A finger food at most meals, whatever's easy.",
+      ff: "At every meal: steamed veg sticks, flaked fish, papaya and banana strips, omelette strips, toast fingers.",
       cook: ["Tue 8–Wed 9 in Sydney: restock the freezer for after Fiji (beef, chicken, dhal, sweet potato, salmon patties)", "Pack for Fiji: porridge box, Weet-Bix, peanut butter, tahini, a small UHT soy milk, 2 bowls, spoons, a fork, bibs"],
       tips: ["No new allergens from Mon 7 until you're home on the 16th. Keep-ups are safe because he's already had these foods.", "Fiji buffet: ask the kitchen for small plain portions with no salt or sauce: steamed fish, fully cooked egg, rice, steamed veg.", "Use bottled or boiled water for anything you mix for him, and peel fruit yourself.", "Mix the porridge with a splash of UHT soy milk to keep soy going."],
       days: [
@@ -380,17 +381,17 @@ window.PLAN = {
         { b: "Banana porridge with peanut butter + banana | cereal,pb,banana | peanut", a: "Freezer cubes at home: beef + sweet potato | beef,sweetpotato |", note: "Travel day back to Sydney.", ff: "Toast finger with hummus | toast,chickpeas,tahini" },
         { b: "Weet-Bix + yoghurt + tahini | weetbix,yoghurt,tahini | wheat,dairy,sesame", a: "Salmon + potato mash | salmon,potato | fish", note: "Pack for Fiji today.", ff: "Omelette strip | egg" },
         { b: "Mashed egg + avocado | egg,avocado | egg", a: "Banana porridge made with UHT soy milk + mashed banana | cereal,banana | soy | Banana porridge with soy milk", note: "Travel day to Fiji.", ff: "Banana half | banana" },
-        { b: "Buffet: plain yoghurt + mashed papaya | yoghurt,papaya | dairy | Yoghurt and papaya", a: "Buffet: plain steamed fish mashed into rice | whitefish,rice | fish | Fish and rice", ff: "Avocado from the buffet | avocado" },
-        { b: "Banana porridge with peanut butter + papaya | cereal,pb,papaya | peanut", a: "Buffet: fully cooked egg + steamed veg, mashed | egg,carrot,pumpkin | egg | Egg and veg", ff: "Toast finger | toast" },
+        { b: "Buffet: plain yoghurt + mashed papaya | yoghurt,papaya | dairy | Yoghurt and papaya", a: "Buffet: plain steamed fish mashed into rice | whitefish,rice | fish | Fish and rice", ff: "Papaya strip + soft steamed carrot stick | papaya,carrot" },
+        { b: "Banana porridge with peanut butter + papaya | cereal,pb,papaya | peanut", a: "Buffet: fully cooked egg + steamed veg, mashed | egg,carrot,pumpkin | egg | Egg and veg", ff: "Large soft flakes of steamed fish + toast finger | whitefish,toast" },
         { b: "Buffet toast fingers + yoghurt with tahini | toast,yoghurt,tahini | wheat,dairy,sesame | Toast and tahini yoghurt", a: "Banana porridge with UHT soy milk + mashed avocado | cereal,avocado | soy | Banana porridge with soy milk", ff: "Steamed carrot | carrot" }
       ] },
-    { n: 5, tex: "Lumpy and minced", start: "2026-12-14", title: "Fly home, then tree nuts begin. 7 months on Friday",
+    { n: 5, tex: "Mostly baby-led", start: "2026-12-14", title: "Fly home, then tree nuts begin. 7 months on Friday",
       meals: "2 meals, plus an optional small lunch if he's hungry.",
-      texture: "Lumpy mash, minced and finely chopped soft foods.",
+      texture: "Mostly baby-led from Wednesday. Finger food he feeds himself, with the spoon for dhal, yoghurt, porridge and nut first tries (load it and hand it to him).",
       amount: "3–4 tbsp per meal (rough guide only).",
-      ff: "A finger food at most meals.",
+      ff: "Most of every meal. Finger-length strips, soft enough to squash. Small bite-sized pieces wait until he can pick things up between thumb and finger (about 9 months).",
       cook: ["Grind each nut as it comes up (see that nut's recipe)", "Salmon patty logs", "Dhal", "Mild chicken curry (his portion before chilli and salt)"],
-      tips: ["Tree nuts one every second day: cashew Wed, almond Fri, walnut Sun.", "He turns 7 months on Friday 18 December.", "Iron-rich food at both meals."],
+      tips: ["Tree nuts one every second day: cashew Wed, almond Fri, walnut Sun. Each first try is measured into porridge or yoghurt on a spoon, never a finger food.", "He turns 7 months on Friday 18 December.", "Iron-rich food at both meals. Gnawed meat doesn't count for much yet, so pair it with mince, dhal or iron porridge on the spoon."],
       days: [
         { b: "Buffet: steamed fish + potato or rice, mashed | whitefish,potato | fish | Fish and potato", a: "Buffet: freshly cooked prawns minced very finely into rice | prawn,rice | shellfish | Prawn and rice", note: "Last full day in Fiji. Only give the prawns if they're freshly cooked, not from a tray that's been sitting out. Skip them if unsure.", ff: "Mango from the buffet | mango" },
         { b: "Weet-Bix or porridge + peanut butter + banana | weetbix,pb,banana | wheat,peanut | Weet-Bix and peanut butter", a: "Mashed egg + avocado | egg,avocado | egg", note: "Fly home. Nothing new today.", ff: "Banana half | banana" },
@@ -400,9 +401,9 @@ window.PLAN = {
         { b: "Porridge with 1 tsp almond meal + yoghurt | oats,almond,yoghurt | almond:build,dairy", a: "Beef + spinach mash with egg | beef,spinach,egg | egg", ff: "Salmon patty log | salmon" },
         { b: "Porridge with ground walnut + mango | oats,walnut,mango | walnut:new", a: "Dhal with tahini + rice | dhal,tahini,rice | sesame", note: "WALNUT FIRST TRY.", ff: "Tofu strip | tofu" }
       ] },
-    { n: 6, tex: "Lumpy and minced", start: "2026-12-21", title: "Hazelnut, pistachio, macadamia and an easy Christmas",
+    { n: 6, tex: "Mostly baby-led", start: "2026-12-21", title: "Hazelnut, pistachio, macadamia and an easy Christmas",
       meals: "2 meals, plus a small lunch on days he wants it.",
-      texture: "Lumpy, minced and soft chopped. Soft family food mashed with a fork.",
+      texture: "Mostly baby-led. Soft family food as finger-length pieces, with the spoon for wetter food and nut first tries.",
       amount: "Follow his appetite. Some days will be big, some tiny.",
       ff: "A finger food at each meal.",
       cook: ["Freezer stock-up for Christmas: kofta, salmon patties, dhal cubes, veg wedges"],
@@ -529,9 +530,9 @@ window.PLAN = {
   ],
 
   textureLadder: [
-    { age: "6 mo", label: "Smooth, thick purée", detail: "Weeks 1–2. Thicker than you'd think, like thick yoghurt." },
-    { age: "6½ mo", label: "Mashed + soft lumps", detail: "Weeks 3–4. Fork-mash. Easy-start finger foods alongside." },
-    { age: "7 mo", label: "Lumpy, minced", detail: "Weeks 5–6. Finger food at most meals." },
+    { age: "6 mo", label: "Smooth purée", detail: "Week 1. Thick purée, plus an optional big soft holding food." },
+    { age: "6 mo", label: "Hybrid", detail: "Weeks 2–4, from 23 Nov. Finger food every meal plus a loaded spoon. No-cook in the hotel, buffet in Fiji." },
+    { age: "7 mo", label: "Mostly baby-led", detail: "Weeks 5–6, from 16 Dec. He feeds himself. Spoon for dhal, yoghurt, porridge and nut first tries." },
     { age: "7½–8 mo", label: "Soft chopped", detail: "Weeks 7–9. Finger food at every meal, three meals a day." },
     { age: "8–9 mo", label: "Chopped family food", detail: "Weeks 10–12. Self-feeding, small soft pieces for pincer practice." }
   ],

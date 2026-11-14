@@ -420,7 +420,7 @@ const emojisFor = f => [...new Set((f||[]).map(x => FOOD[x]?.e).filter(Boolean))
 const tileFor = (f, size = '') => { const em = emojisFor(f).slice(0, 3); return `<div class="mi ${size} n${Math.max(1, em.length)}">${(em.length ? em : ['🍽️']).map(x => `<span>${x}</span>`).join('')}</div>`; };
 const LIKE = { '1':{i:'👍', n:'Loved it'}, '0':{i:'➖', n:'It was OK'}, '-1':{i:'👎', n:'Not keen'} };
 const likeOf = v => v === undefined || v === null ? null : LIKE[String(v)];
-function stageFor(s){ if (s < '2026-11-30') return 'pur'; if (s < '2027-01-11') return 'mash'; return 'ff9'; }
+function stageFor(s){ if (s < '2026-11-23') return 'pur'; if (s < '2027-01-11') return 'mash'; return 'ff9'; }
 const STAGES = {
   pur:  { s:'Purée', n:'Smooth purée', when:'Auckland and weeks 1–2 (until 29 Nov)' },
   mash: { s:'Mashed', n:'Mashed and lumpy', when:'Weeks 3–8 (30 Nov to 10 Jan)' },
@@ -896,7 +896,7 @@ function openEntry(e, preset = {}){
 function renderPlan(){
   const t = todayStr(), cur = planFor(t);
   let ladderIdx = 0;
-  if (cur.type === 'week'){ const n = cur.week.n; ladderIdx = n <= 2 ? 0 : n <= 4 ? 1 : n <= 6 ? 2 : n <= 9 ? 3 : 4; }
+  if (cur.type === 'week'){ const n = cur.week.n; ladderIdx = n <= 1 ? 0 : n <= 4 ? 1 : n <= 6 ? 2 : n <= 9 ? 3 : 4; }
   if (cur.type === 'after') ladderIdx = 4;
   let h = `<div class="sec">Texture ladder</div><div class="ladder" id="ladder">${P.textureLadder.map((x,i) => `<div class="rung ${i === ladderIdx ? 'now' : i < ladderIdx ? 'past' : ''}" data-i="${i}"><div class="between"><b>${esc(x.age)}</b>${i === ladderIdx ? '<span class="pill new">Now</span>' : i === ladderIdx + 1 ? '<span class="pill keep">Next</span>' : i < ladderIdx ? '<span class="tiny muted">✓ Done</span>' : ''}</div><strong>${esc(x.label)}</strong><div class="muted">${esc(x.detail)}</div></div>`).join('')}</div>`;
   // Auckland
@@ -983,7 +983,7 @@ function renderFoods(){
 }
 function openFood(id, want){
   const f = FOOD[id]; if (!f) return; const t = foodTried(id);
-  const today = todayStr(), now = today < P.auckland.start ? 'pur' : stageFor(today), ffNow = today >= '2026-11-23';
+  const today = todayStr(), now = today < P.auckland.start ? 'pur' : stageFor(today), ffNow = today >= '2026-11-16';
   const ss = `https://www.google.com/search?q=${encodeURIComponent('site:solidstarts.com/foods ' + f.n.replace(/\(.*\)/,''))}`;
   const isNow = k => k === now || (k === 'ff' && ffNow && now !== 'ff9');
   const avail = ['pur','mash','ff','ff9'].filter(k => f[k]);
