@@ -3,10 +3,10 @@
 window.RECIPES = {
  "sweetpotato": {
   "pur": {
-   "y": "About 12 cubes (1 cube ≈ 1 tbsp)",
+   "y": "About 4 cubes (1 cube ≈ 1 tbsp)",
    "ing": [
-    "1 medium sweet potato (about 300 g)",
-    "2–4 tbsp of the cooking water or cooled boiled water"
+    "½ small sweet potato (about 100 g). Cut the other half into wedges for a holding food",
+    "1–2 tbsp of the cooking water or cooled boiled water"
    ],
    "how": [
     "Peel and cut into 2 cm cubes.",
@@ -33,12 +33,12 @@ window.RECIPES = {
   "ff": {
    "y": "1–2 serves (keeps 24 hours in the fridge)",
    "ing": [
-    "1 medium sweet potato",
+    "½ small sweet potato",
     "1 tsp olive oil (if roasting)"
    ],
    "how": [
     "Peel and cut into wedges about as long and thick as your finger.",
-    "Toss in the oil and roast at 200°C for 25–30 minutes, turning once.",
+    "Steam for 10–12 minutes, or toss in the oil and roast at 200°C for 25–30 minutes, turning once.",
     "Squish test: it's ready when you can easily squash it between your thumb and finger.",
     "Let it cool to just warm before offering. Hold a piece out and let him take it."
    ]
@@ -58,10 +58,10 @@ window.RECIPES = {
  },
  "pumpkin": {
   "pur": {
-   "y": "About 12 cubes (1 cube ≈ 1 tbsp)",
+   "y": "About 5 cubes (1 cube ≈ 1 tbsp)",
    "ing": [
-    "About 300 g butternut pumpkin",
-    "2–4 tbsp of the cooking water or cooled boiled water"
+    "About 150 g butternut pumpkin (a piece about the size of your hand)",
+    "1–2 tbsp of the cooking water or cooled boiled water"
    ],
    "how": [
     "Peel, scoop out the seeds and cut into 2 cm cubes.",
@@ -168,10 +168,10 @@ window.RECIPES = {
  },
  "carrot": {
   "pur": {
-   "y": "About 12 cubes (1 cube ≈ 1 tbsp)",
+   "y": "About 3 cubes (1 cube ≈ 1 tbsp)",
    "ing": [
-    "3 medium carrots (about 300 g)",
-    "2–4 tbsp of the cooking water or cooled boiled water"
+    "1 medium carrot",
+    "1–2 tbsp of the cooking water or cooled boiled water"
    ],
    "how": [
     "Peel and slice into 1 cm rounds.",
@@ -724,10 +724,10 @@ window.RECIPES = {
  },
  "pear": {
   "pur": {
-   "y": "About 10 cubes",
+   "y": "About 4 cubes",
    "ing": [
-    "2 pears",
-    "2 tbsp water"
+    "1 pear",
+    "1 tbsp water"
    ],
    "how": [
     "Peel, core and chop into chunks.",
@@ -784,10 +784,10 @@ window.RECIPES = {
    ]
   },
   "mash": {
-   "y": "About 10 cubes",
+   "y": "About 4 cubes",
    "ing": [
-    "2 apples",
-    "3 tbsp water"
+    "1 apple",
+    "2 tbsp water"
    ],
    "how": [
     "Stew as for purée.",
@@ -944,11 +944,11 @@ window.RECIPES = {
  },
  "beef": {
   "pur": {
-   "y": "About 10 cubes",
+   "y": "About 4 cubes (small batch)",
    "ing": [
-    "250 g lean beef mince",
+    "100 g lean beef mince",
     "1 tsp olive oil",
-    "½ cup (125 ml) water"
+    "¼ cup (60 ml) water"
    ],
    "how": [
     "Heat the oil in a frying pan on medium. Add the mince and break it up with a wooden spoon.",
@@ -979,19 +979,19 @@ window.RECIPES = {
    ]
   },
   "ff": {
-   "y": "About 12 kofta logs",
+   "y": "About 4 kofta logs",
    "ing": [
-    "250 g beef mince",
-    "2 tbsp grated zucchini, squeezed dry",
-    "2 tbsp rolled oats, blitzed into crumbs",
-    "¼ tsp ground cumin"
+    "100 g beef mince",
+    "1 tbsp grated zucchini, squeezed dry",
+    "1 tbsp rolled oats, blitzed into crumbs",
+    "Pinch of ground cumin"
    ],
    "how": [
     "Heat the oven to 200°C and line a tray with baking paper.",
     "Mix everything together with your hands.",
     "Roll into logs about the length and thickness of your finger.",
     "Bake for 15–18 minutes, turning halfway, until cooked right through with no pink inside.",
-    "Cool to warm. Freeze extras on a tray, then bag them."
+    "Cool to warm. Freeze extras on a tray, then bag them. To serve from frozen: thaw overnight in the fridge and reheat until hot right through, then cool to warm."
    ]
   },
   "ff9": {
@@ -1022,15 +1022,15 @@ window.RECIPES = {
    ]
   },
   "mash": {
-   "y": "About 10 cubes",
+   "y": "About 4 cubes",
    "ing": [
-    "250 g lamb mince",
-    "1 small sweet potato, grated",
-    "½ cup water",
+    "100 g lamb mince",
+    "½ zucchini, grated",
+    "¼ cup water",
     "Pinch of ground cumin and coriander"
    ],
    "how": [
-    "Brown the mince, then add everything else.",
+    "Brown the mince, then add everything else. Or take 100 g out of your family lamb mince before salt and chilli.",
     "Simmer covered for 15 minutes.",
     "Mash until fine with a few soft lumps.",
     "Spoon into an ice cube tray, cover and freeze. Once frozen, pop the cubes into a labelled, dated zip-lock bag. Use within a month."
@@ -1062,9 +1062,9 @@ window.RECIPES = {
  },
  "chicken": {
   "pur": {
-   "y": "About 8–10 cubes from 2 drumsticks",
+   "y": "About 4 cubes from 1 drumstick",
    "ing": [
-    "2 chicken drumsticks (or 2 thigh fillets, about 250 g)",
+    "1 chicken drumstick (or 1 thigh fillet, about 125 g)",
     "Water to cover"
    ],
    "how": [
@@ -1374,19 +1374,19 @@ window.RECIPES = {
  },
  "dhal": {
   "pur": {
-   "y": "About 12 cubes",
+   "y": "About 5 cubes",
    "ing": [
-    "½ cup (100 g) red lentils or yellow split lentils",
-    "2 cups (500 ml) water",
-    "¼ tsp ground turmeric",
-    "¼ tsp ground cumin",
-    "3 tbsp coconut milk",
-    "1 tsp ghee or oil (optional)"
+    "¼ cup (50 g) red lentils or yellow split lentils",
+    "1 cup (250 ml) water",
+    "Pinch of ground turmeric",
+    "Pinch of ground cumin",
+    "1½ tbsp coconut milk",
+    "½ tsp ghee or oil (optional)"
    ],
    "how": [
     "Rinse the lentils in a sieve until the water runs clear.",
     "Put in a saucepan with the water, turmeric and cumin. Bring to the boil, then simmer uncovered for 20–25 minutes, stirring often, until very soft and falling apart.",
-    "Stir in the coconut milk and ghee.",
+    "Stir in the coconut milk and ghee. Or skip this recipe and take his portion out of your family dhal before any salt or chilli goes in.",
     "Blend until smooth.",
     "Spoon into an ice cube tray, cover and freeze. Once frozen, pop the cubes into a labelled, dated zip-lock bag. Use within a month.",
     "To serve: thaw a cube overnight in the fridge, reheat until steaming hot, stir, let it cool and test the temperature. Add a little breast milk now if you want it thinner."
