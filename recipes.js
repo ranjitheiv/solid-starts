@@ -1881,29 +1881,31 @@ window.RECIPES = {
   "mash": {
    "y": "1 serve",
    "ing": [
-    "1 tbsp grated mild cheddar",
-    "2 tbsp hot mash"
+    "1 tbsp ricotta or cottage cheese",
+    "2 tbsp warm mash"
    ],
    "how": [
-    "Stir the cheese into the hot mash so it melts."
+    "Stir the ricotta into the warm mash."
    ]
   },
   "ff": {
    "y": "1 serve",
    "ing": [
-    "1 thin slice mild cheddar or Swiss cheese"
+    "1 small ball of fresh mozzarella (bocconcini), or 1 tbsp ricotta and a toast finger"
    ],
    "how": [
-    "Cut into strips about finger width."
+    "Tear the mozzarella into finger-length strips.",
+    "Or spread ricotta thinly on a toast finger.",
+    "Low-salt cheeses only before 12 months: no cheddar, feta or haloumi."
    ]
   },
   "ff9": {
    "y": "1 serve",
    "ing": [
-    "15 g mild cheese"
+    "1 small ball of fresh mozzarella"
    ],
    "how": [
-    "Grate it, or cut into small 1 cm cubes."
+    "Tear into small soft pieces."
    ]
   }
  },

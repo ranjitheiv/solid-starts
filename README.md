@@ -41,7 +41,7 @@ The token can only read and write gists on your account. It's stored only on eac
 
 - **Today**: what to offer, with the new allergen steps when it's an allergen day. Tap the circle when he's eaten it. Tap **Edit** to record how much and any reaction.
 - **Plan**: every week with texture targets, amounts, a cook-and-freeze checklist and tips. Tap any day to open it.
-- **Allergens**: all 15 allergens, when each is planned, and a warning when one hasn't been given for 5 or more days.
+- **Allergens**: all 15 allergens, when each is planned, and a flag when one is due for its twice-weekly keep-up.
 - **Foods**: prep notes by stage for 50 foods, with a link to Solid Starts for cutting and serving photos.
 - **Log**: everything he's eaten. **GP report** prints a one-page summary of allergens, reactions and foods tried. Export a backup now and then.
 - **Safety**: gagging vs choking, choking first aid, reaction signs, when to call 000 or the GP.

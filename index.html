@@ -478,7 +478,7 @@ function allergenStatus(id, asOf = todayStr()){
   else if (ex.length >= 3){ status = 'in'; label = 'In his diet'; cls = 'ok'; }
   else if (ex.length){ status = 'building'; label = 'Building up'; cls = 'build'; }
   let due = null;
-  if (ex.length && !rx.length){ if (since >= 8) due = 'overdue'; else if (since >= 6) due = 'soon'; }
+  if (ex.length && !rx.length){ if (since >= 5) due = 'overdue'; else if (since >= 3) due = 'soon'; }
   return { ex, rx, last, since, status, label, cls, due, first: ex[0]?.d || null };
 }
 function foodTried(id){
@@ -545,7 +545,7 @@ function renderToday(){
   } else if (p.type === 'pause'){
     h += `<div class="card"><h3>✈️ ${esc(p.label)}</h3><p class="muted">${esc(p.note)}</p><p class="small">The home plan starts <b>${fmtLong(P.homeStart)}</b> with beef purée and sweet potato. Defrost a cube of each the night before.</p></div>`;
   } else if (p.type === 'after'){
-    h += `<div class="card"><h3>🎉 12-week plan complete</h3><p>Keep going with three meals of family food and the weekly keep-up rhythm: egg Mon, fish Tue, peanut Wed, soy and sesame Thu, prawn Fri, nut mix Sat. The Allergens tab shows anything that's due.</p></div>`;
+    h += `<div class="card"><h3>🎉 12-week plan complete</h3><p>Keep going with three meals of family food and keep each allergen going about twice a week (every 3 to 4 days). The Allergens tab shows anything that's due.</p></div>`;
   } else {
     // new allergen banner
     const newIds = []; p.meals.forEach(m => Object.entries(m.alk).forEach(([id,k]) => k === 'new' && newIds.push(id)));
@@ -561,7 +561,7 @@ function renderToday(){
     const planned = new Set(); [p, planFor(addDays(s, 1))].forEach(pp => { (pp.meals||[]).forEach(m => expandAl([...m.al, ...m.f.map(f => FOOD[f]?.al).filter(Boolean)]).forEach(i => planned.add(i))); if (pp.ff) expandAl([...pp.ff.al, ...pp.ff.f.map(f => FOOD[f]?.al).filter(Boolean)]).forEach(i => planned.add(i)); });
     const due = P.allergens.map(a => ({a, st:allergenStatus(a.id, s)})).filter(x => x.st.due && !planned.has(x.a.id));
     if (due.length){
-      h += `<div class="card"><div class="between"><b>Keep-up due</b><span class="small muted">at least weekly</span></div><div class="chips">${due.map(x => `<span class="pill ${x.st.due === 'overdue' ? 'bad' : 'warn'}">${x.a.emoji} ${esc(x.a.name.replace(/ \(.*\)/,''))} · ${x.st.since}d</span>`).join('')}</div><div class="small muted" style="margin-top:8px">Add any of these to a meal today. Tree nuts are all covered by one serve of the nut and seed mix.</div></div>`;
+      h += `<div class="card"><div class="between"><b>Keep-up due</b><span class="small muted">about twice a week</span></div><div class="chips">${due.map(x => `<span class="pill ${x.st.due === 'overdue' ? 'bad' : 'warn'}">${x.a.emoji} ${esc(x.a.name.replace(/ \(.*\)/,''))} · ${x.st.since}d</span>`).join('')}</div><div class="small muted" style="margin-top:8px">Add any of these to a meal today. Tree nuts are all covered by one serve of the nut and seed mix.</div></div>`;
     }
 
     h += varietyCard(s) + freezerCard(s);
@@ -942,7 +942,7 @@ function renderAllergens(){
   let h = `<div class="card"><div class="between"><div><b>${inDiet} of ${P.allergens.length} introduced</b><div class="small muted">Goal: all in by about 7½ months, then each one at least weekly.</div></div><div style="font-size:28px">${inDiet === P.allergens.length ? '🎉' : '🛡️'}</div></div><div class="prog"><i style="width:${Math.round(inDiet/P.allergens.length*100)}%"></i></div></div>`;
   if (rx.length) h += `<div class="alert bad"><b>Reaction logged: ${rx.map(x => esc(x.a.name)).join(', ')}.</b> Don't offer it again until you've spoken to your GP. Use the GP report in the Log tab.</div>`;
   h += `<details class="card"><summary class="between"><b>How to introduce an allergen</b><span class="chev">›</span></summary><ul class="small" style="padding-left:18px;margin:0">${P.allergenRules.map(r => `<li style="margin-bottom:6px">${esc(r)}</li>`).join('')}</ul></details>`;
-  const grp = (title, list) => `<div class="sec">${title}</div><div class="agrid">${list.map(({a, st}) => `<button class="acard s-${st.status} ${st.due === 'overdue' ? 'overdue' : ''}" data-al="${a.id}">${st.status === 'in' ? '<span class="abadge">✓</span>' : st.status === 'reaction' ? '<span class="abadge bad">!</span>' : ''}<div class="em">${a.emoji}</div><div class="nm">${esc(a.name)}</div><span class="pill ${st.cls}">${st.status === 'in' ? '✓ ' : ''}${esc(st.label)}</span><div class="tiny muted" style="margin-top:6px">${st.last ? `Last: ${st.since === 0 ? 'today' : st.since === 1 ? 'yesterday' : st.since+' days ago'}` : nextIntro(a.id)}</div>${st.due ? `<div class="tiny" style="margin-top:4px;color:var(--${st.due === 'overdue' ? 'bad' : 'warn'});font-weight:700">${st.due === 'overdue' ? 'Over a week: give it soon' : 'Due tomorrow'}</div>` : ''}</button>`).join('')}</div>`;
+  const grp = (title, list) => `<div class="sec">${title}</div><div class="agrid">${list.map(({a, st}) => `<button class="acard s-${st.status} ${st.due === 'overdue' ? 'overdue' : ''}" data-al="${a.id}">${st.status === 'in' ? '<span class="abadge">✓</span>' : st.status === 'reaction' ? '<span class="abadge bad">!</span>' : ''}<div class="em">${a.emoji}</div><div class="nm">${esc(a.name)}</div><span class="pill ${st.cls}">${st.status === 'in' ? '✓ ' : ''}${esc(st.label)}</span><div class="tiny muted" style="margin-top:6px">${st.last ? `Last: ${st.since === 0 ? 'today' : st.since === 1 ? 'yesterday' : st.since+' days ago'}` : nextIntro(a.id)}</div>${st.due ? `<div class="tiny" style="margin-top:4px;color:var(--${st.due === 'overdue' ? 'bad' : 'warn'});font-weight:700">${st.due === 'overdue' ? st.since+' days: give it today' : st.since >= 4 ? 'Due today' : 'Due tomorrow'}</div>` : ''}</button>`).join('')}</div>`;
   h += grp('Main allergens', sts.filter(x => x.a.group === 'core'));
   h += grp('Tree nuts', sts.filter(x => x.a.group === 'nut'));
   h += `<p class="small muted" style="margin-top:12px">Logging the nut and seed mix counts as a serve of every tree nut and sesame.</p>`;
@@ -1074,6 +1074,10 @@ function renderHelp(){
    <p class="small"><span class="pill bad">Severe (anaphylaxis)</span> difficult or noisy breathing, wheeze or persistent cough, swollen tongue or throat, change in cry, pale and floppy.</p>
    <p class="small"><b>Do:</b> call 000 immediately. Lay him flat. If breathing is hard, you can hold him upright, but if he's pale or floppy keep him lying flat.</p>
    <p class="small"><span class="pill keep">Not usually allergy</span> redness around the mouth only, from tomato, berries or citrus. If there's nothing else, offer the food again.</p></div>
+
+  <div class="card"><h3>Delayed reaction (FPIES)</h3>
+   <p class="small">Rare, but worth knowing. Repeated, heavy vomiting starting 1 to 4 hours after a food, often with him going pale, floppy or very sleepy. There are no hives. Egg, fish, rice and oats are common triggers.</p>
+   <p class="small"><b>Do:</b> call 000 if he's pale or floppy. Otherwise go to the emergency department. Don't offer that food again until you've seen your GP.</p></div>
 
   <div class="card"><h3>See your GP (not urgent)</h3><ul class="small">
     <li>After any mild reaction, before trying that food again</li>
