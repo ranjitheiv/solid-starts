@@ -3,7 +3,7 @@
 window.RECIPES = {
  "sweetpotato": {
   "pur": {
-   "y": "About 4 cubes (1 cube ≈ 1 tbsp)",
+   "y": "About 3 cubes, after a serve for today",
    "ing": [
     "½ small sweet potato (about 100 g). Cut the other half into wedges for a holding food",
     "1–2 tbsp of the cooking water or cooled boiled water"
@@ -976,7 +976,7 @@ window.RECIPES = {
  },
  "beef": {
   "pur": {
-   "y": "About 4 cubes (small batch)",
+   "y": "About 6 cubes (small batch)",
    "ing": [
     "100 g lean beef mince",
     "1 tsp olive oil",
