@@ -14,7 +14,8 @@ window.RECIPES = {
     "Blend, adding the water a tablespoon at a time, until completely smooth and about as thick as yoghurt.",
     "Spoon into an ice cube tray, cover and freeze. Once frozen, pop the cubes into a labelled, dated zip-lock bag. Use within a month.",
     "To serve: thaw a cube overnight in the fridge, reheat until steaming hot, stir, let it cool and test the temperature. Add a little breast milk now if you want it thinner."
-   ]
+   ],
+   "tray": "25"
   },
   "mash": {
    "y": "About 12 cubes (1 cube ≈ 1 tbsp)",
@@ -28,7 +29,8 @@ window.RECIPES = {
     "Mix with a cube of meat, chicken or dhal to make a meal.",
     "Spoon into an ice cube tray, cover and freeze. Once frozen, pop the cubes into a labelled, dated zip-lock bag. Use within a month.",
     "To serve: thaw a cube overnight in the fridge, reheat until steaming hot, stir, let it cool and test the temperature. Add a little breast milk now if you want it thinner."
-   ]
+   ],
+   "tray": "25"
   },
   "ff": {
    "y": "1–2 serves (keeps 24 hours in the fridge)",
@@ -69,7 +71,8 @@ window.RECIPES = {
     "Blend, adding the water a tablespoon at a time, until completely smooth and about as thick as yoghurt.",
     "Spoon into an ice cube tray, cover and freeze. Once frozen, pop the cubes into a labelled, dated zip-lock bag. Use within a month.",
     "To serve: thaw a cube overnight in the fridge, reheat until steaming hot, stir, let it cool and test the temperature. Add a little breast milk now if you want it thinner."
-   ]
+   ],
+   "tray": "25"
   },
   "mash": {
    "y": "About 12 cubes (1 cube ≈ 1 tbsp)",
@@ -83,7 +86,8 @@ window.RECIPES = {
     "Mix with a cube of meat, chicken or dhal to make a meal.",
     "Spoon into an ice cube tray, cover and freeze. Once frozen, pop the cubes into a labelled, dated zip-lock bag. Use within a month.",
     "To serve: thaw a cube overnight in the fridge, reheat until steaming hot, stir, let it cool and test the temperature. Add a little breast milk now if you want it thinner."
-   ]
+   ],
+   "tray": "25"
   },
   "ff": {
    "y": "1–2 serves (keeps 24 hours in the fridge)",
@@ -124,7 +128,8 @@ window.RECIPES = {
     "Blend, adding the water a tablespoon at a time, until completely smooth and about as thick as yoghurt.",
     "Spoon into an ice cube tray, cover and freeze. Once frozen, pop the cubes into a labelled, dated zip-lock bag. Use within a month.",
     "To serve: thaw a cube overnight in the fridge, reheat until steaming hot, stir, let it cool and test the temperature. Add a little breast milk now if you want it thinner."
-   ]
+   ],
+   "tray": "25"
   },
   "mash": {
    "y": "About 12 cubes (1 cube ≈ 1 tbsp)",
@@ -138,7 +143,8 @@ window.RECIPES = {
     "Mix with a cube of meat, chicken or dhal to make a meal.",
     "Spoon into an ice cube tray, cover and freeze. Once frozen, pop the cubes into a labelled, dated zip-lock bag. Use within a month.",
     "To serve: thaw a cube overnight in the fridge, reheat until steaming hot, stir, let it cool and test the temperature. Add a little breast milk now if you want it thinner."
-   ]
+   ],
+   "tray": "25"
   },
   "ff": {
    "y": "1–2 serves (keeps 24 hours in the fridge)",
@@ -179,7 +185,8 @@ window.RECIPES = {
     "Blend, adding the water a tablespoon at a time, until completely smooth and about as thick as yoghurt.",
     "Spoon into an ice cube tray, cover and freeze. Once frozen, pop the cubes into a labelled, dated zip-lock bag. Use within a month.",
     "To serve: thaw a cube overnight in the fridge, reheat until steaming hot, stir, let it cool and test the temperature. Add a little breast milk now if you want it thinner."
-   ]
+   ],
+   "tray": "25"
   },
   "mash": {
    "y": "About 12 cubes (1 cube ≈ 1 tbsp)",
@@ -193,7 +200,8 @@ window.RECIPES = {
     "Mix with a cube of meat, chicken or dhal to make a meal.",
     "Spoon into an ice cube tray, cover and freeze. Once frozen, pop the cubes into a labelled, dated zip-lock bag. Use within a month.",
     "To serve: thaw a cube overnight in the fridge, reheat until steaming hot, stir, let it cool and test the temperature. Add a little breast milk now if you want it thinner."
-   ]
+   ],
+   "tray": "25"
   },
   "ff": {
    "y": "1–2 serves (keeps 24 hours in the fridge)",
@@ -234,7 +242,8 @@ window.RECIPES = {
     "Blend, adding the water a tablespoon at a time, until completely smooth and about as thick as yoghurt. It's naturally runny, so you may not need any water.",
     "Spoon into an ice cube tray, cover and freeze. Once frozen, pop the cubes into a labelled, dated zip-lock bag. Use within a month.",
     "To serve: thaw a cube overnight in the fridge, reheat until steaming hot, stir, let it cool and test the temperature. Add a little breast milk now if you want it thinner."
-   ]
+   ],
+   "tray": "25"
   },
   "mash": {
    "y": "About 8 cubes (it's watery)",
@@ -248,7 +257,8 @@ window.RECIPES = {
     "Mix with a cube of meat, chicken or dhal to make a meal.",
     "Spoon into an ice cube tray, cover and freeze. Once frozen, pop the cubes into a labelled, dated zip-lock bag. Use within a month.",
     "To serve: thaw a cube overnight in the fridge, reheat until steaming hot, stir, let it cool and test the temperature. Add a little breast milk now if you want it thinner."
-   ]
+   ],
+   "tray": "25"
   },
   "ff": {
    "y": "1–2 serves (keeps 24 hours in the fridge)",
@@ -289,7 +299,8 @@ window.RECIPES = {
     "Blend, adding the water a tablespoon at a time, until completely smooth and about as thick as yoghurt. It has a strong taste on its own, so it's best mixed with sweet potato or potato purée.",
     "Spoon into an ice cube tray, cover and freeze. Once frozen, pop the cubes into a labelled, dated zip-lock bag. Use within a month.",
     "To serve: thaw a cube overnight in the fridge, reheat until steaming hot, stir, let it cool and test the temperature. Add a little breast milk now if you want it thinner."
-   ]
+   ],
+   "tray": "25"
   },
   "mash": {
    "y": "About 12 cubes (1 cube ≈ 1 tbsp)",
@@ -303,7 +314,8 @@ window.RECIPES = {
     "Mix with a cube of meat, chicken or dhal to make a meal.",
     "Spoon into an ice cube tray, cover and freeze. Once frozen, pop the cubes into a labelled, dated zip-lock bag. Use within a month.",
     "To serve: thaw a cube overnight in the fridge, reheat until steaming hot, stir, let it cool and test the temperature. Add a little breast milk now if you want it thinner."
-   ]
+   ],
+   "tray": "25"
   },
   "ff": {
    "y": "1–2 serves (keeps 24 hours in the fridge)",
@@ -344,7 +356,8 @@ window.RECIPES = {
     "Blend, adding the water a tablespoon at a time, until completely smooth and about as thick as yoghurt.",
     "Spoon into an ice cube tray, cover and freeze. Once frozen, pop the cubes into a labelled, dated zip-lock bag. Use within a month.",
     "To serve: thaw a cube overnight in the fridge, reheat until steaming hot, stir, let it cool and test the temperature. Add a little breast milk now if you want it thinner."
-   ]
+   ],
+   "tray": "25"
   },
   "mash": {
    "y": "About 12 cubes (1 cube ≈ 1 tbsp)",
@@ -358,7 +371,8 @@ window.RECIPES = {
     "Mix with a cube of meat, chicken or dhal to make a meal.",
     "Spoon into an ice cube tray, cover and freeze. Once frozen, pop the cubes into a labelled, dated zip-lock bag. Use within a month.",
     "To serve: thaw a cube overnight in the fridge, reheat until steaming hot, stir, let it cool and test the temperature. Add a little breast milk now if you want it thinner."
-   ]
+   ],
+   "tray": "25"
   },
   "ff": {
    "y": "1–2 serves (keeps 24 hours in the fridge)",
@@ -399,7 +413,8 @@ window.RECIPES = {
     "Blend, adding the water a tablespoon at a time, until completely smooth and about as thick as yoghurt.",
     "Spoon into an ice cube tray, cover and freeze. Once frozen, pop the cubes into a labelled, dated zip-lock bag. Use within a month.",
     "To serve: thaw a cube overnight in the fridge, reheat until steaming hot, stir, let it cool and test the temperature. Add a little breast milk now if you want it thinner."
-   ]
+   ],
+   "tray": "25"
   },
   "mash": {
    "y": "About 8 cubes",
@@ -413,7 +428,8 @@ window.RECIPES = {
     "Mix with a cube of meat, chicken or dhal to make a meal.",
     "Spoon into an ice cube tray, cover and freeze. Once frozen, pop the cubes into a labelled, dated zip-lock bag. Use within a month.",
     "To serve: thaw a cube overnight in the fridge, reheat until steaming hot, stir, let it cool and test the temperature. Add a little breast milk now if you want it thinner."
-   ]
+   ],
+   "tray": "25"
   },
   "ff": {
    "y": "1–2 serves (keeps 24 hours in the fridge)",
@@ -454,7 +470,8 @@ window.RECIPES = {
     "Push through a sieve with the back of a spoon to remove the skins.",
     "Spoon into an ice cube tray, cover and freeze. Once frozen, pop the cubes into a labelled, dated zip-lock bag. Use within a month.",
     "To serve: thaw a cube overnight in the fridge, reheat until steaming hot, stir, let it cool and test the temperature. Add a little breast milk now if you want it thinner."
-   ]
+   ],
+   "tray": "25"
   },
   "mash": {
    "y": "About 8 cubes",
@@ -466,7 +483,8 @@ window.RECIPES = {
     "Drain and squash with a fork or potato masher.",
     "Great mixed through mashed potato with flaked salmon.",
     "Spoon into an ice cube tray, cover and freeze. Once frozen, pop the cubes into a labelled, dated zip-lock bag. Use within a month."
-   ]
+   ],
+   "tray": "25"
   },
   "ff": {
    "y": "1 serve",
@@ -503,7 +521,8 @@ window.RECIPES = {
     "Put in a bowl, cover with a plate for 10 minutes, then peel off the skin.",
     "Blend until smooth. Best mixed with sweet potato, pumpkin or meat purée.",
     "Spoon into an ice cube tray, cover and freeze. Once frozen, pop the cubes into a labelled, dated zip-lock bag. Use within a month."
-   ]
+   ],
+   "tray": "25"
   },
   "mash": {
    "y": "About 6 cubes",
@@ -513,7 +532,8 @@ window.RECIPES = {
    "how": [
     "Roast and peel as for purée.",
     "Chop finely and mash into sweet potato, dhal or meat."
-   ]
+   ],
+   "tray": "25"
   },
   "ff": {
    "y": "1–2 serves",
@@ -551,7 +571,8 @@ window.RECIPES = {
     "Blend until smooth.",
     "Stir a cube into dhal, meat, potato or sweet potato purée. It's strong on its own.",
     "Spoon into an ice cube tray, cover and freeze. Once frozen, pop the cubes into a labelled, dated zip-lock bag. Use within a month."
-   ]
+   ],
+   "tray": "25"
   },
   "mash": {
    "y": "About 4 cubes",
@@ -561,7 +582,8 @@ window.RECIPES = {
    "how": [
     "Wilt as above, squeeze out the water and chop finely.",
     "Stir through mash, dhal or minced meat."
-   ]
+   ],
+   "tray": "25"
   },
   "ff": {
    "y": "1–2 serves",
@@ -606,7 +628,8 @@ window.RECIPES = {
     "Simmer in the oil over low heat for 10–15 minutes until soft and saucy.",
     "Blend until smooth. Mix into meat, pasta or veg purée.",
     "Spoon into an ice cube tray, cover and freeze. Once frozen, pop the cubes into a labelled, dated zip-lock bag. Use within a month."
-   ]
+   ],
+   "tray": "25"
   },
   "mash": {
    "y": "About 6 cubes",
@@ -617,7 +640,8 @@ window.RECIPES = {
    "how": [
     "Cook as for purée but don't blend.",
     "Use as a sauce for meat, lentils or pasta."
-   ]
+   ],
+   "tray": "25"
   },
   "ff": {
    "y": "1 serve",
@@ -735,7 +759,8 @@ window.RECIPES = {
     "Blend until smooth.",
     "Spoon into an ice cube tray, cover and freeze. Once frozen, pop the cubes into a labelled, dated zip-lock bag. Use within a month.",
     "To serve: thaw a cube overnight in the fridge, reheat until steaming hot, stir, let it cool and test the temperature. Add a little breast milk now if you want it thinner."
-   ]
+   ],
+   "tray": "25"
   },
   "mash": {
    "y": "About 10 cubes",
@@ -745,7 +770,8 @@ window.RECIPES = {
    "how": [
     "Peel, core and chop. Steam 6–8 minutes.",
     "Mash with a fork."
-   ]
+   ],
+   "tray": "25"
   },
   "ff": {
    "y": "1 serve",
@@ -781,7 +807,8 @@ window.RECIPES = {
     "Blend until smooth.",
     "Spoon into an ice cube tray, cover and freeze. Once frozen, pop the cubes into a labelled, dated zip-lock bag. Use within a month.",
     "To serve: thaw a cube overnight in the fridge, reheat until steaming hot, stir, let it cool and test the temperature. Add a little breast milk now if you want it thinner."
-   ]
+   ],
+   "tray": "25"
   },
   "mash": {
    "y": "About 4 cubes",
@@ -792,7 +819,8 @@ window.RECIPES = {
    "how": [
     "Stew as for purée.",
     "Mash with a fork."
-   ]
+   ],
+   "tray": "25"
   },
   "ff": {
    "y": "1–2 serves",
@@ -826,7 +854,8 @@ window.RECIPES = {
     "Cut off the cheeks and scoop out the flesh.",
     "Blend until smooth.",
     "Spoon into an ice cube tray, cover and freeze. Once frozen, pop the cubes into a labelled, dated zip-lock bag. Use within a month."
-   ]
+   ],
+   "tray": "25"
   },
   "mash": {
    "y": "1–2 serves",
@@ -867,7 +896,8 @@ window.RECIPES = {
     "If frozen, warm in a pan for 3–4 minutes until soft.",
     "Blend until smooth. Push through a sieve if the skins bother him.",
     "Spoon into an ice cube tray, cover and freeze. Once frozen, pop the cubes into a labelled, dated zip-lock bag. Use within a month."
-   ]
+   ],
+   "tray": "25"
   },
   "mash": {
    "y": "1–2 serves",
@@ -911,7 +941,8 @@ window.RECIPES = {
     "Blend with the soaking water until smooth.",
     "1 cube a day stirred into porridge or cereal helps if he's constipated.",
     "Spoon into an ice cube tray, cover and freeze. Once frozen, pop the cubes into a labelled, dated zip-lock bag. Use within a month."
-   ]
+   ],
+   "tray": "25"
   },
   "mash": {
    "y": "About 6 cubes",
@@ -921,7 +952,8 @@ window.RECIPES = {
    ],
    "how": [
     "Soak, then mash with a fork."
-   ]
+   ],
+   "tray": "25"
   },
   "ff": {
    "y": "1 serve",
@@ -957,10 +989,11 @@ window.RECIPES = {
     "Blend everything, including the liquid, until completely smooth. Add more water if it's too thick.",
     "Spoon into an ice cube tray, cover and freeze. Once frozen, pop the cubes into a labelled, dated zip-lock bag. Use within a month.",
     "To serve: thaw a cube overnight in the fridge, reheat until steaming hot, stir, let it cool and test the temperature. Add a little breast milk now if you want it thinner."
-   ]
+   ],
+   "tray": "25"
   },
   "mash": {
-   "y": "About 12 cubes",
+   "y": "About 6 cubes",
    "ing": [
     "250 g lean beef mince",
     "1 tsp olive oil",
@@ -976,7 +1009,8 @@ window.RECIPES = {
     "Mash with a potato masher, or pulse 2–3 times in a blender, so it's fine but not smooth.",
     "Spoon into an ice cube tray, cover and freeze. Once frozen, pop the cubes into a labelled, dated zip-lock bag. Use within a month.",
     "To serve: thaw a cube overnight in the fridge, reheat until steaming hot, stir, let it cool and test the temperature. Add a little breast milk now if you want it thinner."
-   ]
+   ],
+   "tray": "50"
   },
   "ff": {
    "y": "About 4 kofta logs",
@@ -1019,10 +1053,11 @@ window.RECIPES = {
     "Blend with the liquid until smooth.",
     "Spoon into an ice cube tray, cover and freeze. Once frozen, pop the cubes into a labelled, dated zip-lock bag. Use within a month.",
     "To serve: thaw a cube overnight in the fridge, reheat until steaming hot, stir, let it cool and test the temperature. Add a little breast milk now if you want it thinner."
-   ]
+   ],
+   "tray": "25"
   },
   "mash": {
-   "y": "About 4 cubes",
+   "y": "About 2 cubes",
    "ing": [
     "100 g lamb mince",
     "½ zucchini, grated",
@@ -1034,7 +1069,8 @@ window.RECIPES = {
     "Simmer covered for 15 minutes.",
     "Mash until fine with a few soft lumps.",
     "Spoon into an ice cube tray, cover and freeze. Once frozen, pop the cubes into a labelled, dated zip-lock bag. Use within a month."
-   ]
+   ],
+   "tray": "50"
   },
   "ff": {
    "y": "About 12 kofta logs",
@@ -1076,10 +1112,11 @@ window.RECIPES = {
     "Blend the meat with 3–4 tbsp of the poaching water until completely smooth and runny. Add more water if needed.",
     "Freeze the rest in an ice cube tray. Add breast milk only at serving, after reheating.",
     "To serve: thaw a cube overnight in the fridge, reheat until steaming hot, stir, let it cool and test the temperature."
-   ]
+   ],
+   "tray": "25"
   },
   "mash": {
-   "y": "About 8–10 cubes",
+   "y": "About 4–5 cubes",
    "ing": [
     "2 chicken drumsticks (or 2 thigh fillets)"
    ],
@@ -1089,7 +1126,8 @@ window.RECIPES = {
     "Shred very finely with two forks, then chop.",
     "Stir into mashed veg, rice or dhal with a little poaching water to keep it moist.",
     "Spoon into an ice cube tray, cover and freeze. Use within a month."
-   ]
+   ],
+   "tray": "50"
   },
   "ff": {
    "y": "2–3 serves",
@@ -1139,10 +1177,11 @@ window.RECIPES = {
     "Blend with the potato and water until smooth.",
     "Spoon into an ice cube tray, cover and freeze. Once frozen, pop the cubes into a labelled, dated zip-lock bag. Use within a month.",
     "To serve: thaw a cube overnight in the fridge, reheat until steaming hot, stir, let it cool and test the temperature. Add a little breast milk now if you want it thinner."
-   ]
+   ],
+   "tray": "25"
   },
   "mash": {
-   "y": "About 8 cubes",
+   "y": "About 4 cubes",
    "ing": [
     "150 g skinless, boneless salmon fillet",
     "1 medium potato or sweet potato"
@@ -1150,7 +1189,8 @@ window.RECIPES = {
    "how": [
     "Cook as for purée.",
     "Flake, check for bones, and fork through the mashed potato. Leave it lumpy."
-   ]
+   ],
+   "tray": "50"
   },
   "ff": {
    "y": "About 8 patties",
@@ -1191,10 +1231,11 @@ window.RECIPES = {
     "Flake the fish and check for bones.",
     "Blend with the potato and water until smooth.",
     "Spoon into an ice cube tray, cover and freeze. Once frozen, pop the cubes into a labelled, dated zip-lock bag. Use within a month."
-   ]
+   ],
+   "tray": "25"
   },
   "mash": {
-   "y": "About 8 cubes",
+   "y": "About 4 cubes",
    "ing": [
     "150 g white fish fillet",
     "1 potato"
@@ -1202,7 +1243,8 @@ window.RECIPES = {
    "how": [
     "Steam as above.",
     "Flake and fork through the mashed potato."
-   ]
+   ],
+   "tray": "50"
   },
   "ff": {
    "y": "About 8 patties",
@@ -1238,10 +1280,11 @@ window.RECIPES = {
     "Simmer the prawns in water for 3–4 minutes until pink and opaque all the way through.",
     "Blend the prawns, potato and water until completely smooth with no pieces left.",
     "Spoon into an ice cube tray, cover and freeze. Once frozen, pop the cubes into a labelled, dated zip-lock bag. Use within a month."
-   ]
+   ],
+   "tray": "25"
   },
   "mash": {
-   "y": "About 6 cubes",
+   "y": "About 3 cubes",
    "ing": [
     "100 g raw prawns, peeled and deveined",
     "½ cup cooked rice or mashed potato"
@@ -1249,7 +1292,8 @@ window.RECIPES = {
    "how": [
     "Cook as above.",
     "Mince the prawns very finely with a knife and stir through the rice or mash."
-   ]
+   ],
+   "tray": "50"
   },
   "ff": {
    "y": "About 8 fritters",
@@ -1390,10 +1434,11 @@ window.RECIPES = {
     "Blend until smooth.",
     "Spoon into an ice cube tray, cover and freeze. Once frozen, pop the cubes into a labelled, dated zip-lock bag. Use within a month.",
     "To serve: thaw a cube overnight in the fridge, reheat until steaming hot, stir, let it cool and test the temperature. Add a little breast milk now if you want it thinner."
-   ]
+   ],
+   "tray": "25"
   },
   "mash": {
-   "y": "About 12 cubes",
+   "y": "About 6 cubes",
    "ing": [
     "½ cup (100 g) red or yellow split lentils",
     "1½ cups (375 ml) water",
@@ -1405,7 +1450,8 @@ window.RECIPES = {
     "Cook as for purée, with less water so it's thick.",
     "Don't blend. Stir well so some lentils break down and some stay whole.",
     "Spoon into an ice cube tray, cover and freeze. Once frozen, pop the cubes into a labelled, dated zip-lock bag. Use within a month."
-   ]
+   ],
+   "tray": "50"
   },
   "ff": {
    "y": "1 serve",
@@ -1444,16 +1490,18 @@ window.RECIPES = {
    "how": [
     "Blend everything until completely smooth, adding water until it's like thick yoghurt.",
     "Keeps 3 days in the fridge, or freeze in cubes."
-   ]
+   ],
+   "tray": "25"
   },
   "mash": {
-   "y": "About 12 cubes",
+   "y": "About 6 cubes",
    "ing": [
     "Same as purée"
    ],
    "how": [
     "Blend a bit less so it's thick and slightly textured."
-   ]
+   ],
+   "tray": "50"
   },
   "ff": {
    "y": "1 serve",
@@ -1627,7 +1675,8 @@ window.RECIPES = {
    "how": [
     "Simmer the rice in the water for 20–25 minutes, longer than normal, until very soft and mushy.",
     "Blend with a cube of dhal or chicken curry sauce until smooth."
-   ]
+   ],
+   "tray": "25"
   },
   "mash": {
    "y": "About 8 cubes",
@@ -1638,7 +1687,8 @@ window.RECIPES = {
    "how": [
     "Overcook as for purée.",
     "Mash into dhal or curry. Don't blend."
-   ]
+   ],
+   "tray": "25"
   },
   "ff": {
    "y": "2–3 logs",

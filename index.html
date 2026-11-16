@@ -163,6 +163,7 @@ a.btn{text-decoration:none}
 .stabs button.on{background:var(--card);color:var(--ink);box-shadow:var(--shadow)}
 .stabs button i{position:absolute;top:5px;right:6px;width:6px;height:6px;border-radius:50%;background:var(--accent)}
 .recipe{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px}
+.recipe .tray{font-size:13.5px;margin:-4px 0 10px;color:var(--ink)}
 .recipe .yield{font-size:13.5px;font-weight:600;color:var(--ok);margin-bottom:10px}
 .recipe .rh{font-size:12px;text-transform:uppercase;letter-spacing:.07em;font-weight:700;color:var(--muted);margin:10px 0 4px}
 .recipe .ing{margin:0;padding-left:20px;font-size:14.5px}
@@ -422,9 +423,9 @@ const LIKE = { '1':{i:'👍', n:'Loved it'}, '0':{i:'➖', n:'It was OK'}, '-1':
 const likeOf = v => v === undefined || v === null ? null : LIKE[String(v)];
 function stageFor(s){ if (s < '2026-11-23') return 'pur'; if (s < '2027-01-11') return 'mash'; return 'ff9'; }
 const STAGES = {
-  pur:  { s:'Purée', n:'Smooth purée', when:'Auckland and weeks 1–2 (until 29 Nov)' },
-  mash: { s:'Mashed', n:'Mashed and lumpy', when:'Weeks 3–8 (30 Nov to 10 Jan)' },
-  ff:   { s:'Finger food', n:'Finger food he holds', when:'From week 2 (23 Nov). Big pieces, about the size of your finger, so he can grip them' },
+  pur:  { s:'Purée', n:'Smooth purée', when:'Auckland and week 1 (until 22 Nov)' },
+  mash: { s:'Mashed', n:'Mashed and lumpy', when:'On a loaded spoon, weeks 2–8 (23 Nov to 10 Jan)' },
+  ff:   { s:'Finger food', n:'Finger food he holds', when:'Optional from week 1, every meal from 23 Nov. Big pieces, about the size of your finger, so he can grip them' },
   ff9:  { s:'Pieces', n:'Small pieces', when:'From week 9 (11 Jan), once he can pick things up between thumb and finger' }
 };
 
@@ -795,7 +796,7 @@ function openFreezer(){
 }
 function openBatch(id){
   const f = FOOD[id]; let n = cubesIn(id) || 6;
-  const html = `<div class="row" style="margin:-4px 0 14px">${tileFor([id], 'lg')}<div><b>${esc(f.n)}</b><div class="small muted">How many cubes did you get?</div></div></div>
+  const html = `<div class="row" style="margin:-4px 0 14px">${tileFor([id], 'lg')}<div><b>${esc(f.n)}</b><div class="small muted">How many cubes did you get?${RECIPES[id]?.pur?.tray || RECIPES[id]?.mash?.tray ? ` Use the ${stageFor(todayStr()) === 'mash' && RECIPES[id]?.mash?.tray ? RECIPES[id].mash.tray : (RECIPES[id]?.pur?.tray || RECIPES[id]?.mash?.tray)} ml tray.` : ''}</div></div></div>
     <div class="stepper"><button class="cbtn big" id="bM" aria-label="One less">−</button><span id="bN">${n}</span><button class="cbtn big" id="bP" aria-label="One more">+</button></div>
     <div class="small muted" style="text-align:center">The recipe usually makes about ${cubesIn(id)}</div>
     <button class="btn block" id="bAdd" style="margin-top:16px">Add ${n} to the freezer</button>`;
@@ -991,7 +992,7 @@ function openFood(id, want){
   const stageHtml = k => {
     const rc = RECIPES[id]?.[k];
     return `<div class="stage ${isNow(k) ? 'now' : ''}"><div class="between"><b>${STAGES[k].n}</b>${isNow(k) ? '<span class="pill new">Now</span>' : ''}</div><div class="tiny muted">${esc(STAGES[k].when)}</div><p>${esc(f[k])}</p></div>
-      ${rc ? `<div class="sec">How to make it</div><div class="recipe"><div class="yield">🍽️ Makes: ${esc(rc.y)}</div><div class="rh">Ingredients</div><ul class="ing">${rc.ing.map(i => `<li>${esc(i)}</li>`).join('')}</ul><div class="rh">Method</div><ol class="how">${rc.how.map(i => `<li>${esc(i)}</li>`).join('')}</ol></div>` : ''}`;
+      ${rc ? `<div class="sec">How to make it</div><div class="recipe"><div class="yield">🍽️ Makes: ${esc(rc.y)}</div>${rc.tray ? `<div class="tray">🧊 Freeze in the <b>${rc.tray} ml tray</b>. ${rc.tray === '50' ? 'Big cube: about 2 meals now, 1 meal from 8 months.' : 'Small cube: about 1 serve.'}</div>` : ''}<div class="rh">Ingredients</div><ul class="ing">${rc.ing.map(i => `<li>${esc(i)}</li>`).join('')}</ul><div class="rh">Method</div><ol class="how">${rc.how.map(i => `<li>${esc(i)}</li>`).join('')}</ol></div>` : ''}`;
   };
   const html = `<div class="row" style="margin:-4px 0 12px"><div class="mi lg n1"><span>${f.e}</span></div><div class="chips" style="margin:0">${f.iron ? '<span class="pill iron">Iron-rich</span>' : ''}${f.al ? `<span class="pill keep">Allergen: ${esc(f.al === 'nutmix' ? 'tree nuts + sesame' : AL[f.al]?.name)}</span>` : ''}</div></div>
    ${f.note ? `<div class="alert warn small" style="margin-top:0">${esc(f.note)}</div>` : ''}
