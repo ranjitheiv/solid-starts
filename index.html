@@ -246,6 +246,7 @@ details.more summary{font-size:14px;font-weight:600;color:var(--accent);cursor:p
 .wd .wn{font-size:10px;font-weight:700;color:var(--accent);height:12px;text-transform:uppercase;letter-spacing:.04em}
 .wd.part .wc{background:var(--accent-soft);border-color:color-mix(in srgb,var(--accent) 40%,var(--line))}
 .wd.full .wc{background:var(--ok);border-color:var(--ok);color:#fff}
+.wd.skipd .wc{background:var(--line);color:var(--muted)}
 .wd.rx .wc{background:var(--bad);border-color:var(--bad);color:#fff}
 .wd.today .wl{color:var(--accent)}
 .wd.sel .wc{outline:2.5px solid var(--ink);outline-offset:2px}
@@ -762,7 +763,7 @@ function tripsOverview(){
 const mondayOf = s => { const d = parse(s); const k = (d.getDay() + 6) % 7; return addDays(s, -k); };
 function dayStatus(d){
   const p = planFor(d); const ms = [...(p.meals||[]), ...(p.ff ? [{ slot:'f', al:[], alk:{} , ...p.ff }] : [])];
-  const done = ms.filter(m => entryFor(`${d}:${m.slot}`)).length;
+  const done = ms.filter(m => entryFor(`${d}:${m.slot}`) || skipFor(`${d}:${m.slot}`)).length;
   const extra = live().filter(e => e.d === d).length;
   const isNew = (p.meals||[]).some(m => Object.values(m.alk).includes('new'));
   return { total: ms.length, done, any: extra > 0, isNew, rx: live().some(e => e.d === d && (e.rx === 'mild' || e.rx === 'severe')) };
@@ -770,8 +771,8 @@ function dayStatus(d){
 function weekStrip(s){
   const mon = mondayOf(s), t = todayStr();
   return `<div class="wstrip">${[0,1,2,3,4,5,6].map(i => { const d = addDays(mon, i), st = dayStatus(d), dd = parse(d);
-    const cls = st.rx ? 'rx' : st.total && st.done >= st.total ? 'full' : st.any ? 'part' : '';
-    return `<button class="wd ${cls} ${d === s ? 'sel' : ''} ${d === t ? 'today' : ''}" data-day="${d}"><span class="wl">${'MTWTFSS'[i]}</span><span class="wc">${st.rx ? '!' : cls === 'full' ? '✓' : dd.getDate()}</span><span class="wn">${flightOn(d) ? '✈️' : st.isNew ? 'new' : ''}</span></button>`; }).join('')}</div>`;
+    const cls = st.rx ? 'rx' : st.total && st.done >= st.total ? (st.any ? 'full' : 'skipd') : st.any ? 'part' : '';
+    return `<button class="wd ${cls} ${d === s ? 'sel' : ''} ${d === t ? 'today' : ''}" data-day="${d}"><span class="wl">${'MTWTFSS'[i]}</span><span class="wc">${st.rx ? '!' : cls === 'full' ? '✓' : cls === 'skipd' ? '–' : dd.getDate()}</span><span class="wn">${flightOn(d) ? '✈️' : st.isNew ? 'new' : ''}</span></button>`; }).join('')}</div>`;
 }
 
 /* TODAY SO FAR / PARTNER FEED */
