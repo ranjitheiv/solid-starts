@@ -181,6 +181,11 @@ a.btn{text-decoration:none}
 .mcard{display:flex;align-items:center;gap:10px;padding:12px}
 .mcard .meal{flex:1;min-width:0;display:flex;gap:12px;align-items:flex-start;cursor:pointer}
 .mcard.is-done{background:color-mix(in srgb,var(--ok-soft) 45%,var(--card))}
+.mcard.is-skip{opacity:.62}.mcard.is-skip .ttl{text-decoration:line-through}
+.tick.skip{background:var(--card);color:var(--muted);font-size:17px}
+.reasons{display:flex;flex-wrap:wrap;gap:8px}.reasons button{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:9px 13px;font:inherit;font-size:14px;color:var(--ink)}.reasons button.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.skiprow{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-top:1px solid var(--line)}.skiprow:first-child{border-top:0}
+.copybox{width:100%;min-height:220px;font:12px/1.4 ui-monospace,monospace}
 .mi{flex:none;width:58px;height:58px;border-radius:16px;background:var(--accent-soft);display:grid;place-items:center;font-size:32px;line-height:1}
 .mi.n2,.mi.n3{grid-template-columns:1fr 1fr;font-size:22px;padding:4px;gap:0}
 .mi.n3 span:first-child{grid-column:1/-1}
@@ -216,7 +221,7 @@ details.banner summary{list-style:none;cursor:pointer}details.banner summary::-w
 .ftile .fb{background:var(--card);border-radius:50%;width:22px;height:22px;display:grid;place-items:center}
 .dm{display:flex;align-items:center;gap:6px;margin:2px 0;min-width:0}
 .dm .de{font-size:17px}.dm .dt{flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.dm .dk{margin-left:auto;font-size:14px}.dm.done .dt{color:var(--muted)}
+.dm .dk{margin-left:auto;font-size:14px}.dm.done .dt{color:var(--muted)}.dm.skip .dt{color:var(--muted);text-decoration:line-through}
 .dm .pill{font-size:11px;padding:2px 7px}
 .lkbig{font-size:22px}
 .dayrow .chev{transform:none!important}
@@ -448,16 +453,16 @@ function planFor(s){
 }
 
 /* ---------- state + merge ---------- */
-const DEF = { v:1, entries:{}, ticks:{}, foods:{}, freezer:{} };
+const DEF = { v:1, entries:{}, ticks:{}, foods:{}, freezer:{}, skips:{} };
 let S = LS.get('ks_data', null) || structuredClone(DEF);
-['entries','ticks','foods','freezer'].forEach(k => S[k] ||= {});
+['entries','ticks','foods','freezer','skips'].forEach(k => S[k] ||= {});
 let local = LS.get('ks_local', { name:'Aranei', watch:null });
 let cfg = LS.get('ks_sync', { token:'', gist:'' });
 const save = () => { LS.set('ks_data', S); scheduleSync(); try { checkMilestones(); } catch {} };
 const stamp = o => (o.u = Date.now(), o);
 function merge(a, b){
-  const out = { v:1, entries:{}, ticks:{}, foods:{}, freezer:{} };
-  ['entries','ticks','foods','freezer'].forEach(k => {
+  const out = { v:1, entries:{}, ticks:{}, foods:{}, freezer:{}, skips:{} };
+  ['entries','ticks','foods','freezer','skips'].forEach(k => {
     const A = a?.[k] || {}, B = b?.[k] || {};
     new Set([...Object.keys(A), ...Object.keys(B)]).forEach(id => {
       const x = A[id], y = B[id];
@@ -467,6 +472,12 @@ function merge(a, b){
   return out;
 }
 const live = () => Object.values(S.entries).filter(e => !e.del);
+const SKIP_REASONS = [['unwell','Unwell'],['nothungry','Not hungry'],['travel','Travel'],['swapped','Swapped'],['notime','No time'],['nothave',"Didn't have item"],['other','Other']];
+const INTENTIONAL = new Set(['notime','nothave']);
+const reasonLabel = r => (SKIP_REASONS.find(x => x[0] === r) || [,'Other'])[1];
+const skipFor = key => { const k = S.skips[key]; return k && !k.del ? k : null; };
+const liveSkips = () => Object.values(S.skips).filter(k => !k.del);
+const insteadFor = key => live().filter(e => e.off === key);
 
 /* ---------- derived ---------- */
 function allergenStatus(id, asOf = todayStr()){
@@ -557,9 +568,11 @@ function renderToday(){
     p.meals.forEach(m => h += mealCard(s, m));
     if (p.ff){ h += mealCard(s, { slot:'f', ...p.ff }, true); }
     else if (p.type === 'week' && p.wi === 0) h += `<div class="small muted" style="margin:0 2px 12px">No finger foods yet. They start in week 2.</div>`;
+    const extras = live().filter(e => e.d === s && !e.plan).sort((a, b) => a.t.localeCompare(b.t));
+    if (extras.length) h += `<div class="sec">Also eaten today</div><div class="card">${extras.map(e => { const lk = likeOf(e.like); return `<div class="entry row" data-ex="${e.id}">${tileFor(e.f, 'sm')}<div style="flex:1;min-width:0"><div class="w">${esc(e.title || e.txt)}</div><div class="t">${esc(e.t)} · ${esc(SLOTS[e.slot]?.n || 'Meal')}${e.off ? ' · instead of the plan' : ''}${e.by ? ' · '+esc(e.by) : ''}</div></div><span class="lkbig">${lk ? lk.i : ''}</span></div>`; }).join('')}</div>`;
 
     // keep-up due
-    const planned = new Set(); [p, planFor(addDays(s, 1))].forEach(pp => { (pp.meals||[]).forEach(m => expandAl([...m.al, ...m.f.map(f => FOOD[f]?.al).filter(Boolean)]).forEach(i => planned.add(i))); if (pp.ff) expandAl([...pp.ff.al, ...pp.ff.f.map(f => FOOD[f]?.al).filter(Boolean)]).forEach(i => planned.add(i)); });
+    const planned = new Set(); [p, planFor(addDays(s, 1))].forEach(pp => { (pp.meals||[]).filter(m => !skipFor(`${pp === p ? s : addDays(s, 1)}:${m.slot}`)).forEach(m => expandAl([...m.al, ...m.f.map(f => FOOD[f]?.al).filter(Boolean)]).forEach(i => planned.add(i))); if (pp.ff) expandAl([...pp.ff.al, ...pp.ff.f.map(f => FOOD[f]?.al).filter(Boolean)]).forEach(i => planned.add(i)); });
     const due = P.allergens.map(a => ({a, st:allergenStatus(a.id, s)})).filter(x => x.st.due && !planned.has(x.a.id));
     if (due.length){
       h += `<div class="card"><div class="between"><b>Keep-up due</b><span class="small muted">about twice a week</span></div><div class="chips">${due.map(x => `<span class="pill ${x.st.due === 'overdue' ? 'bad' : 'warn'}">${x.a.emoji} ${esc(x.a.name.replace(/ \(.*\)/,''))} · ${x.st.since}d</span>`).join('')}</div><div class="small muted" style="margin-top:8px">Add any of these to a meal today. Tree nuts are all covered by one serve of the nut and seed mix.</div></div>`;
@@ -584,7 +597,9 @@ function renderToday(){
   $('#frz') && ($('#frz').onclick = openFreezer);
   $('#addExtra').onclick = () => openEntry(null, { d:s, slot:'x' });
   $$('[data-tick]', $('#v-today')).forEach(b => b.onclick = () => toggleTick(b.dataset.tick));
-  $$('[data-open]', $('#v-today')).forEach(b => b.onclick = () => { const e = entryFor(b.dataset.open); e ? openEntry(e) : openMeal(b.dataset.open); });
+  $$('[data-unskip]', $('#v-today')).forEach(b => b.onclick = () => unskip(b.dataset.unskip));
+  $$('[data-ex]', $('#v-today')).forEach(b => b.onclick = () => openEntry(S.entries[b.dataset.ex]));
+  $$('[data-open]', $('#v-today')).forEach(b => b.onclick = () => { const k = b.dataset.open, e = entryFor(k); e ? openEntry(e) : skipFor(k) ? openSkipped(k) : openMeal(k); });
   $$('[data-food]', $('#v-today')).forEach(b => b.onclick = () => openFood(b.dataset.food));
 }
 function mealCard(s, m, isFF){
@@ -597,6 +612,8 @@ function mealCard(s, m, isFF){
   const lk = e && likeOf(e.like);
   const status = e ? `<div class="logged">${lk ? `<span class="lk">${lk.i}</span> ${lk.n}` : '✓ Eaten'}${e.rx && e.rx !== 'none' ? ` · <b style="color:var(--${e.rx === 'mouth' ? 'warn' : 'bad'})">${esc(rxLabel(e.rx))}</b>` : ''}<span class="muted"> · ${esc(e.t)}${e.by ? ' · '+esc(e.by) : ''}</span></div>` : '';
   const sub = m.txt && m.txt.toLowerCase() !== m.title.toLowerCase() ? `<div class="sub">${esc(m.txt)}</div>` : '';
+  const sk = !e && skipFor(key);
+  if (sk){ const ins = insteadFor(key); return `<div class="card mcard is-skip"><div class="meal" data-open="${key}" role="button" tabindex="0">${tileFor(m.f)}<div class="body"><div class="slot">${esc(slotName)}</div><div class="ttl">${esc(m.title)}</div>${chips ? `<div class="chips">${chips}</div>` : ''}<div class="logged">⏭️ Skipped: ${esc(reasonLabel(sk.reason))}${sk.by ? `<span class="muted"> · ${esc(sk.by)}</span>` : ''}${ins.length ? `<div class="small muted" style="font-weight:500">Instead: ${esc(ins.map(x => x.title || x.txt).join(', '))}</div>` : ''}</div></div></div><button class="tick skip" data-unskip="${key}" aria-label="Undo skip">↺</button></div>`; }
   return `<div class="card mcard ${e ? 'is-done' : ''}"><div class="meal" data-open="${key}" role="button" tabindex="0">${tileFor(m.f)}<div class="body"><div class="slot">${esc(slotName)}</div><div class="ttl">${esc(m.title)}</div>${sub}${chips ? `<div class="chips">${chips}</div>` : ''}${status}</div></div><button class="tick ${e ? (rx ? 'rx' : 'done') : ''}" data-tick="${key}" aria-label="${e ? 'Undo' : 'Mark as eaten'}">${rx ? '!' : '✓'}</button></div>`;
 }
 function mealFromKey(key){ const d = key.slice(0,10), slot = key.slice(11), p = planFor(d); return { d, slot, p, m: slot === 'f' ? p.ff : (p.meals||[]).find(x => x.slot === slot) }; }
@@ -608,10 +625,54 @@ function openMeal(key){
     ${newA.map(a => `<div class="banner new small"><b>${a.emoji} First time: ${esc(a.name)}</b><div style="margin-top:4px">${esc(a.how)}</div><ol>${a.steps.map(x => `<li>${esc(x)}</li>`).join('')}</ol></div>`).join('')}
     <div class="sec" style="margin-top:4px">What's in it · tap a food for the recipe</div>
     ${m.f.map(id => { const f = FOOD[id]; if (!f) return ''; const t = f[st] || f.mash || f.pur || f.ff || ''; return `<button class="prep" data-food="${id}" data-st="${st}"><span class="pe">${f.e}</span><span class="pb"><b>${esc(f.n)}</b><span>${esc(t)}</span></span><span class="chev">›</span></button>`; }).join('') || '<div class="small muted">Use whatever is in the freezer or left over, prepared to his current texture.</div>'}
-    <button class="btn block" id="mDone" style="margin-top:14px">✓ He's eaten it</button>`;
+    <button class="btn block" id="mDone" style="margin-top:14px">✓ He's eaten it</button>
+    <button class="btn ghost block" id="mSkip" style="margin-top:8px">⏭️ Skip this</button>`;
   openSheet(m.title, html, root => {
     $$('[data-food]', root).forEach(b => b.onclick = () => openFood(b.dataset.food, b.dataset.st));
     $('#mDone', root).onclick = () => { closeSheet(); setTimeout(() => toggleTick(key), 260); };
+    $('#mSkip', root).onclick = () => { closeSheet(); setTimeout(() => openSkip(key), 260); };
+  });
+}
+function openSkip(key){
+  const { d, slot, m } = mealFromKey(key); if (!m) return;
+  const als = m.al.filter(a => m.alk[a] === 'new' || m.alk[a] === 'build');
+  const warn = als.length ? `<div class="alert warn small">This meal has ${als.map(a => `${esc((AL[a]?.name || a).replace(/ \(.*\)/,''))} (${m.alk[a] === 'new' ? 'first try' : 'building up'})`).join(' and ')}. Skipping it means it isn't given today. The Allergens tab only counts what's logged, so it'll still show when it's due.</div>`
+    : m.al.length ? `<div class="small muted" style="margin-bottom:10px">Keep-up in this meal: ${m.al.map(a => esc(a === 'nutmix' ? 'nut mix' : (AL[a]?.name || a).replace(/ \(.*\)/,''))).join(', ')}. If you skip it, the Allergens tab will flag it when it's due.</div>` : '';
+  const html = `<div class="row" style="margin:-4px 0 14px">${tileFor(m.f)}<div><b>${esc(m.title)}</b><div class="small muted">${fmtDate(d)} · ${esc(SLOTS[slot]?.n || 'Meal')}</div></div></div>${warn}
+    <div class="field"><label>Why?</label><div class="reasons" id="kR">${SKIP_REASONS.map(([k, n]) => `<button type="button" data-v="${k}">${esc(n)}</button>`).join('')}</div></div>
+    <div class="field"><label>Note (optional)</label><textarea id="kN" placeholder="e.g. fever, ate at auntie's, out of pumpkin"></textarea></div>
+    <button class="btn block" id="kInst">Skip, then log what he had</button>
+    <button class="btn ghost block" id="kOnly" style="margin-top:8px">Skip, he had nothing</button>`;
+  openSheet('Skip this meal', html, root => {
+    let reason = null;
+    $$('#kR button', root).forEach(b => b.onclick = () => { $$('#kR button', root).forEach(o => o.classList.remove('on')); b.classList.add('on'); reason = b.dataset.v; });
+    const go = instead => {
+      if (!reason){ toast('Pick a reason first'); return; }
+      S.skips[key] = stamp({ key, d, slot, title:m.title, txt:m.txt, f:[...m.f], al:m.al.map(a => m.alk[a] && m.alk[a] !== 'keep' ? `${a}:${m.alk[a]}` : a), reason, note:$('#kN', root).value.trim(), by:local.name, at:new Date().toISOString() });
+      save(); closeSheet(); render();
+      if (instead) setTimeout(() => openEntry(null, { d, slot: slot === 'f' ? 'f' : slot, off:key }), 260); else toast('Skipped');
+    };
+    $('#kInst', root).onclick = () => go(true);
+    $('#kOnly', root).onclick = () => go(false);
+  });
+}
+function unskip(key){
+  const k = S.skips[key]; if (!k) return;
+  if (!confirm('Undo this skip? The planned meal comes back.')) return;
+  stamp(k).del = true; save(); render(); toast('Skip undone');
+}
+function openSkipped(key){
+  const k = skipFor(key); if (!k) return;
+  const ins = insteadFor(key);
+  const html = `<div class="row" style="margin:-4px 0 14px">${tileFor(k.f)}<div><b>${esc(k.title)}</b><div class="small muted">${fmtDate(k.d)} · ${esc(SLOTS[k.slot]?.n || 'Meal')}</div></div></div>
+    <p class="small"><b>Skipped: ${esc(reasonLabel(k.reason))}</b>${k.by ? ` · ${esc(k.by)}` : ''}${k.note ? `<br>${esc(k.note)}` : ''}</p>
+    ${ins.length ? `<div class="sec">Instead he had</div>${ins.map(e => `<button class="prep" data-ex="${e.id}">${tileFor(e.f, 'sm')}<span class="pb"><b>${esc(e.title || e.txt)}</b><span>${esc(e.t)}</span></span><span class="chev">›</span></button>`).join('')}` : ''}
+    <button class="btn block" id="kLog" style="margin-top:14px">+ Log what he had instead</button>
+    <button class="btn ghost block" id="kUndo" style="margin-top:8px">↺ Undo skip</button>`;
+  openSheet('Skipped meal', html, root => {
+    $$('[data-ex]', root).forEach(b => b.onclick = () => { closeSheet(); setTimeout(() => openEntry(S.entries[b.dataset.ex]), 260); });
+    $('#kLog', root).onclick = () => { closeSheet(); setTimeout(() => openEntry(null, { d:k.d, slot:k.slot, off:key }), 260); };
+    $('#kUndo', root).onclick = () => { closeSheet(); setTimeout(() => unskip(key), 260); };
   });
 }
 function openRate(id){
@@ -649,6 +710,7 @@ function toggleTick(key){
   const e = entryFor(key);
   if (e){ if (!confirm('Undo this meal? It will be removed from the log.')) return; Object.entries(cubeMap(e)).forEach(([f, n]) => { S.freezer[f] = stamp({ n: (S.freezer[f]?.n || 0) + n }); }); stamp(e).del = true; save(); render(); return; }
   const [d, slot] = [key.slice(0,10), key.slice(11)];
+  if (skipFor(key)) stamp(S.skips[key]).del = true;
   const p = planFor(d);
   const m = slot === 'f' ? p.ff : p.meals.find(x => x.slot === slot);
   if (!m) return;
@@ -851,7 +913,7 @@ function milestoneStrip(){
 /* ENTRY FORM */
 function openEntry(e, preset = {}){
   const isNew = !e;
-  const x = e ? structuredClone(e) : { id:'e'+Date.now().toString(36)+Math.random().toString(36).slice(2,6), d:preset.d || todayStr(), t:nowHM(), slot:preset.slot || 'x', txt:'', f:[], al:preset.al || [], amt:'some', rx:'none', notes:'', by:local.name };
+  const x = e ? structuredClone(e) : { id:'e'+Date.now().toString(36)+Math.random().toString(36).slice(2,6), d:preset.d || todayStr(), t:nowHM(), slot:preset.slot || 'x', txt:'', f:[], al:preset.al || [], amt:'some', rx:'none', notes:'', by:local.name, ...(preset.off ? { off:preset.off } : {}) };
   const alOpts = [...P.allergens.map(a => [a.id, a.name.replace(/ \(.*\)/,'')]), ['nutmix','Nut and seed mix']];
   const rateSeg = `<div class="rate sm" id="fLike">${['1','0','-1'].map(v => `<button type="button" data-v="${v}" class="${String(x.like) === v ? 'on' : ''}"><span>${LIKE[v].i}</span>${LIKE[v].n}</button>`).join('')}</div>`;
   const html = `
@@ -869,7 +931,7 @@ function openEntry(e, preset = {}){
    </details>
    <button class="btn block" id="fSave" style="margin-top:14px">${isNew ? 'Save to log' : 'Save changes'}</button>
    ${isNew ? '' : '<button class="btn ghost block" id="fDel" style="margin-top:8px;color:var(--bad)">Delete entry</button>'}`;
-  openSheet(isNew ? 'Log a meal' : 'Edit meal', html, root => {
+  openSheet(isNew ? (x.off ? 'What he had instead' : 'Log a meal') : 'Edit meal', html, root => {
     const togg = (box) => $$('button', box).forEach(b => b.onclick = () => b.classList.toggle('on'));
     togg($('#fF', root)); togg($('#fA', root));
     $('#fFind', root).oninput = ev => { const q = ev.target.value.toLowerCase(); $$('#fF button', root).forEach(b => b.style.display = b.textContent.toLowerCase().includes(q) ? '' : 'none'); };
@@ -918,7 +980,7 @@ function renderPlan(){
 function weekBlock({ key, start, title, range, days, open, w, info }){
   const t = todayStr();
   let total = 0, done = 0;
-  days.forEach(d => { const ms = [...d.meals, ...(d.ff ? [{slot:'f'}] : [])]; total += ms.length; ms.forEach(m => entryFor(`${d.date}:${m.slot}`) && done++); });
+  days.forEach(d => { const ms = [...d.meals, ...(d.ff ? [{slot:'f'}] : [])]; total += ms.length; ms.forEach(m => (entryFor(`${d.date}:${m.slot}`) || skipFor(`${d.date}:${m.slot}`)) && done++); });
   const newAl = []; days.forEach(d => d.meals.forEach(m => Object.entries(m.alk).forEach(([a,k]) => k === 'new' && newAl.push(a))));
   let body = info || '';
   if (w){
@@ -927,12 +989,12 @@ function weekBlock({ key, start, title, range, days, open, w, info }){
     if (w.tips?.length) body += `<div class="sec" style="margin-top:14px">Tips</div><ul class="small" style="padding-left:18px;margin:0">${w.tips.map(x => `<li>${esc(x)}</li>`).join('')}</ul>`;
   }
   body += `<div class="sec" style="margin-top:14px">Days</div>` + days.map(d => {
-    const ms = d.meals.map(m => { const e = entryFor(`${d.date}:${m.slot}`); const lk = e && likeOf(e.like); return `<div class="dm ${e ? 'done' : ''}"><span class="de">${emojisFor(m.f)[0] || '🍽️'}</span><span class="dt">${esc(m.title)}</span>${Object.entries(m.alk).filter(([,k]) => k === 'new').map(([a]) => `<span class="pill new">${esc(AL[a]?.name.replace(/ \(.*\)/,''))}</span>`).join('')}${e ? `<span class="dk">${lk ? lk.i : '✓'}</span>` : ''}</div>`; }).join('');
+    const ms = d.meals.map(m => { const e = entryFor(`${d.date}:${m.slot}`), sk = !e && skipFor(`${d.date}:${m.slot}`); const lk = e && likeOf(e.like); return `<div class="dm ${e ? 'done' : sk ? 'skip' : ''}"><span class="de">${emojisFor(m.f)[0] || '🍽️'}</span><span class="dt">${esc(m.title)}</span>${Object.entries(m.alk).filter(([,k]) => k === 'new').map(([a]) => `<span class="pill new">${esc(AL[a]?.name.replace(/ \(.*\)/,''))}</span>`).join('')}${e ? `<span class="dk">${lk ? lk.i : '✓'}</span>` : sk ? '<span class="dk">⏭️</span>' : ''}</div>`; }).join('');
     const dl = locOf(d.date), df = flightOn(d.date);
     return `<div class="dayrow ${d.date === t ? 'today' : ''}" data-go="${d.date}"><div class="d"><b>${DOW[parse(d.date).getDay()]}</b>${parse(d.date).getDate()} ${MON[parse(d.date).getMonth()]}</div><div class="m">${df ? `<div class="tiny" style="font-weight:700;color:var(--blue)">✈️ ${esc(df.t)}</div>` : ''}${dl && dl.k !== 'home' ? `<div class="tiny dloc loc-${dl.k}-t">${dl.e} ${esc(dl.sub)}</div>` : ''}${ms}</div><span class="chev">›</span></div>`;
   }).join('');
   const sd = parse(start), past = addDays(start, days.length - 1) < t, isCur = t >= start && t <= addDays(start, days.length - 1);
-  return `<details class="card wkcard ${isCur ? 'cur' : ''}" ${open ? 'open' : ''}><summary><div class="row" style="align-items:flex-start"><div class="cal ${past ? 'past' : ''}"><span class="cm">${MON[sd.getMonth()]}</span><span class="cd">${sd.getDate()}</span></div><div style="flex:1;min-width:0"><div class="between"><div><b>${esc(title)}</b><div class="small muted">${esc(range)}${newAl.length ? ' · new: '+newAl.map(a => esc(AL[a]?.name.replace(/ \(.*\)/,''))).join(', ') : ''}</div>${(() => { const seen = []; days.forEach(d => { const l = locOf(d.date); if (l && !seen.some(x => x.k === l.k && x.sub === l.sub)) seen.push(l); }); return seen.length && !(seen.length === 1 && seen[0].k === 'home') ? `<div class="chips" style="margin-top:6px">${seen.map(l => locChip(l, true)).join('')}${days.some(d => flightOn(d.date)) ? '<span class="loc sm loc-fly">✈️ Flight</span>' : ''}</div>` : ''; })()}</div><span class="chev">›</span></div><div class="prog"><i style="width:${total ? Math.round(done/total*100) : 0}%"></i></div><div class="tiny muted" style="margin-top:4px">${done} of ${total} logged</div></div></div></summary>${body}</details>`;
+  return `<details class="card wkcard ${isCur ? 'cur' : ''}" ${open ? 'open' : ''}><summary><div class="row" style="align-items:flex-start"><div class="cal ${past ? 'past' : ''}"><span class="cm">${MON[sd.getMonth()]}</span><span class="cd">${sd.getDate()}</span></div><div style="flex:1;min-width:0"><div class="between"><div><b>${esc(title)}</b><div class="small muted">${esc(range)}${newAl.length ? ' · new: '+newAl.map(a => esc(AL[a]?.name.replace(/ \(.*\)/,''))).join(', ') : ''}</div>${(() => { const seen = []; days.forEach(d => { const l = locOf(d.date); if (l && !seen.some(x => x.k === l.k && x.sub === l.sub)) seen.push(l); }); return seen.length && !(seen.length === 1 && seen[0].k === 'home') ? `<div class="chips" style="margin-top:6px">${seen.map(l => locChip(l, true)).join('')}${days.some(d => flightOn(d.date)) ? '<span class="loc sm loc-fly">✈️ Flight</span>' : ''}</div>` : ''; })()}</div><span class="chev">›</span></div><div class="prog"><i style="width:${total ? Math.round(done/total*100) : 0}%"></i></div><div class="tiny muted" style="margin-top:4px">${done} of ${total} logged or skipped</div></div></div></summary>${body}</details>`;
 }
 
 /* ALLERGENS */
@@ -940,7 +1002,7 @@ function renderAllergens(){
   const sts = P.allergens.map(a => ({ a, st:allergenStatus(a.id) }));
   const inDiet = sts.filter(x => x.st.status === 'in' || x.st.status === 'building').length;
   const rx = sts.filter(x => x.st.status === 'reaction');
-  let h = `<div class="card"><div class="between"><div><b>${inDiet} of ${P.allergens.length} introduced</b><div class="small muted">Goal: all in by about 7½ months, then each one at least weekly.</div></div><div style="font-size:28px">${inDiet === P.allergens.length ? '🎉' : '🛡️'}</div></div><div class="prog"><i style="width:${Math.round(inDiet/P.allergens.length*100)}%"></i></div></div>`;
+  let h = `<div class="card"><div class="between"><div><b>${inDiet} of ${P.allergens.length} introduced</b><div class="small muted">Goal: all in by about 8 months, then each one about twice a week.</div></div><div style="font-size:28px">${inDiet === P.allergens.length ? '🎉' : '🛡️'}</div></div><div class="prog"><i style="width:${Math.round(inDiet/P.allergens.length*100)}%"></i></div></div>`;
   if (rx.length) h += `<div class="alert bad"><b>Reaction logged: ${rx.map(x => esc(x.a.name)).join(', ')}.</b> Don't offer it again until you've spoken to your GP. Use the GP report in the Log tab.</div>`;
   h += `<details class="card"><summary class="between"><b>How to introduce an allergen</b><span class="chev">›</span></summary><ul class="small" style="padding-left:18px;margin:0">${P.allergenRules.map(r => `<li style="margin-bottom:6px">${esc(r)}</li>`).join('')}</ul></details>`;
   const grp = (title, list) => `<div class="sec">${title}</div><div class="agrid">${list.map(({a, st}) => `<button class="acard s-${st.status} ${st.due === 'overdue' ? 'overdue' : ''}" data-al="${a.id}">${st.status === 'in' ? '<span class="abadge">✓</span>' : st.status === 'reaction' ? '<span class="abadge bad">!</span>' : ''}<div class="em">${a.emoji}</div><div class="nm">${esc(a.name)}</div><span class="pill ${st.cls}">${st.status === 'in' ? '✓ ' : ''}${esc(st.label)}</span><div class="tiny muted" style="margin-top:6px">${st.last ? `Last: ${st.since === 0 ? 'today' : st.since === 1 ? 'yesterday' : st.since+' days ago'}` : nextIntro(a.id)}</div>${st.due ? `<div class="tiny" style="margin-top:4px;color:var(--${st.due === 'overdue' ? 'bad' : 'warn'});font-weight:700">${st.due === 'overdue' ? st.since+' days: give it today' : st.since >= 4 ? 'Due today' : 'Due tomorrow'}</div>` : ''}</button>`).join('')}</div>`;
@@ -1020,13 +1082,33 @@ function renderLog(){
   Object.entries(byDay).forEach(([d, list]) => {
     h += `<div class="sec">${fmtLong(d)}${d === todayStr() ? ' · today' : ''}</div><div class="card">${list.map(e => { const lk = likeOf(e.like); return `<div class="entry row" data-e="${e.id}">${tileFor(e.f, 'sm')}<div style="flex:1;min-width:0"><div class="w">${esc(e.title || e.txt)}</div><div class="t">${esc(e.t)} · ${esc(SLOTS[e.slot]?.n || 'Meal')}${e.by ? ' · '+esc(e.by) : ''}</div>${e.rx && e.rx !== 'none' ? `<span class="pill ${e.rx === 'mouth' ? 'warn' : 'bad'}" style="margin-top:4px">${esc(rxLabel(e.rx))}</span>` : ''}${e.notes ? `<div class="small muted" style="margin-top:4px">${esc(e.notes)}</div>` : ''}</div><span class="lkbig">${lk ? lk.i : ''}</span></div>`; }).join('')}</div>`;
   });
+  const sks = liveSkips().sort((a, b) => b.key.localeCompare(a.key));
+  h += `<div class="sec">Skipped (${sks.length})</div>`;
+  h += sks.length ? `<div class="card">${sks.map(k => { const ins = insteadFor(k.key); return `<div class="skiprow" data-sk="${k.key}">${tileFor(k.f, 'sm')}<div style="flex:1;min-width:0"><div class="w" style="text-decoration:line-through;color:var(--muted)">${esc(k.title)}</div><div class="t small">${fmtDate(k.d)} · ${esc(SLOTS[k.slot]?.n || 'Meal')} · <b>${esc(reasonLabel(k.reason))}</b>${k.by ? ' · '+esc(k.by) : ''}</div>${k.note ? `<div class="small muted">${esc(k.note)}</div>` : ''}${ins.length ? `<div class="small">Instead: ${esc(ins.map(e => e.title || e.txt).join(', '))}</div>` : ''}</div></div>`; }).join('')}</div>` : `<div class="card small muted">Nothing skipped. To skip a planned meal, tap it on the Today tab and choose Skip this.</div>`;
+  h += `<button class="btn block" id="lCopy">📋 Copy for Claude</button><div class="tiny muted" style="margin:6px 2px 0">${local.lastCopy ? `Copies everything skipped or off-plan since ${fmtDate(local.lastCopy.slice(0,10))}.` : 'Copies everything skipped or off-plan so far.'} Paste it into your chat with Claude to rework the plan. <button class="linkbtn" id="lCopyAll" style="display:inline;padding:0">Copy everything instead</button></div>`;
   h += `<div class="sec">Data</div><div class="grid2"><button class="btn ghost sm" id="lCsv">Download CSV</button><button class="btn ghost sm" id="lJson">Export backup</button></div>`;
   $('#v-log').innerHTML = h;
+  $$('[data-sk]', $('#v-log')).forEach(r => r.onclick = () => openSkipped(r.dataset.sk));
+  $('#lCopy').onclick = () => copyForClaude(false);
+  $('#lCopyAll').onclick = () => copyForClaude(true);
   $('#lAdd').onclick = () => openEntry(null);
   $('#lGP').onclick = gpReport;
   $('#lCsv').onclick = downloadCSV;
   $('#lJson').onclick = () => download(`kavin-solids-backup-${todayStr()}.json`, JSON.stringify(S, null, 2), 'application/json');
   $$('[data-e]', $('#v-log')).forEach(r => r.onclick = () => openEntry(S.entries[r.dataset.e]));
+}
+function copyForClaude(all){
+  const since = all ? 0 : (local.lastCopy ? Date.parse(local.lastCopy) : 0);
+  const sks = liveSkips().filter(k => (k.u || 0) > since).sort((a, b) => a.key.localeCompare(b.key));
+  const offs = live().filter(e => !e.plan && (e.u || 0) > since).sort((a, b) => (a.d+a.t).localeCompare(b.d+b.t));
+  const alTxt = list => (list || []).map(t => { const [id, k] = t.split(':'); const n = id === 'nutmix' ? 'nut mix' : (AL[id]?.name || id).replace(/ \(.*\)/,''); return k === 'new' ? `${n} FIRST TRY` : k === 'build' ? `${n} (building up)` : n; }).join(', ');
+  let t = `Kavin solids update, ${fmtLong(todayStr())}${since ? ` (changes since ${fmtDate(new Date(since).toISOString().slice(0,10))})` : ''}\n\nSKIPPED MEALS (${sks.length})\n`;
+  t += sks.length ? sks.map(k => { const ins = insteadFor(k.key); return `- ${fmtDate(k.d)} ${SLOTS[k.slot]?.n || ''}: planned "${k.txt || k.title}"${k.al?.length ? ` [allergens: ${alTxt(k.al)}]` : ''}. Skipped: ${reasonLabel(k.reason)}${INTENTIONAL.has(k.reason) ? ' (intentional)' : ''}${k.note ? `. Note: ${k.note}` : ''}${ins.length ? `. Instead: ${ins.map(e => e.txt || e.title).join('; ')}` : ''}${k.by ? ` (${k.by})` : ''}`; }).join('\n') : '- none';
+  t += `\n\nOFF-PLAN MEALS (${offs.length})\n` + (offs.length ? offs.map(e => `- ${fmtDate(e.d)} ${e.t} ${SLOTS[e.slot]?.n || ''}: ${e.txt || e.title}${e.al?.length ? ` [allergens: ${alTxt(e.al)}]` : ''}${e.off ? ' (instead of a skipped meal)' : ''}${e.rx && e.rx !== 'none' ? `. REACTION: ${rxLabel(e.rx)}` : ''}${e.notes ? `. Note: ${e.notes}` : ''}`).join('\n') : '- none');
+  t += `\n\nALLERGENS TODAY\n` + P.allergens.map(a => { const s = allergenStatus(a.id); return `- ${a.name.replace(/ \(.*\)/,'')}: ${s.ex.length ? `${s.ex.length} times, first ${s.first}, last ${s.last}` : 'not yet given'}${s.rx.length ? ', REACTION LOGGED' : ''}`; }).join('\n');
+  const done = () => { local.lastCopy = new Date().toISOString(); LS.set('ks_local', local); renderLog(); };
+  const fallback = () => openSheet('Copy for Claude', `<p class="small muted">Select all and copy, then paste it into your chat with Claude.</p><textarea class="copybox" readonly>${esc(t)}</textarea>`, root => { const ta = $('textarea', root); ta.focus(); ta.select(); done(); });
+  try { navigator.clipboard.writeText(t).then(() => { toast('Copied. Paste it to Claude'); done(); }, fallback); } catch { fallback(); }
 }
 function download(name, text, type){
   const blob = new Blob([text], { type }); const a = document.createElement('a');
@@ -1036,6 +1118,7 @@ function download(name, text, type){
 function downloadCSV(){
   const rows = [['Date','Time','Meal','What he had','Foods','Allergens','How much','Liked it','Reaction','Notes','Logged by']];
   live().sort((a,b) => (a.d+a.t).localeCompare(b.d+b.t)).forEach(e => rows.push([e.d, e.t, SLOTS[e.slot]?.n || '', e.txt, (e.f||[]).map(f => FOOD[f]?.n || f).join('; '), (e.al||[]).map(a => a === 'nutmix' ? 'Nut and seed mix' : AL[a]?.name || a).join('; '), amtLabel(e.amt), likeOf(e.like)?.n || '', rxLabel(e.rx), e.notes || '', e.by || '']));
+  liveSkips().sort((a,b) => a.key.localeCompare(b.key)).forEach(k => rows.push([k.d, '', SLOTS[k.slot]?.n || '', 'SKIPPED: ' + (k.txt || k.title), (k.f||[]).map(f => FOOD[f]?.n || f).join('; '), (k.al||[]).map(t => t.split(':')[0]).map(a => a === 'nutmix' ? 'Nut and seed mix' : AL[a]?.name || a).join('; '), 'Skipped', '', '', reasonLabel(k.reason) + (k.note ? ': ' + k.note : ''), k.by || '']));
   download(`kavin-solids-log-${todayStr()}.csv`, rows.map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n'), 'text/csv');
 }
 function gpReport(){
